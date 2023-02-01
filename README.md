@@ -4,7 +4,7 @@ Repository for MTE 380 Project Software
 ### ****Coding Conventions****
 
 #### Naming Conventions
-- Branch Names: '<subtask>/<taskName>' (subtask and task name can be found in the task breakdown)
+- Branch Names: `subtask/taskName` (subtask and task name can be found in the task breakdown)
 -   `variableNames` 
 -   `Function_Name()` 
 -   `CONSTANT_NAMES` 
