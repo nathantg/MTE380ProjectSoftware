@@ -19,8 +19,10 @@
 #define STEP_ANGLE 1.8F
 
 typedef enum {
-  BACKWARD = 0,
-  FORWARD = 1,
+  RIGHT_BACKWARD = 0,
+  RIGHT_FORWARD = 1,
+  LEFT_BACKWARD = 1,
+  LEFT_FORWARD = 0,
   NO_DIRECTION = 2,
 } motor_direction_t;
 
@@ -53,12 +55,31 @@ typedef struct {
 } motor_instance_t;
  
 /**
+ * @brief Initialize single motor configuration
+ * @param motorConfig pointer to motor configuration instance
+ * @param directionPinPort pointer to GPIO port for microcontroller pin assigned for DIR pin of motor driver
+ * @param directionPin microcontroller pin assigned for DIR pin of motor driver
+ * @retval None
+ */
+void MOTOR_initialize_motor_config(motor_config_t *motorConfig, GPIO_TypeDef *directionPinPort, uint16_t directionPin);
+
+/**
+ * @brief Initialize motor instance
+ * @param timer pointer to PWM timer handle
+ * @param rightMotor motor configuration for right motor
+ * @param leftMotor motor configuration for left motor
+ * @param wheelRadius radius of wheel to calculate linear speeds 
+ * @retval None
+ */
+void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_HandleTypeDef *timer, motor_config_t rightMotor, motor_config_t leftMotor, float wheelRadius);
+
+/**
   * @brief Move forwad at given speed
   * @param speed commanded speed to move motors forward
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_move_speed_forward(float speed, motor_instance_t motors);
+void MOTOR_move_speed_forward(float speed, motor_instance_t *motors);
 
 /**
   * @brief Move backward at given speed
@@ -66,14 +87,14 @@ void MOTOR_move_speed_forward(float speed, motor_instance_t motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_move_speed_backward(float speed, motor_instance_t motors);
+void MOTOR_move_speed_backward(float speed, motor_instance_t *motors);
 
 /**
   * @brief Stop both motors
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_stop_both(motor_instance_t motors);
+void MOTOR_stop_both(motor_instance_t *motors);
 
 /**
   * @brief Turn right
@@ -81,7 +102,7 @@ void MOTOR_stop_both(motor_instance_t motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_turn_right(float angle, float speed, motor_instance_t motors);
+void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors);
 
 /**
   * @brief Turn left
@@ -89,7 +110,7 @@ void MOTOR_turn_right(float angle, float speed, motor_instance_t motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_turn_left(float angle, float speed, motor_instance_t motors);
+void MOTOR_turn_left(float angle, float speed, motor_instance_t *motors);
 
 
  #endif /* __MOTOR_CONTROL_H */

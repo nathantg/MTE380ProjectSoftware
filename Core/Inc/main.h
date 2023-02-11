@@ -71,10 +71,10 @@ void Error_Handler(void);
 #define Right_Motor_Driver_STEP_GPIO_Port GPIOA
 #define Left_Motor_Driver_STEP_Pin GPIO_PIN_7
 #define Left_Motor_Driver_STEP_GPIO_Port GPIOA
-#define Left_Motor_Driver_DIR_Pin GPIO_PIN_11
-#define Left_Motor_Driver_DIR_GPIO_Port GPIOA
-#define Right_Motor_Driver_DIR_Pin GPIO_PIN_12
+#define Right_Motor_Driver_DIR_Pin GPIO_PIN_8
 #define Right_Motor_Driver_DIR_GPIO_Port GPIOA
+#define Left_Motor_Driver_DIR_Pin GPIO_PIN_9
+#define Left_Motor_Driver_DIR_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

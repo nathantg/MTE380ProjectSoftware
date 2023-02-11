@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "motor_functions.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -31,6 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define WHEEL_RADIUS 10.0F
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -92,7 +94,17 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  motor_config_t rightMotor;
+  motor_config_t leftMotor;
 
+  MOTOR_initialize_motor_config(&rightMotor, Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin);
+  MOTOR_initialize_motor_config(&leftMotor, Left_Motor_Driver_DIR_GPIO_Port, Left_Motor_Driver_DIR_Pin);
+
+  motor_instance_t motorInstance;
+
+  MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
+
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -264,10 +276,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Left_Motor_Driver_DIR_Pin|Right_Motor_Driver_DIR_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|Right_Motor_Driver_DIR_Pin|Left_Motor_Driver_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -275,8 +284,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD2_Pin Left_Motor_Driver_DIR_Pin Right_Motor_Driver_DIR_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin|Left_Motor_Driver_DIR_Pin|Right_Motor_Driver_DIR_Pin;
+  /*Configure GPIO pins : LD2_Pin Right_Motor_Driver_DIR_Pin Left_Motor_Driver_DIR_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin|Right_Motor_Driver_DIR_Pin|Left_Motor_Driver_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
