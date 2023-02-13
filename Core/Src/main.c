@@ -105,6 +105,8 @@ int main(void)
   MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+
+  float commandSpeed = 0; // Speed we will use for prototype demonstration
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,6 +114,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    MOTOR_move_speed_forward(commandSpeed, &motorInstance);
+    HAL_Delay(5000);
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1500);
+    MOTOR_move_speed_backward(commandSpeed, &motorInstance);
+    HAL_Delay(5000);
 
     /* USER CODE BEGIN 3 */
   }
