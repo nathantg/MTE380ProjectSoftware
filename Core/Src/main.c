@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "motor_functions.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -103,7 +104,7 @@ int main(void)
 
   MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
 
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 
   float commandSpeed = 0; // Speed we will use for prototype demonstration
   /* USER CODE END 2 */
@@ -113,6 +114,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 1);
+    HAL_Delay(2000);
+    HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 0);
+    HAL_Delay(2000);
 
     /* USER CODE BEGIN 3 */
   }
