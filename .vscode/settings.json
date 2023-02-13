@@ -6,5 +6,6 @@
         "stm32f4xx_hal_def.h": "c",
         "motor_functions.h": "c",
         "stm32f4xx_hal_tim.h": "c"
-    }
+    },
+    "stm32-for-vscode.openOCDPath": "/usr/bin/openocd"
 }
