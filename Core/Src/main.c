@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "motor_functions.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -114,12 +113,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    MOTOR_move_speed_forward(commandSpeed, &motorInstance);
-    HAL_Delay(5000);
-    MOTOR_stop_both(&motorInstance);
-    HAL_Delay(1500);
-    MOTOR_move_speed_backward(commandSpeed, &motorInstance);
-    HAL_Delay(5000);
 
     /* USER CODE BEGIN 3 */
   }
@@ -286,6 +279,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LD2_Pin|Right_Motor_Driver_DIR_Pin|Left_Motor_Driver_DIR_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -298,6 +294,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PulseTest_Pin */
+  GPIO_InitStruct.Pin = PulseTest_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(PulseTest_GPIO_Port, &GPIO_InitStruct);
 
 }
 

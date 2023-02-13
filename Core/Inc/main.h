@@ -71,6 +71,8 @@ void Error_Handler(void);
 #define Right_Motor_Driver_STEP_GPIO_Port GPIOA
 #define Left_Motor_Driver_STEP_Pin GPIO_PIN_7
 #define Left_Motor_Driver_STEP_GPIO_Port GPIOA
+#define PulseTest_Pin GPIO_PIN_7
+#define PulseTest_GPIO_Port GPIOC
 #define Right_Motor_Driver_DIR_Pin GPIO_PIN_8
 #define Right_Motor_Driver_DIR_GPIO_Port GPIOA
 #define Left_Motor_Driver_DIR_Pin GPIO_PIN_9
