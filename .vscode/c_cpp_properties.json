@@ -17,7 +17,7 @@
                 "USE_HAL_DRIVER",
                 "STM32F401xE"
             ],
-            "compilerPath": "C:/Users/natha/DevTools/arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
             "cStandard": "gnu17",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "gcc-arm",
