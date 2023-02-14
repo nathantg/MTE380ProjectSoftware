@@ -112,6 +112,12 @@ int main(void)
   HAL_GPIO_WritePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin, RIGHT_FORWARD);
 
   uint32_t arr = 98824;
+  uint32_t crr = 49412;
+
+  uint32_t count = 0;
+
+  __HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
+  __HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, crr);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,14 +125,11 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    __HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
-
-
-    /*
+    
     if (count == 100) {
       count = 0;
       HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-      HAL_GPIO_TogglePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin);
+      //HAL_GPIO_TogglePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin);
     };
     HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 1);
     //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
@@ -135,7 +138,7 @@ int main(void)
     //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     HAL_Delay(10);
 
-    count++; */
+    count++; 
 
     /* USER CODE BEGIN 3 */
   }
