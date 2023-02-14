@@ -97,10 +97,6 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  // __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 500);
-
-  
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -113,15 +109,6 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 
-  // float commandSpeed = 0; // Speed we will use for prototype demonstration
-
-  //uint32_t arr = 98824;
-  //uint32_t ccr = 49412;
-
-  //uint32_t count = 0;
-
-  //__HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
-  //__HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, ccr); 
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -138,15 +125,6 @@ int main(void)
     HAL_Delay(2000); 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(2000);
-
-    /*
-    HAL_Delay(3000);
-    __HAL_TIM_SET_AUTORELOAD(&htim3, 0);
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    HAL_Delay(3000);
-    __HAL_TIM_SET_AUTORELOAD(&htim3, 10000);
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    */
 
     /* USER CODE BEGIN 3 */
   }
