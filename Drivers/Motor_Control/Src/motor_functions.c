@@ -22,8 +22,6 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
   motorInstance->wheelRadius = wheelRadius;
 }
 
-// Assuming 1 is forward and 0 is backward for the DIR pins
-
 void MOTOR_move_speed_forward(float speed, motor_instance_t *motors, uint32_t autoReloadRegister) {
   /*
   float pwmFrequency = speed / (STEP_ANGLE * motors->wheelRadius);
