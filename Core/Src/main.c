@@ -105,11 +105,13 @@ int main(void)
 
   MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
 
-  // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 
   // float commandSpeed = 0; // Speed we will use for prototype demonstration
 
   HAL_GPIO_WritePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin, RIGHT_FORWARD);
+
+  uint32_t arr = 98824;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,12 +119,23 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    __HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
+
+
+    /*
+    if (count == 100) {
+      count = 0;
+      HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+      HAL_GPIO_TogglePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin);
+    };
     HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 1);
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    HAL_Delay(500);
+    //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(10);
     HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 0);
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    HAL_Delay(500);
+    //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(10);
+
+    count++; */
 
     /* USER CODE BEGIN 3 */
   }
