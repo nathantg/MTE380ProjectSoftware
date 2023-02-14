@@ -19,10 +19,10 @@
 #define STEP_ANGLE 1.8F
 
 typedef enum {
-  RIGHT_BACKWARD = 0,
-  RIGHT_FORWARD = 1,
-  LEFT_BACKWARD = 1,
-  LEFT_FORWARD = 0,
+  RIGHT_BACKWARD = 1,
+  RIGHT_FORWARD = 0,
+  LEFT_BACKWARD = 0,
+  LEFT_FORWARD = 1,
   NO_DIRECTION = 2,
 } motor_direction_t;
 
