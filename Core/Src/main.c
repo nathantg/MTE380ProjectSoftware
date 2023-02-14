@@ -96,6 +96,10 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 500);
+
+  /*
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -119,7 +123,7 @@ int main(void)
   uint32_t count = 0;
 
   __HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
-  __HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, crr);
+  __HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, crr); */
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -127,6 +131,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    HAL_Delay(3000);
+    __HAL_TIM_SET_AUTORELOAD(&htim3, 0);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(3000);
+    __HAL_TIM_SET_AUTORELOAD(&htim3, 10000);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 
     /* USER CODE BEGIN 3 */
   }
