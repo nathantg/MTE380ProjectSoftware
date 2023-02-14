@@ -97,7 +97,8 @@ int main(void)
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
-  MOTOR_initialize_motor_config(&rightMotor, Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin);
+  MOTOR_initialize_motor_config(&rightMotor, PulseTest_GPIO_Port, PulseTest_Pin);
+  //MOTOR_initialize_motor_config(&rightMotor, Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin);
   MOTOR_initialize_motor_config(&leftMotor, Left_Motor_Driver_DIR_GPIO_Port, Left_Motor_Driver_DIR_Pin);
 
   motor_instance_t motorInstance;
@@ -106,7 +107,7 @@ int main(void)
 
   // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 
-  float commandSpeed = 0; // Speed we will use for prototype demonstration
+  // float commandSpeed = 0; // Speed we will use for prototype demonstration
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,10 +115,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 1);
-    HAL_Delay(2000);
-    HAL_GPIO_WritePin(PulseTest_GPIO_Port, PulseTest_Pin, 0);
-    HAL_Delay(2000);
+    HAL_GPIO_WritePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin, 1);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(100);
+    HAL_GPIO_WritePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin, 0);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(100);
 
     /* USER CODE BEGIN 3 */
   }
