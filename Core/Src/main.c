@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "motor_functions.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -96,15 +97,14 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 500);
+  //HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  // __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 500);
 
-  /*
+  
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
   MOTOR_initialize_motor_config(&rightMotor, Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin);
-  //MOTOR_initialize_motor_config(&rightMotor, Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin);
   MOTOR_initialize_motor_config(&leftMotor, Left_Motor_Driver_DIR_GPIO_Port, Left_Motor_Driver_DIR_Pin);
 
   motor_instance_t motorInstance;
@@ -115,15 +115,13 @@ int main(void)
 
   // float commandSpeed = 0; // Speed we will use for prototype demonstration
 
-  HAL_GPIO_WritePin(motorInstance.rightMotor.directionPinPort, rightMotor.directionPin, RIGHT_FORWARD);
+  //uint32_t arr = 98824;
+  //uint32_t ccr = 49412;
 
-  uint32_t arr = 98824;
-  uint32_t crr = 49412;
+  //uint32_t count = 0;
 
-  uint32_t count = 0;
-
-  __HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
-  __HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, crr); */
+  //__HAL_TIM_SET_AUTORELOAD(motorInstance.timer, arr);
+  //__HAL_TIM_SET_COMPARE(motorInstance.timer, TIM_CHANNEL_1, ccr); 
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -131,12 +129,24 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    
+    MOTOR_move_speed_forward(0, &motorInstance, 50000);
+    HAL_Delay(2000);
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(2000);
+    MOTOR_move_speed_backward(0, &motorInstance, 10000);
+    HAL_Delay(2000); 
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(2000);
+
+    /*
     HAL_Delay(3000);
     __HAL_TIM_SET_AUTORELOAD(&htim3, 0);
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     HAL_Delay(3000);
     __HAL_TIM_SET_AUTORELOAD(&htim3, 10000);
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    */
 
     /* USER CODE BEGIN 3 */
   }
@@ -234,7 +244,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 32767;
+  sConfigOC.Pulse = 500;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)

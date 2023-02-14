@@ -79,7 +79,7 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_move_speed_forward(float speed, motor_instance_t *motors);
+void MOTOR_move_speed_forward(float speed, motor_instance_t *motors, uint32_t autoReloadRegister);
 
 /**
   * @brief Move backward at given speed
@@ -87,7 +87,7 @@ void MOTOR_move_speed_forward(float speed, motor_instance_t *motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_move_speed_backward(float speed, motor_instance_t *motors);
+void MOTOR_move_speed_backward(float speed, motor_instance_t *motors, uint32_t autoReloadRegister);
 
 /**
   * @brief Stop both motors
