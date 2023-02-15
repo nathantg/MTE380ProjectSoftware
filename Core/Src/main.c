@@ -121,19 +121,25 @@ int main(void)
     HAL_Delay(2000);
 
     MOTOR_stop_both(&motorInstance);
-    HAL_Delay(2000);
+    HAL_Delay(1000);
 
     MOTOR_turn_right(180, 0, &motorInstance, 50000);
     HAL_Delay(2000);
+    
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1000);
 
     MOTOR_move_speed_forward(0, &motorInstance, 50000);
     HAL_Delay(2000);
 
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1000);
+
     MOTOR_move_speed_backward(0, &motorInstance, 50000);
     HAL_Delay(2000); 
-    
+
     MOTOR_stop_both(&motorInstance);
-    HAL_Delay(2000);
+    HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
   }
