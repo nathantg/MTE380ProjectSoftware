@@ -116,6 +116,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {} // wait for push button to be pressed to start
     
     MOTOR_move_speed_forward(0, &motorInstance, 50000);
     HAL_Delay(2000);
