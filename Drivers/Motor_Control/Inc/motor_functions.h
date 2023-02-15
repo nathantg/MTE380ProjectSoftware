@@ -102,7 +102,7 @@ void MOTOR_stop_both(motor_instance_t *motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors);
+void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors, uint32_t autoReloadRegister);
 
 /**
   * @brief Turn left
@@ -110,7 +110,7 @@ void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors);
   * @param motors struct instance of motors
   * @retval None
   */
-void MOTOR_turn_left(float angle, float speed, motor_instance_t *motors);
+void MOTOR_turn_left(float angle, float speed, motor_instance_t *motors, uint32_t autoReloadRegister);
 
 
  #endif /* __MOTOR_CONTROL_H */
