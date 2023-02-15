@@ -19,7 +19,7 @@
 
  void ULTRASONIC_get_distance(float *distance, ultrasonic_conig_t *ultrasonic) {
   HAL_GPIO_WritePin(ultrasonic->trigPinPort, ultrasonic->trigPin, 1);
-  HAL_Delay(0.5); // this delay is too long. Change later
+  Delay_us(10);
   HAL_GPIO_WritePin(ultrasonic->trigPinPort, ultrasonic->trigPin, 0);
 
   while(HAL_GPIO_ReadPin(ultrasonic->echoPinPort, ultrasonic->echoPin) == 0) {} // wait for echo pin to respond
