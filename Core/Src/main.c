@@ -60,6 +60,13 @@ static void MX_TIM1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// Function to provide 
+void Delay_us(uint16_t us) {
+  __HAL_TIM_SET_COUNTER(&htim1, 0); // set counter to 0
+  while(__HAL_TIM_GET_COUNTER(&htim1) < us); // count until us is reached (each count will be 1 us)
+}
+
+
 /* USER CODE END 0 */
 
 /**
@@ -101,10 +108,27 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    HAL_GPIO_WritePin(Ultrasonic_Trig_GPIO_Port, Ultrasonic_Trig_Pin, 1);
+    Delay_us(10);
+    HAL_GPIO_WritePin(Ultrasonic_Trig_GPIO_Port, Ultrasonic_Trig_Pin, 0);
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+    while(HAL_GPIO_ReadPin(Ultrasonic_Echo_GPIO_Port, Ultrasonic_Echo_Pin) == 0) {} // wait for echo pin to respond
+
+    uint32_t t1 = HAL_GetTick();
+    while(HAL_GPIO_ReadPin(Ultrasonic_Echo_GPIO_Port, Ultrasonic_Echo_Pin) == 1) {} // while echo is on
+    uint32_t t2 = HAL_GetTick();
+
+    uint32_t pulseWidth = t2 - t1;
+    pulseWidth = pulseWidth / 1000; // convert ms to us
+
+    float distance = (float) pulseWidth / (float) 58; // distance in cm
+
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(500);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+
+ }
+
 }
 
 /**
