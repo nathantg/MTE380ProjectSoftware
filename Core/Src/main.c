@@ -108,6 +108,7 @@ int main(void)
   MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  
 
   /* USER CODE END 2 */
 
@@ -117,7 +118,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
     while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {} // wait for push button to be pressed to start
+    HLA_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
     
     MOTOR_move_speed_forward(0, &motorInstance, 50000);
     HAL_Delay(2000);
