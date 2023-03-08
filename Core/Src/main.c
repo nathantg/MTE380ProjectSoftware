@@ -97,6 +97,7 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -105,9 +106,12 @@ int main(void)
 
   motor_instance_t motorInstance;
 
-  MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS);
+  MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor, WHEEL_RADIUS); 
 
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
+
+  HAL_GPIO_WritePin(Right_Motor_Driver_DIR_GPIO_Port, Right_Motor_Driver_DIR_Pin, RIGHT_FORWARD);
+  HAL_GPIO_WritePin(Left_Motor_Driver_DIR_GPIO_Port, Left_Motor_Driver_DIR_Pin, LEFT_FORWARD);
 
 
   /* USER CODE END 2 */
@@ -117,34 +121,34 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
     while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {} // wait for push button to be pressed to start
-    HLA_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-    
-    MOTOR_move_speed_forward(0, &motorInstance, 50000);
-    HAL_Delay(2000);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(0, &motorInstance, 65535);
+    HAL_Delay(6000);
 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(1000);
 
-    MOTOR_turn_right(180, 0, &motorInstance, 50000);
-    HAL_Delay(2000);
-    
-    MOTOR_stop_both(&motorInstance);
-    HAL_Delay(1000);
-
-    MOTOR_move_speed_forward(0, &motorInstance, 50000);
-    HAL_Delay(2000);
+    MOTOR_turn_right(180, 0, &motorInstance, 65535);
+    HAL_Delay(2700);
 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(1000);
 
-    MOTOR_move_speed_backward(0, &motorInstance, 50000);
-    HAL_Delay(2000); 
+    MOTOR_move_speed_forward(0, &motorInstance, 65535);
+    HAL_Delay(6000);
 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(1000);
+
+    MOTOR_move_speed_backward(0, &motorInstance, 65535);
+    HAL_Delay(6000);
+
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1000);
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -246,10 +250,6 @@ static void MX_TIM3_Init(void)
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
   }

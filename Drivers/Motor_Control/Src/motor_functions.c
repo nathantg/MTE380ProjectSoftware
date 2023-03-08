@@ -23,13 +23,9 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
 }
 
 void MOTOR_move_speed_forward(float speed, motor_instance_t *motors, uint32_t autoReloadRegister) {
-  /*
-  float pwmFrequency = speed / (STEP_ANGLE * motors->wheelRadius);
-
-  uint32_t autoReloadRegister = FCLK / (pwmFrequency * (PSC + 1)) - 1; */
 
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
   
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
@@ -40,13 +36,9 @@ void MOTOR_move_speed_forward(float speed, motor_instance_t *motors, uint32_t au
 }
 
 void MOTOR_move_speed_backward(float speed, motor_instance_t *motors, uint32_t autoReloadRegister) {
-  /*
-  float pwmFrequency = speed / (STEP_ANGLE * motors->wheelRadius);
-
-  uint32_t autoReloadRegister = FCLK / (pwmFrequency * (PSC + 1)) - 1; */
 
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
 
   motors->rightMotor.direction = RIGHT_BACKWARD;
   motors->leftMotor.direction = LEFT_BACKWARD;
@@ -67,13 +59,9 @@ void MOTOR_stop_both(motor_instance_t *motors) {
 }
 
 void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors, uint32_t autoReloadRegister) {
-  /*
-  float pwmFrequency = speed / (STEP_ANGLE * motors->wheelRadius);
-
-  uint32_t autoReloadRegister = FCLK / (pwmFrequency * (PSC + 1)) - 1; */
 
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
 
   motors->rightMotor.direction = RIGHT_BACKWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
@@ -85,12 +73,9 @@ void MOTOR_turn_right(float angle, float speed, motor_instance_t *motors, uint32
 }
 
 void MOTOR_turn_left(float angle, float speed, motor_instance_t *motors, uint32_t autoReloadRegister) {
-  /*float pwmFrequency = speed / (STEP_ANGLE * motors->wheelRadius);
-
-  uint32_t autoReloadRegister = FCLK / (pwmFrequency * (PSC + 1)) - 1; */
 
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
 
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_BACKWARD;
