@@ -125,14 +125,26 @@ int main(void)
     while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {} // wait for push button to be pressed to start
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     
-    MOTOR_move_speed_forward(0, &motorInstance, 5000);
-    HAL_Delay(5000);
+    MOTOR_move_speed_forward(0, &motorInstance, 10000);
+    HAL_Delay(2000);
 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(1000);
 
-    MOTOR_move_speed_backward(0, &motorInstance, 5000);
-    HAL_Delay(5000); 
+    MOTOR_move_speed_backward(0, &motorInstance, 10000);
+    HAL_Delay(2000); 
+
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1000);
+
+    MOTOR_turn_right(0, 0, &motorInstance, 10000);
+    HAL_Delay(2000); 
+
+    MOTOR_stop_both(&motorInstance);
+    HAL_Delay(1000);
+
+    MOTOR_turn_left(0, 0, &motorInstance, 10000);
+    HAL_Delay(2000); 
 
     MOTOR_stop_both(&motorInstance);
     HAL_Delay(1000);
