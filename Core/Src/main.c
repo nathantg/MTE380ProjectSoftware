@@ -64,6 +64,13 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// Function to provide 
+void Delay_us(uint16_t us) {
+  __HAL_TIM_SET_COUNTER(&htim1, 0); // set counter to 0
+  while(__HAL_TIM_GET_COUNTER(&htim1) < us); // count until us is reached (each count will be 1 us)
+}
+
+
 /* USER CODE END 0 */
 
 /**
@@ -131,9 +138,8 @@ int main(void)
     HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     HAL_Delay(500);
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+ }
+
 }
 
 /**
