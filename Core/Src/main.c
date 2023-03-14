@@ -18,10 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "mpu6050.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "mpu6050.h"
+#include "string.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -32,6 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,6 +48,8 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+
+MPU6050_t MPU6050;
 
 /* USER CODE END PV */
 
@@ -94,7 +99,15 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  MPU6050_Init(&hi2c1);
+  while(MPU6050_Init(&hi2c1)) {}
+  
+
+  /*
+  while(MPU6050_Init(&hi2c1, &check)) {
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+  }
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0); */
 
   /* USER CODE END 2 */
 
@@ -103,6 +116,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+  
 
     /* USER CODE BEGIN 3 */
   }
@@ -171,7 +185,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
