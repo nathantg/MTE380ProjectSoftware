@@ -14,21 +14,9 @@
 #include <string.h>
 #include "main.h"
 
-typedef struct {
-  uint16_t directionPin;
-  GPIO_TypeDef *directionPinPort;
-  uint16_t trigPin;
-  GPIO_TypeDef *trigPinPort;
-  uint16_t echoPin;
-  GPIO_TypeDef *echoPinPort;
+#define RES 4096
 
-} ultrasonic_conig_t;
-
-void ULTRASONIC_init_config(ultrasonic_conig_t *ultrasonic, 
-                             uint16_t trigPin, GPIO_TypeDef *trigPinPort,
-                             uint16_t echoPin, GPIO_TypeDef *echoPinPort);
-
-void ULTRASONIC_get_distance(float *distance, ultrasonic_conig_t *ultrasonic);
+void MB1040_get_distance(ADC_HandleTypeDef *adc, float *distance);
 
 
 #endif /* __ULTRASONIC_H */
