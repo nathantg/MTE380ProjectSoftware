@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "MB1040.h"
 #include "motor_functions.h"
 
 /* USER CODE END Includes */
