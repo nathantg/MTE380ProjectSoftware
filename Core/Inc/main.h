@@ -67,20 +67,18 @@ void Error_Handler(void);
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
-#define Right_Motor_Driver_STEP_Pin GPIO_PIN_6
-#define Right_Motor_Driver_STEP_GPIO_Port GPIOA
-#define Left_Motor_Driver_STEP_Pin GPIO_PIN_7
-#define Left_Motor_Driver_STEP_GPIO_Port GPIOA
-#define Left_Motor_Driver_DIR_Pin GPIO_PIN_11
-#define Left_Motor_Driver_DIR_GPIO_Port GPIOA
-#define Right_Motor_Driver_DIR_Pin GPIO_PIN_12
-#define Right_Motor_Driver_DIR_GPIO_Port GPIOA
+#define Motor_Driver_STEP_Pin GPIO_PIN_6
+#define Motor_Driver_STEP_GPIO_Port GPIOA
+#define Left_Motor_Driver_DIR_Pin_Pin GPIO_PIN_10
+#define Left_Motor_Driver_DIR_Pin_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define Right_Motor_Driver_DIR_Pin_Pin GPIO_PIN_4
+#define Right_Motor_Driver_DIR_Pin_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
