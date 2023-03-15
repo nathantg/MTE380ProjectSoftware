@@ -15,7 +15,7 @@
 #include "main.h"
 
 #define RES 4096
-#define SENSITIVITY 0.0098f
+#define SENSITIVITY 0.0098f // 9.8mV/in
 
 /**
   * @brief Get distance reading from MB1040 
