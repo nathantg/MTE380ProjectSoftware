@@ -78,6 +78,3 @@ void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors) {
 
   motors->autoReloadRegister = autoReloadRegister;
 }
-
-
-
