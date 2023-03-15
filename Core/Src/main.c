@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include "MB1040.h"
 
 /* USER CODE END Includes */
 
@@ -64,13 +65,6 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-// Function to provide 
-void Delay_us(uint16_t us) {
-  __HAL_TIM_SET_COUNTER(&htim1, 0); // set counter to 0
-  while(__HAL_TIM_GET_COUNTER(&htim1) < us); // count until us is reached (each count will be 1 us)
-}
-
-
 /* USER CODE END 0 */
 
 /**
@@ -105,13 +99,10 @@ int main(void)
   MX_TIM1_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  uint16_t AD_RES = 0;
-  uint16_t RES = 4096;
-  float voltage = 0;
 
   uint8_t buf[64];
   float distance;
-  float sensitivity = 0.0098; // 9.8mV/in
+  //float sensitivity = 0.0098; // 9.8mV/in
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,15 +110,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_ADC_Start(&hadc1);
-
-    HAL_ADC_PollForConversion(&hadc1, 1);
-
-    AD_RES = HAL_ADC_GetValue(&hadc1);
-
-    voltage = (float)AD_RES/RES*3.3;
-
-    distance = voltage / sensitivity;
+    MB1040_get_distance(&hadc1, &distance);
 
     distance *= 100;
     sprintf((char*)buf,
@@ -137,7 +120,6 @@ int main(void)
 
     HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     HAL_Delay(500);
-
  }
 
 }

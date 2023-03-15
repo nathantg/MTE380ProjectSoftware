@@ -15,7 +15,13 @@
 #include "main.h"
 
 #define RES 4096
+#define SENSITIVITY 0.0098f
 
+/**
+  * @brief Get distance reading from MB1040 
+  * @param adc handle for adc used for MB1040 
+  * @param distance variable used to store distance 
+  */
 void MB1040_get_distance(ADC_HandleTypeDef *adc, float *distance);
 
 

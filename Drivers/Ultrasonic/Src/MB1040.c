@@ -10,8 +10,8 @@
 
 void MB1040_get_distance(ADC_HandleTypeDef *adc, float *distance) {
   HAL_ADC_Start(adc);
-
   uint16_t raw = HAL_ADC_GetValue(adc);
+  float voltage = (float)raw / RES * 3.3;
 
-  *distance = (float)raw / RES * 3.3;
+  *distance = voltage / SENSITIVITY;
 }
