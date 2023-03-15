@@ -120,10 +120,8 @@ int main(void)
     HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     HAL_Delay(500);
     /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
+
 }
 
 /**
