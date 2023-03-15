@@ -109,7 +109,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
     MB1040_get_distance(&hadc1, &distance);
 
     distance *= 100;
@@ -120,8 +119,11 @@ int main(void)
 
     HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     HAL_Delay(500);
- }
+    /* USER CODE END WHILE */
 
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
 }
 
 /**

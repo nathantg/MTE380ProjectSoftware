@@ -51,7 +51,6 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void Delay_us(uint16_t us);
 
 /* USER CODE BEGIN EFP */
 
