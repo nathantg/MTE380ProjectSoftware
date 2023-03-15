@@ -100,28 +100,17 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t buf[64];
-  float distance;
-  //float sensitivity = 0.0098; // 9.8mV/in
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MB1040_get_distance(&hadc1, &distance);
-
-    distance *= 100;
-    sprintf((char*)buf,
-            "%u.%u in\r\n", 
-            ((unsigned int)distance / 100),
-            ((unsigned int)distance % 100));
-
-    HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
-    HAL_Delay(500);
     /* USER CODE END WHILE */
-  }
 
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
 }
 
 /**
