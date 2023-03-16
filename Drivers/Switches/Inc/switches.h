@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
   * @file           : switches.h
-  * @brief          : Header for motor_functions.c file.
-  *                   This file contains the prototypes for the motor control 
-  *                   functions
+  * @brief          : Header for switches.c file.
+  *                   This file contains the prototypes for the functions for 
+  *                   the limit and tilt switches
   ******************************************************************************
 */
 
@@ -28,7 +28,7 @@ typedef struct {
  * @param tiltSwtichPin microcontroller pin assigned for tilt switch
  * @retval None
  */
-void SWITCHES_initialization(swtiches_config_t *switchesConfig, uint16_t limitSwitchPin, GPIO_TypeDef limitSwitchPinPort, uint16_t tiltSwitchPin, GPIO_TypeDef tiltSwitchPinPort);
+void SWITCHES_initialization(swtiches_config_t *switchesConfig, uint16_t limitSwitchPin, GPIO_TypeDef *limitSwitchPinPort, uint16_t tiltSwitchPin, GPIO_TypeDef *tiltSwitchPinPort);
 
 /**
  * @brief Get current state of limit swtich
