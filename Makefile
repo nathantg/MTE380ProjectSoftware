@@ -62,7 +62,8 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
 Drivers/Motor_Control/Src/motor_functions.c \
 Drivers/Switches/Src/switches.c \
 Drivers/Ultrasonic/Src/MB1040.c \
-Drivers/Logging/Src/logging.c
+Drivers/Logging/Src/logging.c \
+Controls/Ramp_Approach/Src/ramp_approach.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -127,7 +128,8 @@ C_INCLUDES =  \
 -IDrivers/Motor_Control/Inc \
 -IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc \
--IDrivers/Logging/Inc
+-IDrivers/Logging/Inc \
+-IControls/Ramp_Approach/Inc
 
 
 # compile gcc flags
