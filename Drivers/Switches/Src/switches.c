@@ -1,7 +1,8 @@
 /**
   ******************************************************************************
   * @file           : switches.c
-  * @brief          : functions for motor control
+  * @brief          : functions for 
+  *                   the limit and tilt switches
   ******************************************************************************
   */
 

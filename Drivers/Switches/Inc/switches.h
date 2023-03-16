@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
   * @file           : switches.h
-  * @brief          : Header for motor_functions.c file.
-  *                   This file contains the prototypes for the motor control 
-  *                   functions
+  * @brief          : Header for switches.c file.
+  *                   This file contains the prototypes for the functions for 
+  *                   the limit and tilt switches
   ******************************************************************************
 */
 
