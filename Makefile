@@ -63,7 +63,7 @@ Drivers/Motor_Control/Src/motor_functions.c \
 Drivers/Switches/Src/switches.c \
 Drivers/Ultrasonic/Src/MB1040.c \
 Drivers/Logging/Src/logging.c \
-Controls/Platform_Finding/Src/platform_finding.c
+Controls/Ramp_Traversing/Src/ramp_traversing.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -129,7 +129,7 @@ C_INCLUDES =  \
 -IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc \
 -IDrivers/Logging/Inc \
--IControls/Platform_Finding/Inc
+-IControls/Ramp_Traversing/Inc
 
 
 # compile gcc flags
