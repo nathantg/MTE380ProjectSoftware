@@ -3,7 +3,7 @@
   * @file           : ramp_approach.h
   * @brief          : Header for ramp_approach.c file.
   *                   This file contains the functions prototypes for the ramp approach
-  *                   algorithms
+  *                   algorithm
   ******************************************************************************
 */
 
