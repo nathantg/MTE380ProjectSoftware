@@ -55,11 +55,12 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-Drivers/Motor_Control/Src/motor_functions.c \
 Core/Src/system_stm32f4xx.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
+Drivers/Motor_Control/Src/motor_functions.c \
+Drivers/Switches/Src/switches.c \
 Drivers/Ultrasonic/Src/MB1040.c 
 
 # ASM sources
@@ -123,6 +124,7 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/Motor_Control/Inc \
+-IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc
 
 
@@ -189,6 +191,12 @@ $(BUILD_DIR):
 #######################################
 clean:
 	-rm -fR $(BUILD_DIR)
+
+#######################################
+# openocd
+#######################################
+flash: all
+	openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c "program $(BUILD_DIR)/$(TARGET).elf verify reset exit"
   
 #######################################
 # dependencies
