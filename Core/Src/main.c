@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "MB1040.h"
 #include "motor_functions.h"
+#include "logging.h"
 
 /* USER CODE END Includes */
 
@@ -111,6 +112,10 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
+  float distance;
+  uint8_t limitSwitch;
+  uint8_t tiltSwitch;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,6 +123,34 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    MOTOR_move_speed_forward(10000, &motorInstance);
+    MB1040_get_distance(&hadc1, &distance);
+    limitSwitch = 0;
+    tiltSwitch = 0;
+
+    logging(&huart2, distance, limitSwitch, tiltSwitch, &motorInstance);
+
+    HAL_Delay(1000);
+
+    MOTOR_stop_both(&motorInstance);
+    MB1040_get_distance(&hadc1, &distance);
+    limitSwitch = 1;
+    tiltSwitch = 0;
+
+    logging(&huart2, distance, limitSwitch, tiltSwitch, &motorInstance);
+
+    HAL_Delay(1000);
+
+    MOTOR_move_speed_backward(20000, &motorInstance);
+    MB1040_get_distance(&hadc1, &distance);
+    limitSwitch = 0;
+    tiltSwitch = 1;
+
+    logging(&huart2, distance, limitSwitch, tiltSwitch, &motorInstance);
+
+    HAL_Delay(1000);
+
+
 
     /* USER CODE BEGIN 3 */
   }

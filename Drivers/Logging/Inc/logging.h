@@ -23,6 +23,6 @@
  * @param motorInstance pointer to motor instance struct
  * @retval None
  */
-void logging(UART_HandleTypeDef huart, float distance, uint8_t limitSwitchValue, uint8_t tiltSwitchValue, motor_instance_t *motorInstance);
+void logging(UART_HandleTypeDef *huart, float distance, uint8_t limitSwitchValue, uint8_t tiltSwitchValue, motor_instance_t *motorInstance);
 
 #endif /* __LOGGING_H */
