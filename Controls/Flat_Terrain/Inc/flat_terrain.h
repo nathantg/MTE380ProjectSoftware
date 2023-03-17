@@ -15,6 +15,6 @@
 #include "switches.h"
 #include "MB1040.h"
 
-void forward_stop(motor_instance_t *motorInstance, swtiches_config_t *switchConfig, ADC_HandleTypeDef *adc);
+void flat_terrain(motor_instance_t *motorInstance);
 
 #endif

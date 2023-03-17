@@ -62,7 +62,7 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
 Drivers/Ultrasonic/Src/MB1040.c \
 Drivers/Switches/Src/switches.c \
-Controls/Forward_Stop/Src/forward_stop.c
+Controls/Flat_Terrain/Src/flat_terrain.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -127,7 +127,7 @@ C_INCLUDES =  \
 -IDrivers/Motor_Control/Inc \
 -IDrivers/Ultrasonic/Inc \
 -IDrivers/Switches/Inc \
--IControls/Forward_Stop/Inc
+-IControls/Flat_Terrain/Inc
 
 
 # compile gcc flags
