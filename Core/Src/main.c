@@ -119,6 +119,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    MOTOR_move_speed_forward(50000, &motorInstance);
 
     /* USER CODE BEGIN 3 */
   }

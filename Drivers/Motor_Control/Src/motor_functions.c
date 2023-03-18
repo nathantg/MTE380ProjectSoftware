@@ -33,7 +33,7 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
   while(tempARR >= autoReloadRegister) {
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
 
-    tempARR -= 500;
+    tempARR -= 1000;
   }
 
   motors->autoReloadRegister = autoReloadRegister;
