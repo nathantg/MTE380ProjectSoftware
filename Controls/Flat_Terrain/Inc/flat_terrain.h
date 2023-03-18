@@ -15,6 +15,8 @@
 #include "switches.h"
 #include "MB1040.h"
 
+#define SPEED 65535
+
 void flat_terrain(motor_instance_t *motorInstance);
 
 #endif
