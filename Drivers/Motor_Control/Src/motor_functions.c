@@ -46,6 +46,10 @@ void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
     HAL_Delay(50);
     tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
   }
 
   motors->autoReloadRegister = autoReloadRegister;
@@ -76,6 +80,10 @@ void MOTOR_move_speed_backward_accel(uint32_t autoReloadRegister, motor_instance
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
     HAL_Delay(50);
     tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
   }
 
   motors->autoReloadRegister = autoReloadRegister;
@@ -131,6 +139,10 @@ void MOTOR_turn_right_accel(uint32_t autoReloadRegister, motor_instance_t *motor
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
     HAL_Delay(50);
     tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
   }
 
   motors->autoReloadRegister = autoReloadRegister;
@@ -161,6 +173,10 @@ void MOTOR_turn_left_accel(uint32_t autoReloadRegister, motor_instance_t *motors
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
     HAL_Delay(50);
     tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
   }
 
   motors->autoReloadRegister = autoReloadRegister;
