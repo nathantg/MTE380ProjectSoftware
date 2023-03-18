@@ -75,6 +75,14 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
 void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *motors);
 
 /**
+  * @brief Move forwad at given speed
+  * @param autoReloadRegister value for the ARR to change the PWM frequency
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
+
+/**
   * @brief Move backward at given speed
   * @param autoReloadRegister value for the ARR to change the PWM frequency
   * @param motors struct instance of motors

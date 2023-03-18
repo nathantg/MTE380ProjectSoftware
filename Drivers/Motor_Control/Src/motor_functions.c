@@ -28,12 +28,24 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
 
+  __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+
+  motors->autoReloadRegister = autoReloadRegister;
+}
+
+void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
+  
+  motors->rightMotor.direction = RIGHT_FORWARD;
+  motors->leftMotor.direction = LEFT_FORWARD;
+
   uint32_t tempARR = 65535;
 
   while(tempARR >= autoReloadRegister) {
     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
-
-    tempARR -= 1000;
+    HAL_Delay(50);
+    tempARR -= 2000;
   }
 
   motors->autoReloadRegister = autoReloadRegister;

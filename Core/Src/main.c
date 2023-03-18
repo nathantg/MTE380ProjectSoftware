@@ -121,7 +121,13 @@ int main(void)
     /* USER CODE END WHILE */
     while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
 
-    MOTOR_move_speed_forward(50000, &motorInstance);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    MOTOR_move_speed_forward_accel(50000, &motorInstance);
+
+    HAL_Delay(1000);
+
+    MOTOR_stop_both(&motorInstance);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
     /* USER CODE BEGIN 3 */
   }
