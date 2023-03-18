@@ -33,6 +33,28 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
   motors->autoReloadRegister = autoReloadRegister;
 }
 
+void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
+  
+  motors->rightMotor.direction = RIGHT_FORWARD;
+  motors->leftMotor.direction = LEFT_FORWARD;
+
+  uint32_t tempARR = 65535;
+
+  while(tempARR >= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+    HAL_Delay(50);
+    tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
+  }
+
+  motors->autoReloadRegister = autoReloadRegister;
+}
+
 void MOTOR_move_speed_backward(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
@@ -45,13 +67,50 @@ void MOTOR_move_speed_backward(uint32_t autoReloadRegister, motor_instance_t *mo
   motors->autoReloadRegister = autoReloadRegister;
 }
 
+void MOTOR_move_speed_backward_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
+  
+  motors->rightMotor.direction = RIGHT_BACKWARD;
+  motors->leftMotor.direction = LEFT_BACKWARD;
+
+  uint32_t tempARR = 65535;
+
+  while(tempARR >= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+    HAL_Delay(50);
+    tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
+  }
+
+  motors->autoReloadRegister = autoReloadRegister;
+}
+
 void MOTOR_stop_both(motor_instance_t *motors) {
-  uint32_t autoReloadRegister = 0;
-  __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+  __HAL_TIM_SET_AUTORELOAD(motors->timer, 0);
 
   motors->rightMotor.direction = NO_DIRECTION;
   motors->leftMotor.direction = NO_DIRECTION;
 
+  motors->autoReloadRegister = 0;
+}
+
+void MOTOR_stop_both_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  uint32_t tempARR = motors->autoReloadRegister;
+
+  while(tempARR <= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+    HAL_Delay(50);
+    tempARR += 2000;
+  }
+
+  __HAL_TIM_SET_AUTORELOAD(motors->timer, 0);
+
+  motors->rightMotor.direction = NO_DIRECTION;
+  motors->leftMotor.direction = NO_DIRECTION;
   motors->autoReloadRegister = 0;
 }
 
@@ -67,6 +126,28 @@ void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors) {
   motors->autoReloadRegister = autoReloadRegister;
 }
 
+void MOTOR_turn_right_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
+  
+  motors->rightMotor.direction = RIGHT_BACKWARD;
+  motors->leftMotor.direction = LEFT_FORWARD;
+
+  uint32_t tempARR = 65535;
+
+  while(tempARR >= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+    HAL_Delay(50);
+    tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
+  }
+
+  motors->autoReloadRegister = autoReloadRegister;
+}
+
 void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
@@ -75,6 +156,28 @@ void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors) {
   motors->leftMotor.direction = LEFT_BACKWARD;
 
   __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+
+  motors->autoReloadRegister = autoReloadRegister;
+}
+
+void MOTOR_turn_left_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
+  
+  motors->rightMotor.direction = RIGHT_FORWARD;
+  motors->leftMotor.direction = LEFT_BACKWARD;
+
+  uint32_t tempARR = 65535;
+
+  while(tempARR >= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+    HAL_Delay(50);
+    tempARR -= 2000;
+
+    if(tempARR < autoReloadRegister) {
+      __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+    }
+  }
 
   motors->autoReloadRegister = autoReloadRegister;
 }
