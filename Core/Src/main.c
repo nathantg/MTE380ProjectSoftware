@@ -126,12 +126,12 @@ int main(void)
     float distance = 1000;
 
     while(distance >= PLATFORM_DISTANCE) {
-      MB1040_get_distance(&huart2, &distance);
+      MB1040_get_distance(&hadc1, &distance);
       logging(&huart2, distance, 2, 2, &motorInstance);
     }
 
     MOTOR_stop_both(&motorInstance);
-    MB1040_get_distance(&huart2, &distance);
+    MB1040_get_distance(&hadc1, &distance);
     logging(&huart2, distance, 2, 2, &motorInstance);
     
     /* USER CODE END WHILE */
