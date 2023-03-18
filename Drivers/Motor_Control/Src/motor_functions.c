@@ -28,7 +28,13 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
 
-  __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+  uint32_t tempARR = 65535;
+
+  while(tempARR >= autoReloadRegister) {
+    __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+
+    tempARR -= 500;
+  }
 
   motors->autoReloadRegister = autoReloadRegister;
 }
