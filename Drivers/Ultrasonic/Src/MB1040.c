@@ -6,7 +6,6 @@
   */
 
  #include "MB1040.h"
- #include "main.h"
 
 void MB1040_get_distance(ADC_HandleTypeDef *adc, float *distance) {
   HAL_ADC_Start(adc);
