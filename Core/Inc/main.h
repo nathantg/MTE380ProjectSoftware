@@ -69,6 +69,10 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOA
 #define Motor_Driver_STEP_Pin GPIO_PIN_6
 #define Motor_Driver_STEP_GPIO_Port GPIOA
+#define Limit_Switch_Test_Pin_Pin GPIO_PIN_7
+#define Limit_Switch_Test_Pin_GPIO_Port GPIOC
+#define Tilt_Switch_Test_Pin_Pin GPIO_PIN_9
+#define Tilt_Switch_Test_Pin_GPIO_Port GPIOA
 #define Left_Motor_Driver_DIR_Pin_Pin GPIO_PIN_10
 #define Left_Motor_Driver_DIR_Pin_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
