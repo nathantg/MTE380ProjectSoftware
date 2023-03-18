@@ -55,14 +55,16 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-Drivers/Motor_Control/Src/motor_functions.c \
 Core/Src/system_stm32f4xx.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
-Drivers/Ultrasonic/Src/MB1040.c \
+Drivers/Motor_Control/Src/motor_functions.c \
 Drivers/Switches/Src/switches.c \
+Drivers/Ultrasonic/Src/MB1040.c \
+Drivers/Logging/Src/logging.c \
 Controls/Flat_Terrain/Src/flat_terrain.c
+
 
 # ASM sources
 ASM_SOURCES =  \
@@ -125,8 +127,10 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/Motor_Control/Inc \
+-IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc \
 -IDrivers/Switches/Inc \
+-IDrivers/Logging/Inc \
 -IControls/Flat_Terrain/Inc
 
 

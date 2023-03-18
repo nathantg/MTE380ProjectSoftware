@@ -23,6 +23,9 @@
 /* USER CODE BEGIN Includes */
 #include "MB1040.h"
 #include "motor_functions.h"
+#include "logging.h"
+
+#include "flat_terrain.h"
 
 /* USER CODE END Includes */
 
@@ -118,6 +121,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    flat_terrain(&motorInstance);
 
     /* USER CODE BEGIN 3 */
   }

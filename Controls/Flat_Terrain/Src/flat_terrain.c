@@ -13,7 +13,7 @@ void flat_terrain(motor_instance_t *motorInstance) {
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 
   // move motors forward
-  MOTOR_move_speed_forward(20000, motorInstance);
+  MOTOR_move_speed_forward(50000, motorInstance);
 
   HAL_Delay(2000);
 
@@ -23,7 +23,7 @@ void flat_terrain(motor_instance_t *motorInstance) {
   HAL_Delay(1000);
 
   // turn right
-  MOTOR_turn_right(20000, motorInstance);
+  MOTOR_turn_right(50000, motorInstance);
 
   HAL_Delay(2000);
 
@@ -32,7 +32,7 @@ void flat_terrain(motor_instance_t *motorInstance) {
   HAL_Delay(1000);
 
   // turn left
-  MOTOR_turn_left(20000, motorInstance);
+  MOTOR_turn_left(50000, motorInstance);
 
   HAL_Delay(2000);
 
@@ -41,7 +41,7 @@ void flat_terrain(motor_instance_t *motorInstance) {
   HAL_Delay(1000);
 
   // move motors backwards
-  MOTOR_move_speed_backward(20000, motorInstance);
+  MOTOR_move_speed_backward(50000, motorInstance);
 
   HAL_Delay(2000);
 

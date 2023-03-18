@@ -23,7 +23,7 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
 
 void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
   
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
@@ -35,7 +35,7 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
 
 void MOTOR_move_speed_backward(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
   
   motors->rightMotor.direction = RIGHT_BACKWARD;
   motors->leftMotor.direction = LEFT_BACKWARD;
@@ -57,7 +57,7 @@ void MOTOR_stop_both(motor_instance_t *motors) {
 
 void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BACKWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_FORWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWARD);
 
   motors->rightMotor.direction = RIGHT_BACKWARD;
   motors->leftMotor.direction = LEFT_FORWARD;
@@ -69,7 +69,7 @@ void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors) {
 
 void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors) {
   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FORWARD);
-  HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, LEFT_BACKWARD);
+  HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWARD);
 
   motors->rightMotor.direction = RIGHT_FORWARD;
   motors->leftMotor.direction = LEFT_BACKWARD;
