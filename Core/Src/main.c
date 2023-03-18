@@ -112,6 +112,7 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
+  float distance;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,7 +120,11 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    MB1040_get_distance(&hadc1, &distance);
 
+    logging(&huart2, distance, 2, 2, &motorInstance);
+
+    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
