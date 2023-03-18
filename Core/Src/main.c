@@ -34,6 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define PLATFORM_DISTANCE 10.0f
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -118,6 +119,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    MOTOR_turn_right(50000, &motorInstance);
+
+    float distance = 1000;
+
+    while(distance >= PLATFORM_DISTANCE) {
+      MB1040_get_distance(&huart2, &distance);
+      logging(&huart2, distance, 2, 2, &motorInstance);
+    }
+
+    MOTOR_stop_both(&motorInstance);
+    MB1040_get_distance(&huart2, &distance);
+    logging(&huart2, distance, 2, 2, &motorInstance);
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
