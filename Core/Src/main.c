@@ -99,10 +99,6 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  swtiches_config_t switches;
-
-  SWITCHES_initialization(&switches, Limit_Switch_Test_Pin_Pin, Limit_Switch_Test_Pin_GPIO_Port, Tilt_Switch_Test_Pin_Pin, Tilt_Switch_Test_Pin_GPIO_Port);
-
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -115,22 +111,12 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
-  float distance;
-  uint8_t limitSwitchState;
-  uint8_t tiltSwtichState;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MB1040_get_distance(&hadc1, &distance);
-    limitSwitchState = SWITCHES_get_limit_switch(&switches);
-    tiltSwtichState = SWITCHES_get_tilt_switch(&switches);
-
-    logging(&huart2, distance, limitSwitchState, tiltSwtichState, &motorInstance);
-
-    HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
