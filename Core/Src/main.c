@@ -134,12 +134,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
     MB1040_get_distance(&hadc1, &distance);
     SWITCHES_get_up_tilt_switch(&switchesInstance);
     SWITCHES_get_down_tilt_switch(&switchesInstance);
 
     logging(&huart2, distance, &switchesInstance, &motorInstance);
+
+    HAL_Delay(250);
+    /* USER CODE END WHILE */
+    
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
