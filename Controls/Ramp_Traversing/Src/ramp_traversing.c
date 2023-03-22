@@ -12,21 +12,21 @@ void ramp_traversal(motor_instance_t *motorInstance, swtiches_config_t *switchCo
   
     while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1)
     {}
-    MOTOR_move_speed_forward(25000, motorInstance);
-    HAL_Delay(2000);
+    MOTOR_move_speed_forward(45000, motorInstance);
+    HAL_Delay(60000);
     MOTOR_stop_both(motorInstance);
 
-    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1)
-    {}
-    MOTOR_move_speed_forward(42000, motorInstance);
-    HAL_Delay(2000);
-    MOTOR_stop_both(motorInstance);
+    // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1)
+    // {}
+    // MOTOR_mov_speed_forward(42000, motorInstance);
+    // HAL_Delay(2000);
+    // MOTOR_stop_both(motorInstance);
 
-    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1)
-    {}
-    MOTOR_move_speed_forward(60000, motorInstance);
-    HAL_Delay(2000);
-    MOTOR_stop_both(motorInstance);
+    // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1)
+    // {}
+    // MOTOR_move_speed_forward(60000, motorInstance);
+    // HAL_Delay(2000);
+    // MOTOR_stop_both(motorInstance);
 }
 
 

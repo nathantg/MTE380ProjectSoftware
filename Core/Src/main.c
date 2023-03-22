@@ -24,6 +24,7 @@
 #include "MB1040.h"
 #include "motor_functions.h"
 #include "logging.h"
+#include "ramp_traversing.h"
 
 /* USER CODE END Includes */
 
@@ -118,6 +119,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    ramp_traversal(&motorInstance, NULL, NULL); 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

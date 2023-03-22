@@ -15,5 +15,6 @@
 #include "switches.h"
 #include "MB1040.h"
 
+void ramp_traversal(motor_instance_t *motorInstance, swtiches_config_t *switchConfig, ADC_HandleTypeDef *adc);
 
 #endif /* __RAMP_TRAVERSING_H */
