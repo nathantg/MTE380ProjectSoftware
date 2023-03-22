@@ -99,6 +99,19 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+  swtiches_config_t rightLimitSwitch;
+  swtiches_config_t leftLimitSwitch;
+  swtiches_config_t upTiltSwitch;
+  swtiches_config_t downTiltSwitch;
+
+  SWITCHES_initialize_switch_config(&rightLimitSwitch, Right_Limit_Switch_Pin, Right_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&leftLimitSwitch, Left_Limit_Switch_Pin, Left_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
+
+  switches_instance_t switchesInstance;
+
+  SWITCHES_initiallize_switch_instance(&switchesInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
 
   motor_config_t rightMotor;
   motor_config_t leftMotor;
