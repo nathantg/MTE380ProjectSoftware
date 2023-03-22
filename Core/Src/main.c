@@ -24,6 +24,7 @@
 #include "MB1040.h"
 #include "motor_functions.h"
 #include "logging.h"
+#include "switches.h"
 
 /* USER CODE END Includes */
 
@@ -99,6 +100,20 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+  swtiches_config_t rightLimitSwitch;
+  swtiches_config_t leftLimitSwitch;
+  swtiches_config_t upTiltSwitch;
+  swtiches_config_t downTiltSwitch;
+
+  SWITCHES_initialize_switch_config(&rightLimitSwitch, Right_Limit_Switch_Pin, Right_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&leftLimitSwitch, Left_Limit_Switch_Pin, Left_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
+
+  switches_instance_t switchesInstance;
+
+  SWITCHES_initiallize_switch_instance(&switchesInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
+
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -111,6 +126,8 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
+  float distance;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,7 +135,11 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    MB1040_get_distance(&hadc1, &distance);
+    SWITCHES_get_up_tilt_switch(&switchesInstance);
+    SWITCHES_get_down_tilt_switch(&switchesInstance);
 
+    logging(&huart2, distance, &switchesInstance, &motorInstance);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
