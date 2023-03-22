@@ -99,10 +99,6 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  swtiches_config_t switches;
-
-  SWITCHES_initialization(&switches, Limit_Switch_Test_Pin_Pin, Limit_Switch_Test_Pin_GPIO_Port, Tilt_Switch_Test_Pin_Pin, Tilt_Switch_Test_Pin_GPIO_Port);
-
   motor_config_t rightMotor;
   motor_config_t leftMotor;
 
@@ -115,22 +111,12 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
-  float distance;
-  uint8_t limitSwitchState;
-  uint8_t tiltSwtichState;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MB1040_get_distance(&hadc1, &distance);
-    limitSwitchState = SWITCHES_get_limit_switch(&switches);
-    tiltSwtichState = SWITCHES_get_tilt_switch(&switches);
-
-    logging(&huart2, distance, limitSwitchState, tiltSwtichState, &motorInstance);
-
-    HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -362,17 +348,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : Limit_Switch_Test_Pin_Pin */
-  GPIO_InitStruct.Pin = Limit_Switch_Test_Pin_Pin;
+  /*Configure GPIO pins : Down_Tilt_Switch_Pin Up_Tilt_Switch_Pin Left_Limit_Switch_Pin Right_Limit_Switch_Pin */
+  GPIO_InitStruct.Pin = Down_Tilt_Switch_Pin|Up_Tilt_Switch_Pin|Left_Limit_Switch_Pin|Right_Limit_Switch_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(Limit_Switch_Test_Pin_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : Tilt_Switch_Test_Pin_Pin */
-  GPIO_InitStruct.Pin = Tilt_Switch_Test_Pin_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(Tilt_Switch_Test_Pin_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Right_Motor_Driver_DIR_Pin_Pin */
   GPIO_InitStruct.Pin = Right_Motor_Driver_DIR_Pin_Pin;
