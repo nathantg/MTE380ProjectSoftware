@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "MB1040.h"
 #include "motor_functions.h"
+#include "logging.h"
 
 /* USER CODE END Includes */
 
