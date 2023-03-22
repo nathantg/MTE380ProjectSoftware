@@ -75,6 +75,14 @@ void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_Handle
 void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *motors);
 
 /**
+  * @brief Move forwad at given speed using acceleration profile
+  * @param autoReloadRegister value for the ARR to change the PWM frequency
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
+
+/**
   * @brief Move backward at given speed
   * @param autoReloadRegister value for the ARR to change the PWM frequency
   * @param motors struct instance of motors
@@ -83,11 +91,26 @@ void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *mot
 void MOTOR_move_speed_backward(uint32_t autoReloadRegister, motor_instance_t *motors);
 
 /**
+  * @brief Move backward at given speed using acceleration profile
+  * @param autoReloadRegister value for the ARR to change the PWM frequency
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_move_speed_backward_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
+
+/**
   * @brief Stop both motors
   * @param motors struct instance of motors
   * @retval None
   */
 void MOTOR_stop_both(motor_instance_t *motors);
+
+/**
+  * @brief Stop both motors using acceleration profile
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_stop_both_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
 
 /**
   * @brief Turn right
@@ -98,6 +121,14 @@ void MOTOR_stop_both(motor_instance_t *motors);
 void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors);
 
 /**
+  * @brief Turn right using acceleration profile
+  * @param autoReloadRegister value for the ARR to change the PWM frequency
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_turn_right_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
+
+/**
   * @brief Turn left
   * @param autoReloadRegister value for the ARR to change the PWM frequency
   * @param motors struct instance of motors
@@ -105,5 +136,13 @@ void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors);
   */
 void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors);
 
+/**
+  * @brief Turn left using acceleration profile
+  * @param autoReloadRegister value for the ARR to change the PWM frequency
+  * @param motors struct instance of motors
+  * @retval None
+  */
+void MOTOR_turn_left_accel(uint32_t autoReloadRegister, motor_instance_t *motors);
 
- #endif /* __MOTOR_CONTROL_H */
+
+#endif /* __MOTOR_CONTROL_H */
