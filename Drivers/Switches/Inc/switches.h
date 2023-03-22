@@ -15,6 +15,7 @@
 typedef struct {
   uint16_t swtichPin;
   GPIO_TypeDef *switchPinPort;
+  uint8_t switchStatus;
 } swtiches_config_t;
 
 typedef struct {
