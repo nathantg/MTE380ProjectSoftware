@@ -12,6 +12,7 @@
 void SWITCHES_initialize_switch_config(swtiches_config_t *switchConfig, uint16_t switchPin, GPIO_TypeDef *switchPort) {
     switchConfig->swtichPin = switchPin;
     switchConfig->switchPinPort = switchPort;
+    switchConfig->switchStatus = 0;
 }
 
 void SWITCHES_initiallize_switch_instance(switches_instance_t *switchesInstance, 
@@ -24,17 +25,33 @@ void SWITCHES_initiallize_switch_instance(switches_instance_t *switchesInstance,
 }
 
 uint8_t SWITCHES_get_right_limit_switch(switches_instance_t *switchInstance) {
-    return HAL_GPIO_ReadPin(switchInstance->rightLimitSwitch->switchPinPort, switchInstance->rightLimitSwitch->swtichPin);
+    uint8_t status = HAL_GPIO_ReadPin(switchInstance->rightLimitSwitch->switchPinPort, switchInstance->rightLimitSwitch->swtichPin);
+
+    switchInstance->rightLimitSwitch->switchStatus = status;
+
+    return status;
 }
 
 uint8_t SWITCHES_get_left_limit_switch(switches_instance_t *switchInstance) {
-    return HAL_GPIO_ReadPin(switchInstance->leftLimitSwitch->switchPinPort, switchInstance->leftLimitSwitch->swtichPin);
+    uint8_t status = HAL_GPIO_ReadPin(switchInstance->leftLimitSwitch->switchPinPort, switchInstance->leftLimitSwitch->swtichPin);
+
+    switchInstance->leftLimitSwitch->switchStatus = status;
+    
+    return status;
 }
 
 uint8_t SWITCHES_get_up_tilt_switch(switches_instance_t *switchInstance) {
-    return HAL_GPIO_ReadPin(switchInstance->upTiltSwitch->switchPinPort, switchInstance->upTiltSwitch->swtichPin);
+    uint8_t status = HAL_GPIO_ReadPin(switchInstance->upTiltSwitch->switchPinPort, switchInstance->upTiltSwitch->swtichPin);
+
+    switchInstance->upTiltSwitch->switchStatus = status;
+
+    return status;
 }
 
 uint8_t SWITCHES_get_down_tilt_switch(switches_instance_t *switchInstance) {
-    return HAL_GPIO_ReadPin(switchInstance->downTiltSwitch->switchPinPort, switchInstance->downTiltSwitch->swtichPin);
+    uint8_t status = HAL_GPIO_ReadPin(switchInstance->downTiltSwitch->switchPinPort, switchInstance->downTiltSwitch->swtichPin);
+
+    switchInstance->downTiltSwitch->switchStatus = status;
+    
+    return status;
 }
