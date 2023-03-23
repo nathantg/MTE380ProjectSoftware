@@ -362,11 +362,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Down_Tilt_Switch_Pin Up_Tilt_Switch_Pin Left_Limit_Switch_Pin Right_Limit_Switch_Pin */
-  GPIO_InitStruct.Pin = Down_Tilt_Switch_Pin|Up_Tilt_Switch_Pin|Left_Limit_Switch_Pin|Right_Limit_Switch_Pin;
+  /*Configure GPIO pin : Up_Tilt_Switch_Pin */
+  GPIO_InitStruct.Pin = Up_Tilt_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Up_Tilt_Switch_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Left_Limit_Switch_Pin Right_Limit_Switch_Pin */
+  GPIO_InitStruct.Pin = Left_Limit_Switch_Pin|Right_Limit_Switch_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Down_Tilt_Switch_Pin */
+  GPIO_InitStruct.Pin = Down_Tilt_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Down_Tilt_Switch_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Right_Motor_Driver_DIR_Pin_Pin */
   GPIO_InitStruct.Pin = Right_Motor_Driver_DIR_Pin_Pin;
