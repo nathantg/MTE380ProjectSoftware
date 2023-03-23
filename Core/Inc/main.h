@@ -73,10 +73,14 @@ void Error_Handler(void);
 #define Down_Tilt_Switch_GPIO_Port GPIOC
 #define Up_Tilt_Switch_Pin GPIO_PIN_5
 #define Up_Tilt_Switch_GPIO_Port GPIOC
+#define Up_Tilt_Switch_Test_Pin_Pin GPIO_PIN_10
+#define Up_Tilt_Switch_Test_Pin_GPIO_Port GPIOB
 #define Left_Limit_Switch_Pin GPIO_PIN_6
 #define Left_Limit_Switch_GPIO_Port GPIOC
 #define Right_Limit_Switch_Pin GPIO_PIN_8
 #define Right_Limit_Switch_GPIO_Port GPIOC
+#define Down_Tilt_Switch_Test_Pin_Pin GPIO_PIN_8
+#define Down_Tilt_Switch_Test_Pin_GPIO_Port GPIOA
 #define Left_Motor_Driver_DIR_Pin_Pin GPIO_PIN_10
 #define Left_Motor_Driver_DIR_Pin_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13

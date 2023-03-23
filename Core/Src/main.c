@@ -107,8 +107,8 @@ int main(void)
 
   SWITCHES_initialize_switch_config(&rightLimitSwitch, Right_Limit_Switch_Pin, Right_Limit_Switch_GPIO_Port);
   SWITCHES_initialize_switch_config(&leftLimitSwitch, Left_Limit_Switch_Pin, Left_Limit_Switch_GPIO_Port);
-  SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
-  SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Test_Pin_Pin, Up_Tilt_Switch_Test_Pin_GPIO_Port);
+  SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Test_Pin_Pin, Down_Tilt_Switch_Test_Pin_GPIO_Port);
 
   switches_instance_t switchesInstance;
 
@@ -138,11 +138,25 @@ int main(void)
     SWITCHES_get_up_tilt_switch(&switchesInstance);
     SWITCHES_get_down_tilt_switch(&switchesInstance);
 
-    logging(&huart2, distance, &switchesInstance, &motorInstance);
+    if((switchesInstance.upTiltSwitch->switchStatus == 1) || (switchesInstance.downTiltSwitch->switchStatus == 1)) {
+      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    } else {
+      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+    }
 
-    HAL_Delay(250);
+  logging(&huart2, distance, &switchesInstance, &motorInstance);
+
+  HAL_Delay(250);
+
+    // uint8_t upStatus = HAL_GPIO_ReadPin(Up_Tilt_Switch_GPIO_Port, Up_Tilt_Switch_Pin);
+    // uint8_t downStatus = HAL_GPIO_ReadPin(Down_Tilt_Switch_GPIO_Port, Down_Tilt_Switch_Pin);
+
+    // if((upStatus == 1) || (downStatus == 1)) {
+    //   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    // } else {
+    //   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+    // }
     /* USER CODE END WHILE */
-    
 
     /* USER CODE BEGIN 3 */
   }
@@ -378,6 +392,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Up_Tilt_Switch_Test_Pin_Pin */
+  GPIO_InitStruct.Pin = Up_Tilt_Switch_Test_Pin_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Up_Tilt_Switch_Test_Pin_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Down_Tilt_Switch_Test_Pin_Pin */
+  GPIO_InitStruct.Pin = Down_Tilt_Switch_Test_Pin_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Down_Tilt_Switch_Test_Pin_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Right_Motor_Driver_DIR_Pin_Pin */
   GPIO_InitStruct.Pin = Right_Motor_Driver_DIR_Pin_Pin;
