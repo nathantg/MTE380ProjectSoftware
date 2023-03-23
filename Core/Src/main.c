@@ -132,6 +132,77 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    uint8_t upStatus = 0;
+    uint8_t downStatus = 0;
+
+    // Recognize Up
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+
+    while(upStatus == 0) {
+      SWITCHES_get_up_tilt_switch(&switchesInstance);
+      upStatus = switchesInstance.upTiltSwitch->switchStatus;
+
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    MOTOR_stop_both(&motorInstance);
+
+    // Recognize Top 
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+    upStatus = 1;
+    downStatus = 0;
+
+    while(upStatus == 1) {
+      SWITCHES_get_up_tilt_switch(&switchesInstance);
+      upStatus = switchesInstance.upTiltSwitch->switchStatus;
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    MOTOR_stop_both(&motorInstance);
+
+    // Recognize Down
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+    upStatus = 0;
+    downStatus = 0;
+
+    while(downStatus == 0) {
+      SWITCHES_get_up_tilt_switch(&switchesInstance);
+      downStatus = switchesInstance.downTiltSwitch->switchStatus;
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    MOTOR_stop_both(&motorInstance);
+
+    // Recognize End
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+    upStatus = 0;
+    downStatus = 1;
+
+    while(downStatus == 1) {
+      SWITCHES_get_up_tilt_switch(&switchesInstance);
+      upStatus = switchesInstance.downTiltSwitch->switchStatus;
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    MOTOR_stop_both(&motorInstance);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
