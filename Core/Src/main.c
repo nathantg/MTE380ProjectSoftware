@@ -128,12 +128,27 @@ int main(void)
 
   float distance;
 
+  while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+  MOTOR_move_speed_forward(30000, &motorInstance);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+    //   SWITCHES_get_up_tilt_switch(&switchesInstance);
+    //   SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    //   logging(&huart2, 0, &switchesInstance, &motorInstance);
+    // }
+
+    // MOTOR_move_speed_forward(30000, &motorInstance);
+    // HAL_Delay(1500);
+
+    // MOTOR_stop_both(&motorInstance);
     MB1040_get_distance(&hadc1, &distance);
     SWITCHES_get_up_tilt_switch(&switchesInstance);
     SWITCHES_get_down_tilt_switch(&switchesInstance);
