@@ -126,13 +126,128 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
+  uint8_t upStatus;
+  uint8_t downStatus;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // Recognize Up
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+      upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+      downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+
+    upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    logging(&huart2, 0, &switchesInstance, &motorInstance);   
     
+    while((upStatus == 0) && (downStatus == 0)) {
+      upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+      downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+      logging(&huart2, 0, &switchesInstance, &motorInstance);      
+    }
+
+    if(upStatus == 1) {
+      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    }
+
+    MOTOR_move_speed_forward(40000, &motorInstance);
+
+    // Recognize Top
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+      upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+      downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+      logging(&huart2, 0, &switchesInstance, &motorInstance);
+    }
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    MOTOR_move_speed_forward(25000, &motorInstance);
+
+    upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+    
+    while((upStatus == 1) && (downStatus == 0)) {
+      upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+      downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+      logging(&huart2, 0, &switchesInstance, &motorInstance);      
+    }
+
+    if((upStatus == 0) && (downStatus == 0)) {
+      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    }
+
+    MOTOR_stop_both(&motorInstance);
+
+    // // Recognize Down
+    // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+    //   upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    //   downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    //   logging(&huart2, 0, &switchesInstance, &motorInstance);
+    // }
+
+    // HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    // MOTOR_move_speed_forward(25000, &motorInstance);
+
+    // upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    // downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+    
+    // while((upStatus == 0) && (downStatus == 0)) {
+    //   upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    //   downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    //   logging(&huart2, 0, &switchesInstance, &motorInstance);      
+    // }
+
+    // if((upStatus == 0) && (downStatus == 1)) {
+    //   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    // }
+
+    // MOTOR_stop_both(&motorInstance);
+
+    // // Recognize Bottom
+    // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+    //   upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    //   downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    //   logging(&huart2, 0, &switchesInstance, &motorInstance);
+    // }
+
+    // HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+
+    // MOTOR_move_speed_forward(25000, &motorInstance);
+
+    // upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    // downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+    
+    // while((upStatus == 0) && (downStatus == 1)) {
+    //   upStatus = SWITCHES_get_up_tilt_switch(&switchesInstance);
+    //   downStatus = SWITCHES_get_down_tilt_switch(&switchesInstance);
+
+    //   logging(&huart2, 0, &switchesInstance, &motorInstance);      
+    // }
+
+    // if((upStatus == 0) && (downStatus == 0)) {
+    //   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    // }
+
+    // MOTOR_stop_both(&motorInstance);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
