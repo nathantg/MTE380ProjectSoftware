@@ -126,12 +126,29 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
 
+  while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    MOTOR_move_speed_forward_accel(25000, &motorInstance);
+
+    HAL_Delay(20000);
+
+    MOTOR_stop_both(&motorInstance);
+
+    HAL_Delay(20000);
+
+    MOTOR_move_speed_backward_accel(25000, &motorInstance);
+
+    HAL_Delay(20000);
+
+    MOTOR_stop_both(&motorInstance);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
