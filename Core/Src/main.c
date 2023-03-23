@@ -104,36 +104,13 @@ int main(void)
   while(MPU6050_Init(&hi2c1)) {
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
   }
-
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-
-  uint8_t buf[100];
-
-  double pitch;
-  double roll;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-
-    MPU6050_Read_All(&hi2c1, &gyroInstance);
-
-    pitch = gyroInstance.KalmanAngleY;
-    roll = gyroInstance.KalmanAngleX;
-
-    pitch *= 100;
-    roll *= 100;
-
-    sprintf((char*)buf, "Pitch: %u.%u, Roll: %u.%u\r\n",
-            ((unsigned int)pitch / 100), ((unsigned int)pitch / 100),
-            ((unsigned int)roll / 100), ((unsigned int)roll / 100));
-
-    HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
-
-    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
