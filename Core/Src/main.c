@@ -154,8 +154,11 @@ int main(void)
       pitch = gyroInstance.KalmanAngleY;
 
       double pitchString = pitch *= 100;
-
-      sprintf((char*)buf, "Pitch: %u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      if(pitch < 0) {
+        sprintf((char*)buf, "Pitch: -%u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      } else {
+        sprintf((char*)buf, "Pitch: %u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      }
 
       HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
@@ -163,7 +166,7 @@ int main(void)
     }
 
     MOTOR_move_speed_forward(30000, &motorInstance);
-
+    
     do
     {
       MPU6050_Read_All(&hi2c1, &gyroInstance);
