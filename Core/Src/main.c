@@ -166,24 +166,46 @@ int main(void)
     }
 
     MOTOR_move_speed_forward(30000, &motorInstance);
-    
-    do
-    {
+
+    HAL_Delay(1000);
+
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
       MPU6050_Read_All(&hi2c1, &gyroInstance);
       pitch = gyroInstance.KalmanAngleY;
 
       double pitchString = pitch *= 100;
-
-      sprintf((char*)buf, "Pitch: %u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      if(pitch < 0) {
+        pitch += -1;
+        sprintf((char*)buf, "Pitch: -%u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      } else {
+        sprintf((char*)buf, "Pitch: %u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+      }
 
       HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
       HAL_Delay(100); // might not want this delay
-    } while (pitch < UP_THRES);
-
-    HAL_Delay(2000);
+    }
 
     MOTOR_stop_both(&motorInstance);
+    
+    
+    // do
+    // {
+    //   MPU6050_Read_All(&hi2c1, &gyroInstance);
+    //   pitch = gyroInstance.KalmanAngleY;
+
+    //   double pitchString = pitch *= 100;
+
+    //   sprintf((char*)buf, "Pitch: %u.%u\r\n", ((unsigned int)pitchString / 100), ((unsigned int)pitchString % 100));
+
+    //   HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
+
+    //   HAL_Delay(100); // might not want this delay
+    // } while (pitch < UP_THRES);
+
+    // HAL_Delay(2000);
+
+    // MOTOR_stop_both(&motorInstance);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
