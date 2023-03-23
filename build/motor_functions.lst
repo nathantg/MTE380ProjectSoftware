@@ -1,0 +1,1182 @@
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"motor_functions.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Drivers/Motor_Control/Src/motor_functions.c"
+  20              		.section	.text.MOTOR_initialize_motor_config,"ax",%progbits
+  21              		.align	1
+  22              		.global	MOTOR_initialize_motor_config
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MOTOR_initialize_motor_config:
+  28              	.LVL0:
+  29              	.LFB219:
+   1:Drivers/Motor_Control/Src/motor_functions.c **** /**
+   2:Drivers/Motor_Control/Src/motor_functions.c ****   ******************************************************************************
+   3:Drivers/Motor_Control/Src/motor_functions.c ****   * @file           : motor_functions.c
+   4:Drivers/Motor_Control/Src/motor_functions.c ****   * @brief          : functions for motor control
+   5:Drivers/Motor_Control/Src/motor_functions.c ****   ******************************************************************************
+   6:Drivers/Motor_Control/Src/motor_functions.c ****   */
+   7:Drivers/Motor_Control/Src/motor_functions.c **** 
+   8:Drivers/Motor_Control/Src/motor_functions.c ****  #include "motor_functions.h"
+   9:Drivers/Motor_Control/Src/motor_functions.c ****  #include "stm32f4xx_hal_tim.h"
+  10:Drivers/Motor_Control/Src/motor_functions.c **** 
+  11:Drivers/Motor_Control/Src/motor_functions.c ****  void MOTOR_initialize_motor_config(motor_config_t *motorConfig, GPIO_TypeDef *directionPinPort, ui
+  30              		.loc 1 11 121 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:Drivers/Motor_Control/Src/motor_functions.c ****   motorConfig->directionPinPort = directionPinPort;
+  35              		.loc 1 12 3 view .LVU1
+  36              		.loc 1 12 33 is_stmt 0 view .LVU2
+  37 0000 4160     		str	r1, [r0, #4]
+  13:Drivers/Motor_Control/Src/motor_functions.c ****   motorConfig->directionPin = directionPin;
+  38              		.loc 1 13 3 is_stmt 1 view .LVU3
+  39              		.loc 1 13 29 is_stmt 0 view .LVU4
+  40 0002 0280     		strh	r2, [r0]	@ movhi
+  14:Drivers/Motor_Control/Src/motor_functions.c ****   motorConfig->direction = NO_DIRECTION;
+  41              		.loc 1 14 3 is_stmt 1 view .LVU5
+  42              		.loc 1 14 26 is_stmt 0 view .LVU6
+  43 0004 0223     		movs	r3, #2
+  44 0006 0372     		strb	r3, [r0, #8]
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 2
+
+
+  15:Drivers/Motor_Control/Src/motor_functions.c **** }
+  45              		.loc 1 15 1 view .LVU7
+  46 0008 7047     		bx	lr
+  47              		.cfi_endproc
+  48              	.LFE219:
+  50              		.section	.text.MOTOR_initialize_motor_instance,"ax",%progbits
+  51              		.align	1
+  52              		.global	MOTOR_initialize_motor_instance
+  53              		.syntax unified
+  54              		.thumb
+  55              		.thumb_func
+  57              	MOTOR_initialize_motor_instance:
+  58              	.LVL1:
+  59              	.LFB220:
+  16:Drivers/Motor_Control/Src/motor_functions.c **** 
+  17:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_initialize_motor_instance(motor_instance_t *motorInstance, TIM_HandleTypeDef *timer, mot
+  60              		.loc 1 17 150 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 24, pretend = 8, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  65              		.loc 1 17 150 is_stmt 0 view .LVU9
+  66 0000 82B0     		sub	sp, sp, #8
+  67              	.LCFI0:
+  68              		.cfi_def_cfa_offset 8
+  69 0002 8446     		mov	ip, r0
+  70 0004 8DE80C00 		stm	sp, {r2, r3}
+  18:Drivers/Motor_Control/Src/motor_functions.c ****   motorInstance->timer = timer;
+  71              		.loc 1 18 3 is_stmt 1 view .LVU10
+  72              		.loc 1 18 24 is_stmt 0 view .LVU11
+  73 0008 0346     		mov	r3, r0
+  74 000a 43F8041B 		str	r1, [r3], #4
+  19:Drivers/Motor_Control/Src/motor_functions.c ****   motorInstance->rightMotor = rightMotor;
+  75              		.loc 1 19 3 is_stmt 1 view .LVU12
+  76              		.loc 1 19 29 is_stmt 0 view .LVU13
+  77 000e 9DE80700 		ldm	sp, {r0, r1, r2}
+  78              	.LVL2:
+  79              		.loc 1 19 29 view .LVU14
+  80 0012 83E80700 		stm	r3, {r0, r1, r2}
+  20:Drivers/Motor_Control/Src/motor_functions.c ****   motorInstance->leftMotor = leftMotor;
+  81              		.loc 1 20 3 is_stmt 1 view .LVU15
+  82              		.loc 1 20 28 is_stmt 0 view .LVU16
+  83 0016 0CF11003 		add	r3, ip, #16
+  84 001a 03AA     		add	r2, sp, #12
+  85 001c 07CA     		ldm	r2, {r0, r1, r2}
+  86 001e 83E80700 		stm	r3, {r0, r1, r2}
+  21:Drivers/Motor_Control/Src/motor_functions.c ****   motorInstance->autoReloadRegister = 0;
+  87              		.loc 1 21 3 is_stmt 1 view .LVU17
+  88              		.loc 1 21 37 is_stmt 0 view .LVU18
+  89 0022 0023     		movs	r3, #0
+  90 0024 CCF81C30 		str	r3, [ip, #28]
+  22:Drivers/Motor_Control/Src/motor_functions.c **** }
+  91              		.loc 1 22 1 view .LVU19
+  92 0028 02B0     		add	sp, sp, #8
+  93              	.LCFI1:
+  94              		.cfi_def_cfa_offset 0
+  95 002a 7047     		bx	lr
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 3
+
+
+  96              		.cfi_endproc
+  97              	.LFE220:
+  99              		.section	.text.MOTOR_move_speed_forward,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	MOTOR_move_speed_forward
+ 102              		.syntax unified
+ 103              		.thumb
+ 104              		.thumb_func
+ 106              	MOTOR_move_speed_forward:
+ 107              	.LVL3:
+ 108              	.LFB221:
+  23:Drivers/Motor_Control/Src/motor_functions.c **** 
+  24:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_move_speed_forward(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 109              		.loc 1 24 86 is_stmt 1 view -0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113              		.loc 1 24 86 is_stmt 0 view .LVU21
+ 114 0000 38B5     		push	{r3, r4, r5, lr}
+ 115              	.LCFI2:
+ 116              		.cfi_def_cfa_offset 16
+ 117              		.cfi_offset 3, -16
+ 118              		.cfi_offset 4, -12
+ 119              		.cfi_offset 5, -8
+ 120              		.cfi_offset 14, -4
+ 121 0002 0546     		mov	r5, r0
+ 122 0004 0C46     		mov	r4, r1
+  25:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FOR
+ 123              		.loc 1 25 3 is_stmt 1 view .LVU22
+ 124 0006 0122     		movs	r2, #1
+ 125 0008 8988     		ldrh	r1, [r1, #4]
+ 126              	.LVL4:
+ 127              		.loc 1 25 3 is_stmt 0 view .LVU23
+ 128 000a A068     		ldr	r0, [r4, #8]
+ 129              	.LVL5:
+ 130              		.loc 1 25 3 view .LVU24
+ 131 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 132              	.LVL6:
+  26:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWAR
+ 133              		.loc 1 26 3 is_stmt 1 view .LVU25
+ 134 0010 0022     		movs	r2, #0
+ 135 0012 218A     		ldrh	r1, [r4, #16]
+ 136 0014 6069     		ldr	r0, [r4, #20]
+ 137 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 138              	.LVL7:
+  27:Drivers/Motor_Control/Src/motor_functions.c ****   
+  28:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_FORWARD;
+ 139              		.loc 1 28 3 view .LVU26
+ 140              		.loc 1 28 32 is_stmt 0 view .LVU27
+ 141 001a 0123     		movs	r3, #1
+ 142 001c 2373     		strb	r3, [r4, #12]
+  29:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_FORWARD;
+ 143              		.loc 1 29 3 is_stmt 1 view .LVU28
+ 144              		.loc 1 29 31 is_stmt 0 view .LVU29
+ 145 001e 0023     		movs	r3, #0
+ 146 0020 2376     		strb	r3, [r4, #24]
+  30:Drivers/Motor_Control/Src/motor_functions.c **** 
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 4
+
+
+  31:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 147              		.loc 1 31 3 is_stmt 1 view .LVU30
+ 148              		.loc 1 31 3 view .LVU31
+ 149 0022 2368     		ldr	r3, [r4]
+ 150 0024 1B68     		ldr	r3, [r3]
+ 151 0026 DD62     		str	r5, [r3, #44]
+ 152              		.loc 1 31 3 view .LVU32
+ 153 0028 2368     		ldr	r3, [r4]
+ 154 002a DD60     		str	r5, [r3, #12]
+ 155              		.loc 1 31 3 view .LVU33
+  32:Drivers/Motor_Control/Src/motor_functions.c **** 
+  33:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 156              		.loc 1 33 3 view .LVU34
+ 157              		.loc 1 33 30 is_stmt 0 view .LVU35
+ 158 002c E561     		str	r5, [r4, #28]
+  34:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 159              		.loc 1 34 1 view .LVU36
+ 160 002e 38BD     		pop	{r3, r4, r5, pc}
+ 161              		.loc 1 34 1 view .LVU37
+ 162              		.cfi_endproc
+ 163              	.LFE221:
+ 165              		.section	.text.MOTOR_move_speed_forward_accel,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	MOTOR_move_speed_forward_accel
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ 172              	MOTOR_move_speed_forward_accel:
+ 173              	.LVL8:
+ 174              	.LFB222:
+  35:Drivers/Motor_Control/Src/motor_functions.c **** 
+  36:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_move_speed_forward_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 175              		.loc 1 36 92 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179              		.loc 1 36 92 is_stmt 0 view .LVU39
+ 180 0000 70B5     		push	{r4, r5, r6, lr}
+ 181              	.LCFI3:
+ 182              		.cfi_def_cfa_offset 16
+ 183              		.cfi_offset 4, -16
+ 184              		.cfi_offset 5, -12
+ 185              		.cfi_offset 6, -8
+ 186              		.cfi_offset 14, -4
+ 187 0002 0646     		mov	r6, r0
+ 188 0004 0D46     		mov	r5, r1
+  37:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FOR
+ 189              		.loc 1 37 3 is_stmt 1 view .LVU40
+ 190 0006 0122     		movs	r2, #1
+ 191 0008 8988     		ldrh	r1, [r1, #4]
+ 192              	.LVL9:
+ 193              		.loc 1 37 3 is_stmt 0 view .LVU41
+ 194 000a A868     		ldr	r0, [r5, #8]
+ 195              	.LVL10:
+ 196              		.loc 1 37 3 view .LVU42
+ 197 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 198              	.LVL11:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 5
+
+
+  38:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWAR
+ 199              		.loc 1 38 3 is_stmt 1 view .LVU43
+ 200 0010 0022     		movs	r2, #0
+ 201 0012 298A     		ldrh	r1, [r5, #16]
+ 202 0014 6869     		ldr	r0, [r5, #20]
+ 203 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 204              	.LVL12:
+  39:Drivers/Motor_Control/Src/motor_functions.c ****   
+  40:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_FORWARD;
+ 205              		.loc 1 40 3 view .LVU44
+ 206              		.loc 1 40 32 is_stmt 0 view .LVU45
+ 207 001a 0123     		movs	r3, #1
+ 208 001c 2B73     		strb	r3, [r5, #12]
+  41:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_FORWARD;
+ 209              		.loc 1 41 3 is_stmt 1 view .LVU46
+ 210              		.loc 1 41 31 is_stmt 0 view .LVU47
+ 211 001e 0023     		movs	r3, #0
+ 212 0020 2B76     		strb	r3, [r5, #24]
+  42:Drivers/Motor_Control/Src/motor_functions.c **** 
+  43:Drivers/Motor_Control/Src/motor_functions.c ****   uint32_t tempARR = 65535;
+ 213              		.loc 1 43 3 is_stmt 1 view .LVU48
+ 214              	.LVL13:
+  44:Drivers/Motor_Control/Src/motor_functions.c **** 
+  45:Drivers/Motor_Control/Src/motor_functions.c ****   while(tempARR >= autoReloadRegister) {
+ 215              		.loc 1 45 3 view .LVU49
+  43:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 216              		.loc 1 43 12 is_stmt 0 view .LVU50
+ 217 0022 4FF6FF74 		movw	r4, #65535
+ 218              	.LVL14:
+ 219              	.L7:
+  46:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+  47:Drivers/Motor_Control/Src/motor_functions.c ****     HAL_Delay(50);
+  48:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+  49:Drivers/Motor_Control/Src/motor_functions.c **** 
+  50:Drivers/Motor_Control/Src/motor_functions.c ****     if(tempARR < autoReloadRegister) {
+  51:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 220              		.loc 1 51 7 is_stmt 1 discriminator 1 view .LVU51
+  45:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 221              		.loc 1 45 17 discriminator 1 view .LVU52
+ 222 0026 B442     		cmp	r4, r6
+ 223 0028 11D3     		bcc	.L11
+  46:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 224              		.loc 1 46 5 view .LVU53
+  46:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 225              		.loc 1 46 5 view .LVU54
+ 226 002a 2B68     		ldr	r3, [r5]
+ 227 002c 1B68     		ldr	r3, [r3]
+ 228 002e DC62     		str	r4, [r3, #44]
+  46:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 229              		.loc 1 46 5 view .LVU55
+ 230 0030 2B68     		ldr	r3, [r5]
+ 231 0032 DC60     		str	r4, [r3, #12]
+  46:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 232              		.loc 1 46 5 view .LVU56
+  47:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 233              		.loc 1 47 5 view .LVU57
+ 234 0034 3220     		movs	r0, #50
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 6
+
+
+ 235 0036 FFF7FEFF 		bl	HAL_Delay
+ 236              	.LVL15:
+  48:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 237              		.loc 1 48 5 view .LVU58
+  48:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 238              		.loc 1 48 13 is_stmt 0 view .LVU59
+ 239 003a A4F5FA64 		sub	r4, r4, #2000
+ 240              	.LVL16:
+  50:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 241              		.loc 1 50 5 is_stmt 1 view .LVU60
+  50:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 242              		.loc 1 50 7 is_stmt 0 view .LVU61
+ 243 003e A642     		cmp	r6, r4
+ 244 0040 F1D9     		bls	.L7
+ 245              		.loc 1 51 7 is_stmt 1 view .LVU62
+ 246              		.loc 1 51 7 view .LVU63
+ 247 0042 2B68     		ldr	r3, [r5]
+ 248 0044 1B68     		ldr	r3, [r3]
+ 249 0046 DE62     		str	r6, [r3, #44]
+ 250              		.loc 1 51 7 view .LVU64
+ 251 0048 2B68     		ldr	r3, [r5]
+ 252 004a DE60     		str	r6, [r3, #12]
+ 253 004c EBE7     		b	.L7
+ 254              	.L11:
+  52:Drivers/Motor_Control/Src/motor_functions.c ****     }
+  53:Drivers/Motor_Control/Src/motor_functions.c ****   }
+  54:Drivers/Motor_Control/Src/motor_functions.c **** 
+  55:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 255              		.loc 1 55 3 view .LVU65
+ 256              		.loc 1 55 30 is_stmt 0 view .LVU66
+ 257 004e EE61     		str	r6, [r5, #28]
+  56:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 258              		.loc 1 56 1 view .LVU67
+ 259 0050 70BD     		pop	{r4, r5, r6, pc}
+ 260              		.loc 1 56 1 view .LVU68
+ 261              		.cfi_endproc
+ 262              	.LFE222:
+ 264              		.section	.text.MOTOR_move_speed_backward,"ax",%progbits
+ 265              		.align	1
+ 266              		.global	MOTOR_move_speed_backward
+ 267              		.syntax unified
+ 268              		.thumb
+ 269              		.thumb_func
+ 271              	MOTOR_move_speed_backward:
+ 272              	.LVL17:
+ 273              	.LFB223:
+  57:Drivers/Motor_Control/Src/motor_functions.c **** 
+  58:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_move_speed_backward(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 274              		.loc 1 58 87 is_stmt 1 view -0
+ 275              		.cfi_startproc
+ 276              		@ args = 0, pretend = 0, frame = 0
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278              		.loc 1 58 87 is_stmt 0 view .LVU70
+ 279 0000 38B5     		push	{r3, r4, r5, lr}
+ 280              	.LCFI4:
+ 281              		.cfi_def_cfa_offset 16
+ 282              		.cfi_offset 3, -16
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 7
+
+
+ 283              		.cfi_offset 4, -12
+ 284              		.cfi_offset 5, -8
+ 285              		.cfi_offset 14, -4
+ 286 0002 0546     		mov	r5, r0
+ 287 0004 0C46     		mov	r4, r1
+  59:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BAC
+ 288              		.loc 1 59 3 is_stmt 1 view .LVU71
+ 289 0006 0022     		movs	r2, #0
+ 290 0008 8988     		ldrh	r1, [r1, #4]
+ 291              	.LVL18:
+ 292              		.loc 1 59 3 is_stmt 0 view .LVU72
+ 293 000a A068     		ldr	r0, [r4, #8]
+ 294              	.LVL19:
+ 295              		.loc 1 59 3 view .LVU73
+ 296 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 297              	.LVL20:
+  60:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWA
+ 298              		.loc 1 60 3 is_stmt 1 view .LVU74
+ 299 0010 0122     		movs	r2, #1
+ 300 0012 218A     		ldrh	r1, [r4, #16]
+ 301 0014 6069     		ldr	r0, [r4, #20]
+ 302 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 303              	.LVL21:
+  61:Drivers/Motor_Control/Src/motor_functions.c ****   
+  62:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_BACKWARD;
+ 304              		.loc 1 62 3 view .LVU75
+ 305              		.loc 1 62 32 is_stmt 0 view .LVU76
+ 306 001a 0023     		movs	r3, #0
+ 307 001c 2373     		strb	r3, [r4, #12]
+  63:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_BACKWARD;
+ 308              		.loc 1 63 3 is_stmt 1 view .LVU77
+ 309              		.loc 1 63 31 is_stmt 0 view .LVU78
+ 310 001e 0123     		movs	r3, #1
+ 311 0020 2376     		strb	r3, [r4, #24]
+  64:Drivers/Motor_Control/Src/motor_functions.c **** 
+  65:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 312              		.loc 1 65 3 is_stmt 1 view .LVU79
+ 313              		.loc 1 65 3 view .LVU80
+ 314 0022 2368     		ldr	r3, [r4]
+ 315 0024 1B68     		ldr	r3, [r3]
+ 316 0026 DD62     		str	r5, [r3, #44]
+ 317              		.loc 1 65 3 view .LVU81
+ 318 0028 2368     		ldr	r3, [r4]
+ 319 002a DD60     		str	r5, [r3, #12]
+ 320              		.loc 1 65 3 view .LVU82
+  66:Drivers/Motor_Control/Src/motor_functions.c **** 
+  67:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 321              		.loc 1 67 3 view .LVU83
+ 322              		.loc 1 67 30 is_stmt 0 view .LVU84
+ 323 002c E561     		str	r5, [r4, #28]
+  68:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 324              		.loc 1 68 1 view .LVU85
+ 325 002e 38BD     		pop	{r3, r4, r5, pc}
+ 326              		.loc 1 68 1 view .LVU86
+ 327              		.cfi_endproc
+ 328              	.LFE223:
+ 330              		.section	.text.MOTOR_move_speed_backward_accel,"ax",%progbits
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 8
+
+
+ 331              		.align	1
+ 332              		.global	MOTOR_move_speed_backward_accel
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 337              	MOTOR_move_speed_backward_accel:
+ 338              	.LVL22:
+ 339              	.LFB224:
+  69:Drivers/Motor_Control/Src/motor_functions.c **** 
+  70:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_move_speed_backward_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 340              		.loc 1 70 93 is_stmt 1 view -0
+ 341              		.cfi_startproc
+ 342              		@ args = 0, pretend = 0, frame = 0
+ 343              		@ frame_needed = 0, uses_anonymous_args = 0
+ 344              		.loc 1 70 93 is_stmt 0 view .LVU88
+ 345 0000 70B5     		push	{r4, r5, r6, lr}
+ 346              	.LCFI5:
+ 347              		.cfi_def_cfa_offset 16
+ 348              		.cfi_offset 4, -16
+ 349              		.cfi_offset 5, -12
+ 350              		.cfi_offset 6, -8
+ 351              		.cfi_offset 14, -4
+ 352 0002 0646     		mov	r6, r0
+ 353 0004 0D46     		mov	r5, r1
+  71:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BAC
+ 354              		.loc 1 71 3 is_stmt 1 view .LVU89
+ 355 0006 0022     		movs	r2, #0
+ 356 0008 8988     		ldrh	r1, [r1, #4]
+ 357              	.LVL23:
+ 358              		.loc 1 71 3 is_stmt 0 view .LVU90
+ 359 000a A868     		ldr	r0, [r5, #8]
+ 360              	.LVL24:
+ 361              		.loc 1 71 3 view .LVU91
+ 362 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 363              	.LVL25:
+  72:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWA
+ 364              		.loc 1 72 3 is_stmt 1 view .LVU92
+ 365 0010 0122     		movs	r2, #1
+ 366 0012 298A     		ldrh	r1, [r5, #16]
+ 367 0014 6869     		ldr	r0, [r5, #20]
+ 368 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 369              	.LVL26:
+  73:Drivers/Motor_Control/Src/motor_functions.c ****   
+  74:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_BACKWARD;
+ 370              		.loc 1 74 3 view .LVU93
+ 371              		.loc 1 74 32 is_stmt 0 view .LVU94
+ 372 001a 0023     		movs	r3, #0
+ 373 001c 2B73     		strb	r3, [r5, #12]
+  75:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_BACKWARD;
+ 374              		.loc 1 75 3 is_stmt 1 view .LVU95
+ 375              		.loc 1 75 31 is_stmt 0 view .LVU96
+ 376 001e 0123     		movs	r3, #1
+ 377 0020 2B76     		strb	r3, [r5, #24]
+  76:Drivers/Motor_Control/Src/motor_functions.c **** 
+  77:Drivers/Motor_Control/Src/motor_functions.c ****   uint32_t tempARR = 65535;
+ 378              		.loc 1 77 3 is_stmt 1 view .LVU97
+ 379              	.LVL27:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 9
+
+
+  78:Drivers/Motor_Control/Src/motor_functions.c **** 
+  79:Drivers/Motor_Control/Src/motor_functions.c ****   while(tempARR >= autoReloadRegister) {
+ 380              		.loc 1 79 3 view .LVU98
+  77:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 381              		.loc 1 77 12 is_stmt 0 view .LVU99
+ 382 0022 4FF6FF74 		movw	r4, #65535
+ 383              	.LVL28:
+ 384              	.L15:
+  80:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+  81:Drivers/Motor_Control/Src/motor_functions.c ****     HAL_Delay(50);
+  82:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+  83:Drivers/Motor_Control/Src/motor_functions.c **** 
+  84:Drivers/Motor_Control/Src/motor_functions.c ****     if(tempARR < autoReloadRegister) {
+  85:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 385              		.loc 1 85 7 is_stmt 1 discriminator 1 view .LVU100
+  79:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 386              		.loc 1 79 17 discriminator 1 view .LVU101
+ 387 0026 B442     		cmp	r4, r6
+ 388 0028 11D3     		bcc	.L19
+  80:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 389              		.loc 1 80 5 view .LVU102
+  80:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 390              		.loc 1 80 5 view .LVU103
+ 391 002a 2B68     		ldr	r3, [r5]
+ 392 002c 1B68     		ldr	r3, [r3]
+ 393 002e DC62     		str	r4, [r3, #44]
+  80:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 394              		.loc 1 80 5 view .LVU104
+ 395 0030 2B68     		ldr	r3, [r5]
+ 396 0032 DC60     		str	r4, [r3, #12]
+  80:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 397              		.loc 1 80 5 view .LVU105
+  81:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 398              		.loc 1 81 5 view .LVU106
+ 399 0034 3220     		movs	r0, #50
+ 400 0036 FFF7FEFF 		bl	HAL_Delay
+ 401              	.LVL29:
+  82:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 402              		.loc 1 82 5 view .LVU107
+  82:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 403              		.loc 1 82 13 is_stmt 0 view .LVU108
+ 404 003a A4F5FA64 		sub	r4, r4, #2000
+ 405              	.LVL30:
+  84:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 406              		.loc 1 84 5 is_stmt 1 view .LVU109
+  84:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 407              		.loc 1 84 7 is_stmt 0 view .LVU110
+ 408 003e A642     		cmp	r6, r4
+ 409 0040 F1D9     		bls	.L15
+ 410              		.loc 1 85 7 is_stmt 1 view .LVU111
+ 411              		.loc 1 85 7 view .LVU112
+ 412 0042 2B68     		ldr	r3, [r5]
+ 413 0044 1B68     		ldr	r3, [r3]
+ 414 0046 DE62     		str	r6, [r3, #44]
+ 415              		.loc 1 85 7 view .LVU113
+ 416 0048 2B68     		ldr	r3, [r5]
+ 417 004a DE60     		str	r6, [r3, #12]
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 10
+
+
+ 418 004c EBE7     		b	.L15
+ 419              	.L19:
+  86:Drivers/Motor_Control/Src/motor_functions.c ****     }
+  87:Drivers/Motor_Control/Src/motor_functions.c ****   }
+  88:Drivers/Motor_Control/Src/motor_functions.c **** 
+  89:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 420              		.loc 1 89 3 view .LVU114
+ 421              		.loc 1 89 30 is_stmt 0 view .LVU115
+ 422 004e EE61     		str	r6, [r5, #28]
+  90:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 423              		.loc 1 90 1 view .LVU116
+ 424 0050 70BD     		pop	{r4, r5, r6, pc}
+ 425              		.loc 1 90 1 view .LVU117
+ 426              		.cfi_endproc
+ 427              	.LFE224:
+ 429              		.section	.text.MOTOR_stop_both,"ax",%progbits
+ 430              		.align	1
+ 431              		.global	MOTOR_stop_both
+ 432              		.syntax unified
+ 433              		.thumb
+ 434              		.thumb_func
+ 436              	MOTOR_stop_both:
+ 437              	.LVL31:
+ 438              	.LFB225:
+  91:Drivers/Motor_Control/Src/motor_functions.c **** 
+  92:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_stop_both(motor_instance_t *motors) {
+ 439              		.loc 1 92 48 is_stmt 1 view -0
+ 440              		.cfi_startproc
+ 441              		@ args = 0, pretend = 0, frame = 0
+ 442              		@ frame_needed = 0, uses_anonymous_args = 0
+ 443              		@ link register save eliminated.
+  93:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, 0);
+ 444              		.loc 1 93 3 view .LVU119
+ 445              		.loc 1 93 3 view .LVU120
+ 446 0000 0368     		ldr	r3, [r0]
+ 447 0002 1A68     		ldr	r2, [r3]
+ 448 0004 0023     		movs	r3, #0
+ 449 0006 D362     		str	r3, [r2, #44]
+ 450              		.loc 1 93 3 view .LVU121
+ 451 0008 0268     		ldr	r2, [r0]
+ 452 000a D360     		str	r3, [r2, #12]
+ 453              		.loc 1 93 3 view .LVU122
+  94:Drivers/Motor_Control/Src/motor_functions.c **** 
+  95:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = NO_DIRECTION;
+ 454              		.loc 1 95 3 view .LVU123
+ 455              		.loc 1 95 32 is_stmt 0 view .LVU124
+ 456 000c 0222     		movs	r2, #2
+ 457 000e 0273     		strb	r2, [r0, #12]
+  96:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = NO_DIRECTION;
+ 458              		.loc 1 96 3 is_stmt 1 view .LVU125
+ 459              		.loc 1 96 31 is_stmt 0 view .LVU126
+ 460 0010 0276     		strb	r2, [r0, #24]
+  97:Drivers/Motor_Control/Src/motor_functions.c **** 
+  98:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = 0;
+ 461              		.loc 1 98 3 is_stmt 1 view .LVU127
+ 462              		.loc 1 98 30 is_stmt 0 view .LVU128
+ 463 0012 C361     		str	r3, [r0, #28]
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 11
+
+
+  99:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 464              		.loc 1 99 1 view .LVU129
+ 465 0014 7047     		bx	lr
+ 466              		.cfi_endproc
+ 467              	.LFE225:
+ 469              		.section	.text.MOTOR_stop_both_accel,"ax",%progbits
+ 470              		.align	1
+ 471              		.global	MOTOR_stop_both_accel
+ 472              		.syntax unified
+ 473              		.thumb
+ 474              		.thumb_func
+ 476              	MOTOR_stop_both_accel:
+ 477              	.LVL32:
+ 478              	.LFB226:
+ 100:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 101:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_stop_both_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 479              		.loc 1 101 83 is_stmt 1 view -0
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ 482              		@ frame_needed = 0, uses_anonymous_args = 0
+ 483              		.loc 1 101 83 is_stmt 0 view .LVU131
+ 484 0000 70B5     		push	{r4, r5, r6, lr}
+ 485              	.LCFI6:
+ 486              		.cfi_def_cfa_offset 16
+ 487              		.cfi_offset 4, -16
+ 488              		.cfi_offset 5, -12
+ 489              		.cfi_offset 6, -8
+ 490              		.cfi_offset 14, -4
+ 491 0002 0646     		mov	r6, r0
+ 492 0004 0D46     		mov	r5, r1
+ 102:Drivers/Motor_Control/Src/motor_functions.c ****   uint32_t tempARR = motors->autoReloadRegister;
+ 493              		.loc 1 102 3 is_stmt 1 view .LVU132
+ 494              		.loc 1 102 12 is_stmt 0 view .LVU133
+ 495 0006 CC69     		ldr	r4, [r1, #28]
+ 496              	.LVL33:
+ 103:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 104:Drivers/Motor_Control/Src/motor_functions.c ****   while(tempARR <= autoReloadRegister) {
+ 497              		.loc 1 104 3 is_stmt 1 view .LVU134
+ 498              		.loc 1 104 8 is_stmt 0 view .LVU135
+ 499 0008 09E0     		b	.L22
+ 500              	.LVL34:
+ 501              	.L23:
+ 105:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 502              		.loc 1 105 5 is_stmt 1 view .LVU136
+ 503              		.loc 1 105 5 view .LVU137
+ 504 000a 2B68     		ldr	r3, [r5]
+ 505 000c 1B68     		ldr	r3, [r3]
+ 506 000e DC62     		str	r4, [r3, #44]
+ 507              		.loc 1 105 5 view .LVU138
+ 508 0010 2B68     		ldr	r3, [r5]
+ 509 0012 DC60     		str	r4, [r3, #12]
+ 510              		.loc 1 105 5 view .LVU139
+ 106:Drivers/Motor_Control/Src/motor_functions.c ****     HAL_Delay(50);
+ 511              		.loc 1 106 5 view .LVU140
+ 512 0014 3220     		movs	r0, #50
+ 513 0016 FFF7FEFF 		bl	HAL_Delay
+ 514              	.LVL35:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 12
+
+
+ 107:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR += 2000;
+ 515              		.loc 1 107 5 view .LVU141
+ 516              		.loc 1 107 13 is_stmt 0 view .LVU142
+ 517 001a 04F5FA64 		add	r4, r4, #2000
+ 518              	.LVL36:
+ 519              	.L22:
+ 104:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 520              		.loc 1 104 17 is_stmt 1 view .LVU143
+ 521 001e B442     		cmp	r4, r6
+ 522 0020 F3D9     		bls	.L23
+ 108:Drivers/Motor_Control/Src/motor_functions.c ****   }
+ 109:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 110:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, 0);
+ 523              		.loc 1 110 3 view .LVU144
+ 524              		.loc 1 110 3 view .LVU145
+ 525 0022 2B68     		ldr	r3, [r5]
+ 526 0024 1A68     		ldr	r2, [r3]
+ 527 0026 0023     		movs	r3, #0
+ 528 0028 D362     		str	r3, [r2, #44]
+ 529              		.loc 1 110 3 view .LVU146
+ 530 002a 2A68     		ldr	r2, [r5]
+ 531 002c D360     		str	r3, [r2, #12]
+ 532              		.loc 1 110 3 view .LVU147
+ 111:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 112:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = NO_DIRECTION;
+ 533              		.loc 1 112 3 view .LVU148
+ 534              		.loc 1 112 32 is_stmt 0 view .LVU149
+ 535 002e 0222     		movs	r2, #2
+ 536 0030 2A73     		strb	r2, [r5, #12]
+ 113:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = NO_DIRECTION;
+ 537              		.loc 1 113 3 is_stmt 1 view .LVU150
+ 538              		.loc 1 113 31 is_stmt 0 view .LVU151
+ 539 0032 2A76     		strb	r2, [r5, #24]
+ 114:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = 0;
+ 540              		.loc 1 114 3 is_stmt 1 view .LVU152
+ 541              		.loc 1 114 30 is_stmt 0 view .LVU153
+ 542 0034 EB61     		str	r3, [r5, #28]
+ 115:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 543              		.loc 1 115 1 view .LVU154
+ 544 0036 70BD     		pop	{r4, r5, r6, pc}
+ 545              		.loc 1 115 1 view .LVU155
+ 546              		.cfi_endproc
+ 547              	.LFE226:
+ 549              		.section	.text.MOTOR_turn_right,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	MOTOR_turn_right
+ 552              		.syntax unified
+ 553              		.thumb
+ 554              		.thumb_func
+ 556              	MOTOR_turn_right:
+ 557              	.LVL37:
+ 558              	.LFB227:
+ 116:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 117:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_turn_right(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 559              		.loc 1 117 78 is_stmt 1 view -0
+ 560              		.cfi_startproc
+ 561              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 13
+
+
+ 562              		@ frame_needed = 0, uses_anonymous_args = 0
+ 563              		.loc 1 117 78 is_stmt 0 view .LVU157
+ 564 0000 38B5     		push	{r3, r4, r5, lr}
+ 565              	.LCFI7:
+ 566              		.cfi_def_cfa_offset 16
+ 567              		.cfi_offset 3, -16
+ 568              		.cfi_offset 4, -12
+ 569              		.cfi_offset 5, -8
+ 570              		.cfi_offset 14, -4
+ 571 0002 0546     		mov	r5, r0
+ 572 0004 0C46     		mov	r4, r1
+ 118:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BAC
+ 573              		.loc 1 118 3 is_stmt 1 view .LVU158
+ 574 0006 0022     		movs	r2, #0
+ 575 0008 8988     		ldrh	r1, [r1, #4]
+ 576              	.LVL38:
+ 577              		.loc 1 118 3 is_stmt 0 view .LVU159
+ 578 000a A068     		ldr	r0, [r4, #8]
+ 579              	.LVL39:
+ 580              		.loc 1 118 3 view .LVU160
+ 581 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 582              	.LVL40:
+ 119:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWAR
+ 583              		.loc 1 119 3 is_stmt 1 view .LVU161
+ 584 0010 0022     		movs	r2, #0
+ 585 0012 218A     		ldrh	r1, [r4, #16]
+ 586 0014 6069     		ldr	r0, [r4, #20]
+ 587 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 588              	.LVL41:
+ 120:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 121:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_BACKWARD;
+ 589              		.loc 1 121 3 view .LVU162
+ 590              		.loc 1 121 32 is_stmt 0 view .LVU163
+ 591 001a 0023     		movs	r3, #0
+ 592 001c 2373     		strb	r3, [r4, #12]
+ 122:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_FORWARD;
+ 593              		.loc 1 122 3 is_stmt 1 view .LVU164
+ 594              		.loc 1 122 31 is_stmt 0 view .LVU165
+ 595 001e 2376     		strb	r3, [r4, #24]
+ 123:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 124:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 596              		.loc 1 124 3 is_stmt 1 view .LVU166
+ 597              		.loc 1 124 3 view .LVU167
+ 598 0020 2368     		ldr	r3, [r4]
+ 599 0022 1B68     		ldr	r3, [r3]
+ 600 0024 DD62     		str	r5, [r3, #44]
+ 601              		.loc 1 124 3 view .LVU168
+ 602 0026 2368     		ldr	r3, [r4]
+ 603 0028 DD60     		str	r5, [r3, #12]
+ 604              		.loc 1 124 3 view .LVU169
+ 125:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 126:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 605              		.loc 1 126 3 view .LVU170
+ 606              		.loc 1 126 30 is_stmt 0 view .LVU171
+ 607 002a E561     		str	r5, [r4, #28]
+ 127:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 608              		.loc 1 127 1 view .LVU172
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 14
+
+
+ 609 002c 38BD     		pop	{r3, r4, r5, pc}
+ 610              		.loc 1 127 1 view .LVU173
+ 611              		.cfi_endproc
+ 612              	.LFE227:
+ 614              		.section	.text.MOTOR_turn_right_accel,"ax",%progbits
+ 615              		.align	1
+ 616              		.global	MOTOR_turn_right_accel
+ 617              		.syntax unified
+ 618              		.thumb
+ 619              		.thumb_func
+ 621              	MOTOR_turn_right_accel:
+ 622              	.LVL42:
+ 623              	.LFB228:
+ 128:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 129:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_turn_right_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 624              		.loc 1 129 84 is_stmt 1 view -0
+ 625              		.cfi_startproc
+ 626              		@ args = 0, pretend = 0, frame = 0
+ 627              		@ frame_needed = 0, uses_anonymous_args = 0
+ 628              		.loc 1 129 84 is_stmt 0 view .LVU175
+ 629 0000 70B5     		push	{r4, r5, r6, lr}
+ 630              	.LCFI8:
+ 631              		.cfi_def_cfa_offset 16
+ 632              		.cfi_offset 4, -16
+ 633              		.cfi_offset 5, -12
+ 634              		.cfi_offset 6, -8
+ 635              		.cfi_offset 14, -4
+ 636 0002 0646     		mov	r6, r0
+ 637 0004 0D46     		mov	r5, r1
+ 130:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_BAC
+ 638              		.loc 1 130 3 is_stmt 1 view .LVU176
+ 639 0006 0022     		movs	r2, #0
+ 640 0008 8988     		ldrh	r1, [r1, #4]
+ 641              	.LVL43:
+ 642              		.loc 1 130 3 is_stmt 0 view .LVU177
+ 643 000a A868     		ldr	r0, [r5, #8]
+ 644              	.LVL44:
+ 645              		.loc 1 130 3 view .LVU178
+ 646 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 647              	.LVL45:
+ 131:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_FORWAR
+ 648              		.loc 1 131 3 is_stmt 1 view .LVU179
+ 649 0010 0022     		movs	r2, #0
+ 650 0012 298A     		ldrh	r1, [r5, #16]
+ 651 0014 6869     		ldr	r0, [r5, #20]
+ 652 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 653              	.LVL46:
+ 132:Drivers/Motor_Control/Src/motor_functions.c ****   
+ 133:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_BACKWARD;
+ 654              		.loc 1 133 3 view .LVU180
+ 655              		.loc 1 133 32 is_stmt 0 view .LVU181
+ 656 001a 0023     		movs	r3, #0
+ 657 001c 2B73     		strb	r3, [r5, #12]
+ 134:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_FORWARD;
+ 658              		.loc 1 134 3 is_stmt 1 view .LVU182
+ 659              		.loc 1 134 31 is_stmt 0 view .LVU183
+ 660 001e 2B76     		strb	r3, [r5, #24]
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 15
+
+
+ 135:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 136:Drivers/Motor_Control/Src/motor_functions.c ****   uint32_t tempARR = 65535;
+ 661              		.loc 1 136 3 is_stmt 1 view .LVU184
+ 662              	.LVL47:
+ 137:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 138:Drivers/Motor_Control/Src/motor_functions.c ****   while(tempARR >= autoReloadRegister) {
+ 663              		.loc 1 138 3 view .LVU185
+ 136:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 664              		.loc 1 136 12 is_stmt 0 view .LVU186
+ 665 0020 4FF6FF74 		movw	r4, #65535
+ 666              	.LVL48:
+ 667              	.L28:
+ 139:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 140:Drivers/Motor_Control/Src/motor_functions.c ****     HAL_Delay(50);
+ 141:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 142:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 143:Drivers/Motor_Control/Src/motor_functions.c ****     if(tempARR < autoReloadRegister) {
+ 144:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 668              		.loc 1 144 7 is_stmt 1 discriminator 1 view .LVU187
+ 138:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 669              		.loc 1 138 17 discriminator 1 view .LVU188
+ 670 0024 B442     		cmp	r4, r6
+ 671 0026 11D3     		bcc	.L32
+ 139:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 672              		.loc 1 139 5 view .LVU189
+ 139:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 673              		.loc 1 139 5 view .LVU190
+ 674 0028 2B68     		ldr	r3, [r5]
+ 675 002a 1B68     		ldr	r3, [r3]
+ 676 002c DC62     		str	r4, [r3, #44]
+ 139:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 677              		.loc 1 139 5 view .LVU191
+ 678 002e 2B68     		ldr	r3, [r5]
+ 679 0030 DC60     		str	r4, [r3, #12]
+ 139:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 680              		.loc 1 139 5 view .LVU192
+ 140:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 681              		.loc 1 140 5 view .LVU193
+ 682 0032 3220     		movs	r0, #50
+ 683 0034 FFF7FEFF 		bl	HAL_Delay
+ 684              	.LVL49:
+ 141:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 685              		.loc 1 141 5 view .LVU194
+ 141:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 686              		.loc 1 141 13 is_stmt 0 view .LVU195
+ 687 0038 A4F5FA64 		sub	r4, r4, #2000
+ 688              	.LVL50:
+ 143:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 689              		.loc 1 143 5 is_stmt 1 view .LVU196
+ 143:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 690              		.loc 1 143 7 is_stmt 0 view .LVU197
+ 691 003c A642     		cmp	r6, r4
+ 692 003e F1D9     		bls	.L28
+ 693              		.loc 1 144 7 is_stmt 1 view .LVU198
+ 694              		.loc 1 144 7 view .LVU199
+ 695 0040 2B68     		ldr	r3, [r5]
+ 696 0042 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 16
+
+
+ 697 0044 DE62     		str	r6, [r3, #44]
+ 698              		.loc 1 144 7 view .LVU200
+ 699 0046 2B68     		ldr	r3, [r5]
+ 700 0048 DE60     		str	r6, [r3, #12]
+ 701 004a EBE7     		b	.L28
+ 702              	.L32:
+ 145:Drivers/Motor_Control/Src/motor_functions.c ****     }
+ 146:Drivers/Motor_Control/Src/motor_functions.c ****   }
+ 147:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 148:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 703              		.loc 1 148 3 view .LVU201
+ 704              		.loc 1 148 30 is_stmt 0 view .LVU202
+ 705 004c EE61     		str	r6, [r5, #28]
+ 149:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 706              		.loc 1 149 1 view .LVU203
+ 707 004e 70BD     		pop	{r4, r5, r6, pc}
+ 708              		.loc 1 149 1 view .LVU204
+ 709              		.cfi_endproc
+ 710              	.LFE228:
+ 712              		.section	.text.MOTOR_turn_left,"ax",%progbits
+ 713              		.align	1
+ 714              		.global	MOTOR_turn_left
+ 715              		.syntax unified
+ 716              		.thumb
+ 717              		.thumb_func
+ 719              	MOTOR_turn_left:
+ 720              	.LVL51:
+ 721              	.LFB229:
+ 150:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 151:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_turn_left(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 722              		.loc 1 151 77 is_stmt 1 view -0
+ 723              		.cfi_startproc
+ 724              		@ args = 0, pretend = 0, frame = 0
+ 725              		@ frame_needed = 0, uses_anonymous_args = 0
+ 726              		.loc 1 151 77 is_stmt 0 view .LVU206
+ 727 0000 38B5     		push	{r3, r4, r5, lr}
+ 728              	.LCFI9:
+ 729              		.cfi_def_cfa_offset 16
+ 730              		.cfi_offset 3, -16
+ 731              		.cfi_offset 4, -12
+ 732              		.cfi_offset 5, -8
+ 733              		.cfi_offset 14, -4
+ 734 0002 0546     		mov	r5, r0
+ 735 0004 0C46     		mov	r4, r1
+ 152:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FOR
+ 736              		.loc 1 152 3 is_stmt 1 view .LVU207
+ 737 0006 0122     		movs	r2, #1
+ 738 0008 8988     		ldrh	r1, [r1, #4]
+ 739              	.LVL52:
+ 740              		.loc 1 152 3 is_stmt 0 view .LVU208
+ 741 000a A068     		ldr	r0, [r4, #8]
+ 742              	.LVL53:
+ 743              		.loc 1 152 3 view .LVU209
+ 744 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 745              	.LVL54:
+ 153:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWA
+ 746              		.loc 1 153 3 is_stmt 1 view .LVU210
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 17
+
+
+ 747 0010 0122     		movs	r2, #1
+ 748 0012 218A     		ldrh	r1, [r4, #16]
+ 749 0014 6069     		ldr	r0, [r4, #20]
+ 750 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 751              	.LVL55:
+ 154:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 155:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_FORWARD;
+ 752              		.loc 1 155 3 view .LVU211
+ 753              		.loc 1 155 32 is_stmt 0 view .LVU212
+ 754 001a 0123     		movs	r3, #1
+ 755 001c 2373     		strb	r3, [r4, #12]
+ 156:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_BACKWARD;
+ 756              		.loc 1 156 3 is_stmt 1 view .LVU213
+ 757              		.loc 1 156 31 is_stmt 0 view .LVU214
+ 758 001e 2376     		strb	r3, [r4, #24]
+ 157:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 158:Drivers/Motor_Control/Src/motor_functions.c ****   __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 759              		.loc 1 158 3 is_stmt 1 view .LVU215
+ 760              		.loc 1 158 3 view .LVU216
+ 761 0020 2368     		ldr	r3, [r4]
+ 762 0022 1B68     		ldr	r3, [r3]
+ 763 0024 DD62     		str	r5, [r3, #44]
+ 764              		.loc 1 158 3 view .LVU217
+ 765 0026 2368     		ldr	r3, [r4]
+ 766 0028 DD60     		str	r5, [r3, #12]
+ 767              		.loc 1 158 3 view .LVU218
+ 159:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 160:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 768              		.loc 1 160 3 view .LVU219
+ 769              		.loc 1 160 30 is_stmt 0 view .LVU220
+ 770 002a E561     		str	r5, [r4, #28]
+ 161:Drivers/Motor_Control/Src/motor_functions.c **** }
+ 771              		.loc 1 161 1 view .LVU221
+ 772 002c 38BD     		pop	{r3, r4, r5, pc}
+ 773              		.loc 1 161 1 view .LVU222
+ 774              		.cfi_endproc
+ 775              	.LFE229:
+ 777              		.section	.text.MOTOR_turn_left_accel,"ax",%progbits
+ 778              		.align	1
+ 779              		.global	MOTOR_turn_left_accel
+ 780              		.syntax unified
+ 781              		.thumb
+ 782              		.thumb_func
+ 784              	MOTOR_turn_left_accel:
+ 785              	.LVL56:
+ 786              	.LFB230:
+ 162:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 163:Drivers/Motor_Control/Src/motor_functions.c **** void MOTOR_turn_left_accel(uint32_t autoReloadRegister, motor_instance_t *motors) {
+ 787              		.loc 1 163 83 is_stmt 1 view -0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 0
+ 790              		@ frame_needed = 0, uses_anonymous_args = 0
+ 791              		.loc 1 163 83 is_stmt 0 view .LVU224
+ 792 0000 70B5     		push	{r4, r5, r6, lr}
+ 793              	.LCFI10:
+ 794              		.cfi_def_cfa_offset 16
+ 795              		.cfi_offset 4, -16
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 18
+
+
+ 796              		.cfi_offset 5, -12
+ 797              		.cfi_offset 6, -8
+ 798              		.cfi_offset 14, -4
+ 799 0002 0646     		mov	r6, r0
+ 800 0004 0D46     		mov	r5, r1
+ 164:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->rightMotor.directionPinPort, motors->rightMotor.directionPin, RIGHT_FOR
+ 801              		.loc 1 164 3 is_stmt 1 view .LVU225
+ 802 0006 0122     		movs	r2, #1
+ 803 0008 8988     		ldrh	r1, [r1, #4]
+ 804              	.LVL57:
+ 805              		.loc 1 164 3 is_stmt 0 view .LVU226
+ 806 000a A868     		ldr	r0, [r5, #8]
+ 807              	.LVL58:
+ 808              		.loc 1 164 3 view .LVU227
+ 809 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 810              	.LVL59:
+ 165:Drivers/Motor_Control/Src/motor_functions.c ****   HAL_GPIO_WritePin(motors->leftMotor.directionPinPort, motors->leftMotor.directionPin, LEFT_BACKWA
+ 811              		.loc 1 165 3 is_stmt 1 view .LVU228
+ 812 0010 0122     		movs	r2, #1
+ 813 0012 298A     		ldrh	r1, [r5, #16]
+ 814 0014 6869     		ldr	r0, [r5, #20]
+ 815 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 816              	.LVL60:
+ 166:Drivers/Motor_Control/Src/motor_functions.c ****   
+ 167:Drivers/Motor_Control/Src/motor_functions.c ****   motors->rightMotor.direction = RIGHT_FORWARD;
+ 817              		.loc 1 167 3 view .LVU229
+ 818              		.loc 1 167 32 is_stmt 0 view .LVU230
+ 819 001a 0123     		movs	r3, #1
+ 820 001c 2B73     		strb	r3, [r5, #12]
+ 168:Drivers/Motor_Control/Src/motor_functions.c ****   motors->leftMotor.direction = LEFT_BACKWARD;
+ 821              		.loc 1 168 3 is_stmt 1 view .LVU231
+ 822              		.loc 1 168 31 is_stmt 0 view .LVU232
+ 823 001e 2B76     		strb	r3, [r5, #24]
+ 169:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 170:Drivers/Motor_Control/Src/motor_functions.c ****   uint32_t tempARR = 65535;
+ 824              		.loc 1 170 3 is_stmt 1 view .LVU233
+ 825              	.LVL61:
+ 171:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 172:Drivers/Motor_Control/Src/motor_functions.c ****   while(tempARR >= autoReloadRegister) {
+ 826              		.loc 1 172 3 view .LVU234
+ 170:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 827              		.loc 1 170 12 is_stmt 0 view .LVU235
+ 828 0020 4FF6FF74 		movw	r4, #65535
+ 829              	.LVL62:
+ 830              	.L36:
+ 173:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 174:Drivers/Motor_Control/Src/motor_functions.c ****     HAL_Delay(50);
+ 175:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 176:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 177:Drivers/Motor_Control/Src/motor_functions.c ****     if(tempARR < autoReloadRegister) {
+ 178:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 831              		.loc 1 178 7 is_stmt 1 discriminator 1 view .LVU236
+ 172:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 832              		.loc 1 172 17 discriminator 1 view .LVU237
+ 833 0024 B442     		cmp	r4, r6
+ 834 0026 11D3     		bcc	.L40
+ 173:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 19
+
+
+ 835              		.loc 1 173 5 view .LVU238
+ 173:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 836              		.loc 1 173 5 view .LVU239
+ 837 0028 2B68     		ldr	r3, [r5]
+ 838 002a 1B68     		ldr	r3, [r3]
+ 839 002c DC62     		str	r4, [r3, #44]
+ 173:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 840              		.loc 1 173 5 view .LVU240
+ 841 002e 2B68     		ldr	r3, [r5]
+ 842 0030 DC60     		str	r4, [r3, #12]
+ 173:Drivers/Motor_Control/Src/motor_functions.c ****     __HAL_TIM_SET_AUTORELOAD(motors->timer, tempARR);
+ 843              		.loc 1 173 5 view .LVU241
+ 174:Drivers/Motor_Control/Src/motor_functions.c ****     tempARR -= 2000;
+ 844              		.loc 1 174 5 view .LVU242
+ 845 0032 3220     		movs	r0, #50
+ 846 0034 FFF7FEFF 		bl	HAL_Delay
+ 847              	.LVL63:
+ 175:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 848              		.loc 1 175 5 view .LVU243
+ 175:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 849              		.loc 1 175 13 is_stmt 0 view .LVU244
+ 850 0038 A4F5FA64 		sub	r4, r4, #2000
+ 851              	.LVL64:
+ 177:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 852              		.loc 1 177 5 is_stmt 1 view .LVU245
+ 177:Drivers/Motor_Control/Src/motor_functions.c ****       __HAL_TIM_SET_AUTORELOAD(motors->timer, autoReloadRegister);
+ 853              		.loc 1 177 7 is_stmt 0 view .LVU246
+ 854 003c A642     		cmp	r6, r4
+ 855 003e F1D9     		bls	.L36
+ 856              		.loc 1 178 7 is_stmt 1 view .LVU247
+ 857              		.loc 1 178 7 view .LVU248
+ 858 0040 2B68     		ldr	r3, [r5]
+ 859 0042 1B68     		ldr	r3, [r3]
+ 860 0044 DE62     		str	r6, [r3, #44]
+ 861              		.loc 1 178 7 view .LVU249
+ 862 0046 2B68     		ldr	r3, [r5]
+ 863 0048 DE60     		str	r6, [r3, #12]
+ 864 004a EBE7     		b	.L36
+ 865              	.L40:
+ 179:Drivers/Motor_Control/Src/motor_functions.c ****     }
+ 180:Drivers/Motor_Control/Src/motor_functions.c ****   }
+ 181:Drivers/Motor_Control/Src/motor_functions.c **** 
+ 182:Drivers/Motor_Control/Src/motor_functions.c ****   motors->autoReloadRegister = autoReloadRegister;
+ 866              		.loc 1 182 3 view .LVU250
+ 867              		.loc 1 182 30 is_stmt 0 view .LVU251
+ 868 004c EE61     		str	r6, [r5, #28]
+ 183:Drivers/Motor_Control/Src/motor_functions.c **** }...
+ 869              		.loc 1 183 1 view .LVU252
+ 870 004e 70BD     		pop	{r4, r5, r6, pc}
+ 871              		.loc 1 183 1 view .LVU253
+ 872              		.cfi_endproc
+ 873              	.LFE230:
+ 875              		.text
+ 876              	.Letext0:
+ 877              		.file 2 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 878              		.file 3 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 879              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h"
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 20
+
+
+ 880              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 881              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 882              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 883              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 884              		.file 9 "Drivers/Motor_Control/Inc/motor_functions.h"
+ 885              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motor_functions.c
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:21     .text.MOTOR_initialize_motor_config:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:27     .text.MOTOR_initialize_motor_config:00000000 MOTOR_initialize_motor_config
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:51     .text.MOTOR_initialize_motor_instance:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:57     .text.MOTOR_initialize_motor_instance:00000000 MOTOR_initialize_motor_instance
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:100    .text.MOTOR_move_speed_forward:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:106    .text.MOTOR_move_speed_forward:00000000 MOTOR_move_speed_forward
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:166    .text.MOTOR_move_speed_forward_accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:172    .text.MOTOR_move_speed_forward_accel:00000000 MOTOR_move_speed_forward_accel
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:265    .text.MOTOR_move_speed_backward:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:271    .text.MOTOR_move_speed_backward:00000000 MOTOR_move_speed_backward
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:331    .text.MOTOR_move_speed_backward_accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:337    .text.MOTOR_move_speed_backward_accel:00000000 MOTOR_move_speed_backward_accel
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:430    .text.MOTOR_stop_both:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:436    .text.MOTOR_stop_both:00000000 MOTOR_stop_both
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:470    .text.MOTOR_stop_both_accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:476    .text.MOTOR_stop_both_accel:00000000 MOTOR_stop_both_accel
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:550    .text.MOTOR_turn_right:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:556    .text.MOTOR_turn_right:00000000 MOTOR_turn_right
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:615    .text.MOTOR_turn_right_accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:621    .text.MOTOR_turn_right_accel:00000000 MOTOR_turn_right_accel
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:713    .text.MOTOR_turn_left:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:719    .text.MOTOR_turn_left:00000000 MOTOR_turn_left
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:778    .text.MOTOR_turn_left_accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccvOeFuh.s:784    .text.MOTOR_turn_left_accel:00000000 MOTOR_turn_left_accel
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_Delay

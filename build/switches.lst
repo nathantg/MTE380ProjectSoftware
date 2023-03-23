@@ -1,0 +1,346 @@
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"switches.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Drivers/Switches/Src/switches.c"
+  20              		.section	.text.SWITCHES_initialize_switch_config,"ax",%progbits
+  21              		.align	1
+  22              		.global	SWITCHES_initialize_switch_config
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	SWITCHES_initialize_switch_config:
+  28              	.LVL0:
+  29              	.LFB216:
+   1:Drivers/Switches/Src/switches.c **** /**
+   2:Drivers/Switches/Src/switches.c ****   ******************************************************************************
+   3:Drivers/Switches/Src/switches.c ****   * @file           : switches.c
+   4:Drivers/Switches/Src/switches.c ****   * @brief          : functions for 
+   5:Drivers/Switches/Src/switches.c ****   *                   the limit and tilt switches
+   6:Drivers/Switches/Src/switches.c ****   ******************************************************************************
+   7:Drivers/Switches/Src/switches.c ****   */
+   8:Drivers/Switches/Src/switches.c **** 
+   9:Drivers/Switches/Src/switches.c ****  #include "switches.h"
+  10:Drivers/Switches/Src/switches.c ****  #include "stm32f4xx_hal_tim.h"
+  11:Drivers/Switches/Src/switches.c **** 
+  12:Drivers/Switches/Src/switches.c **** void SWITCHES_initialize_switch_config(swtiches_config_t *switchConfig, uint16_t switchPin, GPIO_Ty
+  30              		.loc 1 12 119 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  13:Drivers/Switches/Src/switches.c ****     switchConfig->swtichPin = switchPin;
+  35              		.loc 1 13 5 view .LVU1
+  36              		.loc 1 13 29 is_stmt 0 view .LVU2
+  37 0000 0180     		strh	r1, [r0]	@ movhi
+  14:Drivers/Switches/Src/switches.c ****     switchConfig->switchPinPort = switchPort;
+  38              		.loc 1 14 5 is_stmt 1 view .LVU3
+  39              		.loc 1 14 33 is_stmt 0 view .LVU4
+  40 0002 4260     		str	r2, [r0, #4]
+  15:Drivers/Switches/Src/switches.c ****     switchConfig->switchStatus = 0;
+  41              		.loc 1 15 5 is_stmt 1 view .LVU5
+  42              		.loc 1 15 32 is_stmt 0 view .LVU6
+  43 0004 0023     		movs	r3, #0
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 2
+
+
+  44 0006 0372     		strb	r3, [r0, #8]
+  16:Drivers/Switches/Src/switches.c **** }
+  45              		.loc 1 16 1 view .LVU7
+  46 0008 7047     		bx	lr
+  47              		.cfi_endproc
+  48              	.LFE216:
+  50              		.section	.text.SWITCHES_initiallize_switch_instance,"ax",%progbits
+  51              		.align	1
+  52              		.global	SWITCHES_initiallize_switch_instance
+  53              		.syntax unified
+  54              		.thumb
+  55              		.thumb_func
+  57              	SWITCHES_initiallize_switch_instance:
+  58              	.LVL1:
+  59              	.LFB217:
+  17:Drivers/Switches/Src/switches.c **** 
+  18:Drivers/Switches/Src/switches.c **** void SWITCHES_initiallize_switch_instance(switches_instance_t *switchesInstance, 
+  19:Drivers/Switches/Src/switches.c ****                                           swtiches_config_t *rightLimitSwtich, swtiches_config_t *l
+  20:Drivers/Switches/Src/switches.c ****                                           swtiches_config_t *upTiltSwitch, swtiches_config_t *downT
+  60              		.loc 1 20 111 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 4, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  21:Drivers/Switches/Src/switches.c ****     switchesInstance->rightLimitSwitch = rightLimitSwtich;
+  65              		.loc 1 21 5 view .LVU9
+  66              		.loc 1 21 40 is_stmt 0 view .LVU10
+  67 0000 0160     		str	r1, [r0]
+  22:Drivers/Switches/Src/switches.c ****     switchesInstance->leftLimitSwitch = leftLimitSwitch;
+  68              		.loc 1 22 5 is_stmt 1 view .LVU11
+  69              		.loc 1 22 39 is_stmt 0 view .LVU12
+  70 0002 4260     		str	r2, [r0, #4]
+  23:Drivers/Switches/Src/switches.c ****     switchesInstance->upTiltSwitch = upTiltSwitch;
+  71              		.loc 1 23 5 is_stmt 1 view .LVU13
+  72              		.loc 1 23 36 is_stmt 0 view .LVU14
+  73 0004 8360     		str	r3, [r0, #8]
+  24:Drivers/Switches/Src/switches.c ****     switchesInstance->downTiltSwitch = downTiltSwtich;
+  74              		.loc 1 24 5 is_stmt 1 view .LVU15
+  75              		.loc 1 24 38 is_stmt 0 view .LVU16
+  76 0006 009B     		ldr	r3, [sp]
+  77              	.LVL2:
+  78              		.loc 1 24 38 view .LVU17
+  79 0008 C360     		str	r3, [r0, #12]
+  25:Drivers/Switches/Src/switches.c **** }
+  80              		.loc 1 25 1 view .LVU18
+  81 000a 7047     		bx	lr
+  82              		.cfi_endproc
+  83              	.LFE217:
+  85              		.section	.text.SWITCHES_get_right_limit_switch,"ax",%progbits
+  86              		.align	1
+  87              		.global	SWITCHES_get_right_limit_switch
+  88              		.syntax unified
+  89              		.thumb
+  90              		.thumb_func
+  92              	SWITCHES_get_right_limit_switch:
+  93              	.LVL3:
+  94              	.LFB218:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 3
+
+
+  26:Drivers/Switches/Src/switches.c **** 
+  27:Drivers/Switches/Src/switches.c **** uint8_t SWITCHES_get_right_limit_switch(switches_instance_t *switchInstance) {
+  95              		.loc 1 27 78 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99              		.loc 1 27 78 is_stmt 0 view .LVU20
+ 100 0000 10B5     		push	{r4, lr}
+ 101              	.LCFI0:
+ 102              		.cfi_def_cfa_offset 8
+ 103              		.cfi_offset 4, -8
+ 104              		.cfi_offset 14, -4
+ 105 0002 0446     		mov	r4, r0
+  28:Drivers/Switches/Src/switches.c ****     uint8_t status = HAL_GPIO_ReadPin(switchInstance->rightLimitSwitch->switchPinPort, switchInstan
+ 106              		.loc 1 28 5 is_stmt 1 view .LVU21
+ 107              		.loc 1 28 53 is_stmt 0 view .LVU22
+ 108 0004 0368     		ldr	r3, [r0]
+ 109              		.loc 1 28 22 view .LVU23
+ 110 0006 1988     		ldrh	r1, [r3]
+ 111 0008 5868     		ldr	r0, [r3, #4]
+ 112              	.LVL4:
+ 113              		.loc 1 28 22 view .LVU24
+ 114 000a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 115              	.LVL5:
+  29:Drivers/Switches/Src/switches.c **** 
+  30:Drivers/Switches/Src/switches.c ****     switchInstance->rightLimitSwitch->switchStatus = status;
+ 116              		.loc 1 30 5 is_stmt 1 view .LVU25
+ 117              		.loc 1 30 19 is_stmt 0 view .LVU26
+ 118 000e 2368     		ldr	r3, [r4]
+ 119              		.loc 1 30 52 view .LVU27
+ 120 0010 1872     		strb	r0, [r3, #8]
+  31:Drivers/Switches/Src/switches.c **** 
+  32:Drivers/Switches/Src/switches.c ****     return status;
+ 121              		.loc 1 32 5 is_stmt 1 view .LVU28
+  33:Drivers/Switches/Src/switches.c **** }
+ 122              		.loc 1 33 1 is_stmt 0 view .LVU29
+ 123 0012 10BD     		pop	{r4, pc}
+ 124              		.loc 1 33 1 view .LVU30
+ 125              		.cfi_endproc
+ 126              	.LFE218:
+ 128              		.section	.text.SWITCHES_get_left_limit_switch,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	SWITCHES_get_left_limit_switch
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 135              	SWITCHES_get_left_limit_switch:
+ 136              	.LVL6:
+ 137              	.LFB219:
+  34:Drivers/Switches/Src/switches.c **** 
+  35:Drivers/Switches/Src/switches.c **** uint8_t SWITCHES_get_left_limit_switch(switches_instance_t *switchInstance) {
+ 138              		.loc 1 35 77 is_stmt 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		.loc 1 35 77 is_stmt 0 view .LVU32
+ 143 0000 10B5     		push	{r4, lr}
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 4
+
+
+ 144              	.LCFI1:
+ 145              		.cfi_def_cfa_offset 8
+ 146              		.cfi_offset 4, -8
+ 147              		.cfi_offset 14, -4
+ 148 0002 0446     		mov	r4, r0
+  36:Drivers/Switches/Src/switches.c ****     uint8_t status = HAL_GPIO_ReadPin(switchInstance->leftLimitSwitch->switchPinPort, switchInstanc
+ 149              		.loc 1 36 5 is_stmt 1 view .LVU33
+ 150              		.loc 1 36 53 is_stmt 0 view .LVU34
+ 151 0004 4368     		ldr	r3, [r0, #4]
+ 152              		.loc 1 36 22 view .LVU35
+ 153 0006 1988     		ldrh	r1, [r3]
+ 154 0008 5868     		ldr	r0, [r3, #4]
+ 155              	.LVL7:
+ 156              		.loc 1 36 22 view .LVU36
+ 157 000a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 158              	.LVL8:
+  37:Drivers/Switches/Src/switches.c **** 
+  38:Drivers/Switches/Src/switches.c ****     switchInstance->leftLimitSwitch->switchStatus = status;
+ 159              		.loc 1 38 5 is_stmt 1 view .LVU37
+ 160              		.loc 1 38 19 is_stmt 0 view .LVU38
+ 161 000e 6368     		ldr	r3, [r4, #4]
+ 162              		.loc 1 38 51 view .LVU39
+ 163 0010 1872     		strb	r0, [r3, #8]
+  39:Drivers/Switches/Src/switches.c ****     
+  40:Drivers/Switches/Src/switches.c ****     return status;
+ 164              		.loc 1 40 5 is_stmt 1 view .LVU40
+  41:Drivers/Switches/Src/switches.c **** }
+ 165              		.loc 1 41 1 is_stmt 0 view .LVU41
+ 166 0012 10BD     		pop	{r4, pc}
+ 167              		.loc 1 41 1 view .LVU42
+ 168              		.cfi_endproc
+ 169              	.LFE219:
+ 171              		.section	.text.SWITCHES_get_up_tilt_switch,"ax",%progbits
+ 172              		.align	1
+ 173              		.global	SWITCHES_get_up_tilt_switch
+ 174              		.syntax unified
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	SWITCHES_get_up_tilt_switch:
+ 179              	.LVL9:
+ 180              	.LFB220:
+  42:Drivers/Switches/Src/switches.c **** 
+  43:Drivers/Switches/Src/switches.c **** uint8_t SWITCHES_get_up_tilt_switch(switches_instance_t *switchInstance) {
+ 181              		.loc 1 43 74 is_stmt 1 view -0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 185              		.loc 1 43 74 is_stmt 0 view .LVU44
+ 186 0000 10B5     		push	{r4, lr}
+ 187              	.LCFI2:
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 4, -8
+ 190              		.cfi_offset 14, -4
+ 191 0002 0446     		mov	r4, r0
+  44:Drivers/Switches/Src/switches.c ****     uint8_t status = HAL_GPIO_ReadPin(switchInstance->upTiltSwitch->switchPinPort, switchInstance->
+ 192              		.loc 1 44 5 is_stmt 1 view .LVU45
+ 193              		.loc 1 44 53 is_stmt 0 view .LVU46
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 5
+
+
+ 194 0004 8368     		ldr	r3, [r0, #8]
+ 195              		.loc 1 44 22 view .LVU47
+ 196 0006 1988     		ldrh	r1, [r3]
+ 197 0008 5868     		ldr	r0, [r3, #4]
+ 198              	.LVL10:
+ 199              		.loc 1 44 22 view .LVU48
+ 200 000a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 201              	.LVL11:
+  45:Drivers/Switches/Src/switches.c **** 
+  46:Drivers/Switches/Src/switches.c ****     switchInstance->upTiltSwitch->switchStatus = status;
+ 202              		.loc 1 46 5 is_stmt 1 view .LVU49
+ 203              		.loc 1 46 19 is_stmt 0 view .LVU50
+ 204 000e A368     		ldr	r3, [r4, #8]
+ 205              		.loc 1 46 48 view .LVU51
+ 206 0010 1872     		strb	r0, [r3, #8]
+  47:Drivers/Switches/Src/switches.c **** 
+  48:Drivers/Switches/Src/switches.c ****     return status;
+ 207              		.loc 1 48 5 is_stmt 1 view .LVU52
+  49:Drivers/Switches/Src/switches.c **** }
+ 208              		.loc 1 49 1 is_stmt 0 view .LVU53
+ 209 0012 10BD     		pop	{r4, pc}
+ 210              		.loc 1 49 1 view .LVU54
+ 211              		.cfi_endproc
+ 212              	.LFE220:
+ 214              		.section	.text.SWITCHES_get_down_tilt_switch,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	SWITCHES_get_down_tilt_switch
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	SWITCHES_get_down_tilt_switch:
+ 222              	.LVL12:
+ 223              	.LFB221:
+  50:Drivers/Switches/Src/switches.c **** 
+  51:Drivers/Switches/Src/switches.c **** uint8_t SWITCHES_get_down_tilt_switch(switches_instance_t *switchInstance) {
+ 224              		.loc 1 51 76 is_stmt 1 view -0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228              		.loc 1 51 76 is_stmt 0 view .LVU56
+ 229 0000 10B5     		push	{r4, lr}
+ 230              	.LCFI3:
+ 231              		.cfi_def_cfa_offset 8
+ 232              		.cfi_offset 4, -8
+ 233              		.cfi_offset 14, -4
+ 234 0002 0446     		mov	r4, r0
+  52:Drivers/Switches/Src/switches.c ****     uint8_t status = HAL_GPIO_ReadPin(switchInstance->downTiltSwitch->switchPinPort, switchInstance
+ 235              		.loc 1 52 5 is_stmt 1 view .LVU57
+ 236              		.loc 1 52 53 is_stmt 0 view .LVU58
+ 237 0004 C368     		ldr	r3, [r0, #12]
+ 238              		.loc 1 52 22 view .LVU59
+ 239 0006 1988     		ldrh	r1, [r3]
+ 240 0008 5868     		ldr	r0, [r3, #4]
+ 241              	.LVL13:
+ 242              		.loc 1 52 22 view .LVU60
+ 243 000a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 244              	.LVL14:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 6
+
+
+  53:Drivers/Switches/Src/switches.c **** 
+  54:Drivers/Switches/Src/switches.c ****     switchInstance->downTiltSwitch->switchStatus = status;
+ 245              		.loc 1 54 5 is_stmt 1 view .LVU61
+ 246              		.loc 1 54 19 is_stmt 0 view .LVU62
+ 247 000e E368     		ldr	r3, [r4, #12]
+ 248              		.loc 1 54 50 view .LVU63
+ 249 0010 1872     		strb	r0, [r3, #8]
+  55:Drivers/Switches/Src/switches.c ****     
+  56:Drivers/Switches/Src/switches.c ****     return status;
+ 250              		.loc 1 56 5 is_stmt 1 view .LVU64
+  57:Drivers/Switches/Src/switches.c **** }...
+ 251              		.loc 1 57 1 is_stmt 0 view .LVU65
+ 252 0012 10BD     		pop	{r4, pc}
+ 253              		.loc 1 57 1 view .LVU66
+ 254              		.cfi_endproc
+ 255              	.LFE221:
+ 257              		.text
+ 258              	.Letext0:
+ 259              		.file 2 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 260              		.file 3 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 261              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h"
+ 262              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 263              		.file 6 "Drivers/Switches/Inc/switches.h"
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccHmbowu.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 switches.c
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:21     .text.SWITCHES_initialize_switch_config:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:27     .text.SWITCHES_initialize_switch_config:00000000 SWITCHES_initialize_switch_config
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:51     .text.SWITCHES_initiallize_switch_instance:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:57     .text.SWITCHES_initiallize_switch_instance:00000000 SWITCHES_initiallize_switch_instance
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:86     .text.SWITCHES_get_right_limit_switch:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:92     .text.SWITCHES_get_right_limit_switch:00000000 SWITCHES_get_right_limit_switch
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:129    .text.SWITCHES_get_left_limit_switch:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:135    .text.SWITCHES_get_left_limit_switch:00000000 SWITCHES_get_left_limit_switch
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:172    .text.SWITCHES_get_up_tilt_switch:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:178    .text.SWITCHES_get_up_tilt_switch:00000000 SWITCHES_get_up_tilt_switch
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:215    .text.SWITCHES_get_down_tilt_switch:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccHmbowu.s:221    .text.SWITCHES_get_down_tilt_switch:00000000 SWITCHES_get_down_tilt_switch
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin

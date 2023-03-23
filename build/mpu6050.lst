@@ -1,0 +1,1782 @@
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"mpu6050.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Drivers/MPU6050/Src/mpu6050.c"
+  20              		.section	.text.MPU6050_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	MPU6050_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MPU6050_Init:
+  28              	.LVL0:
+  29              	.LFB216:
+   1:Drivers/MPU6050/Src/mpu6050.c **** /*
+   2:Drivers/MPU6050/Src/mpu6050.c ****  * mpu6050.c
+   3:Drivers/MPU6050/Src/mpu6050.c ****  *
+   4:Drivers/MPU6050/Src/mpu6050.c ****  *  Created on: Nov 13, 2019
+   5:Drivers/MPU6050/Src/mpu6050.c ****  *      Author: Bulanov Konstantin
+   6:Drivers/MPU6050/Src/mpu6050.c ****  *
+   7:Drivers/MPU6050/Src/mpu6050.c ****  *  Contact information
+   8:Drivers/MPU6050/Src/mpu6050.c ****  *  -------------------
+   9:Drivers/MPU6050/Src/mpu6050.c ****  *
+  10:Drivers/MPU6050/Src/mpu6050.c ****  * e-mail   :  leech001@gmail.com
+  11:Drivers/MPU6050/Src/mpu6050.c ****  */
+  12:Drivers/MPU6050/Src/mpu6050.c **** 
+  13:Drivers/MPU6050/Src/mpu6050.c **** /*
+  14:Drivers/MPU6050/Src/mpu6050.c ****  * |---------------------------------------------------------------------------------
+  15:Drivers/MPU6050/Src/mpu6050.c ****  * | Copyright (C) Bulanov Konstantin,2021
+  16:Drivers/MPU6050/Src/mpu6050.c ****  * |
+  17:Drivers/MPU6050/Src/mpu6050.c ****  * | This program is free software: you can redistribute it and/or modify
+  18:Drivers/MPU6050/Src/mpu6050.c ****  * | it under the terms of the GNU General Public License as published by
+  19:Drivers/MPU6050/Src/mpu6050.c ****  * | the Free Software Foundation, either version 3 of the License, or
+  20:Drivers/MPU6050/Src/mpu6050.c ****  * | any later version.
+  21:Drivers/MPU6050/Src/mpu6050.c ****  * |
+  22:Drivers/MPU6050/Src/mpu6050.c ****  * | This program is distributed in the hope that it will be useful,
+  23:Drivers/MPU6050/Src/mpu6050.c ****  * | but WITHOUT ANY WARRANTY; without even the implied warranty of
+  24:Drivers/MPU6050/Src/mpu6050.c ****  * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  25:Drivers/MPU6050/Src/mpu6050.c ****  * | GNU General Public License for more details.
+  26:Drivers/MPU6050/Src/mpu6050.c ****  * |
+  27:Drivers/MPU6050/Src/mpu6050.c ****  * | You should have received a copy of the GNU General Public License
+  28:Drivers/MPU6050/Src/mpu6050.c ****  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  29:Drivers/MPU6050/Src/mpu6050.c ****  * |
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 2
+
+
+  30:Drivers/MPU6050/Src/mpu6050.c ****  * | Kalman filter algorithm used from https://github.com/TKJElectronics/KalmanFilter
+  31:Drivers/MPU6050/Src/mpu6050.c ****  * |---------------------------------------------------------------------------------
+  32:Drivers/MPU6050/Src/mpu6050.c ****  */
+  33:Drivers/MPU6050/Src/mpu6050.c **** 
+  34:Drivers/MPU6050/Src/mpu6050.c **** #include <math.h>
+  35:Drivers/MPU6050/Src/mpu6050.c **** #include "mpu6050.h"
+  36:Drivers/MPU6050/Src/mpu6050.c **** 
+  37:Drivers/MPU6050/Src/mpu6050.c **** #define RAD_TO_DEG 57.295779513082320876798154814105
+  38:Drivers/MPU6050/Src/mpu6050.c **** 
+  39:Drivers/MPU6050/Src/mpu6050.c **** #define WHO_AM_I_REG 0x75
+  40:Drivers/MPU6050/Src/mpu6050.c **** #define PWR_MGMT_1_REG 0x6B
+  41:Drivers/MPU6050/Src/mpu6050.c **** #define SMPLRT_DIV_REG 0x19
+  42:Drivers/MPU6050/Src/mpu6050.c **** #define ACCEL_CONFIG_REG 0x1C
+  43:Drivers/MPU6050/Src/mpu6050.c **** #define ACCEL_XOUT_H_REG 0x3B
+  44:Drivers/MPU6050/Src/mpu6050.c **** #define TEMP_OUT_H_REG 0x41
+  45:Drivers/MPU6050/Src/mpu6050.c **** #define GYRO_CONFIG_REG 0x1B
+  46:Drivers/MPU6050/Src/mpu6050.c **** #define GYRO_XOUT_H_REG 0x43
+  47:Drivers/MPU6050/Src/mpu6050.c **** 
+  48:Drivers/MPU6050/Src/mpu6050.c **** // Setup MPU6050
+  49:Drivers/MPU6050/Src/mpu6050.c **** #define MPU6050_ADDR 0xD0
+  50:Drivers/MPU6050/Src/mpu6050.c **** const uint16_t i2c_timeout = 1000;
+  51:Drivers/MPU6050/Src/mpu6050.c **** const double Accel_Z_corrector = 14418.0;
+  52:Drivers/MPU6050/Src/mpu6050.c **** 
+  53:Drivers/MPU6050/Src/mpu6050.c **** uint32_t timer;
+  54:Drivers/MPU6050/Src/mpu6050.c **** 
+  55:Drivers/MPU6050/Src/mpu6050.c **** Kalman_t KalmanX = {
+  56:Drivers/MPU6050/Src/mpu6050.c ****     .Q_angle = 0.001f,
+  57:Drivers/MPU6050/Src/mpu6050.c ****     .Q_bias = 0.003f,
+  58:Drivers/MPU6050/Src/mpu6050.c ****     .R_measure = 0.03f};
+  59:Drivers/MPU6050/Src/mpu6050.c **** 
+  60:Drivers/MPU6050/Src/mpu6050.c **** Kalman_t KalmanY = {
+  61:Drivers/MPU6050/Src/mpu6050.c ****     .Q_angle = 0.001f,
+  62:Drivers/MPU6050/Src/mpu6050.c ****     .Q_bias = 0.003f,
+  63:Drivers/MPU6050/Src/mpu6050.c ****     .R_measure = 0.03f,
+  64:Drivers/MPU6050/Src/mpu6050.c **** };
+  65:Drivers/MPU6050/Src/mpu6050.c **** 
+  66:Drivers/MPU6050/Src/mpu6050.c **** uint8_t MPU6050_Init(I2C_HandleTypeDef *I2Cx)
+  67:Drivers/MPU6050/Src/mpu6050.c **** {
+  30              		.loc 1 67 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 67 1 is_stmt 0 view .LVU1
+  35 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 24
+  38              		.cfi_offset 4, -24
+  39              		.cfi_offset 5, -20
+  40              		.cfi_offset 6, -16
+  41              		.cfi_offset 7, -12
+  42              		.cfi_offset 8, -8
+  43              		.cfi_offset 14, -4
+  44 0004 86B0     		sub	sp, sp, #24
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 48
+  47 0006 0546     		mov	r5, r0
+  68:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t check;
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 3
+
+
+  48              		.loc 1 68 5 is_stmt 1 view .LVU2
+  69:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Data;
+  49              		.loc 1 69 5 view .LVU3
+  70:Drivers/MPU6050/Src/mpu6050.c **** 
+  71:Drivers/MPU6050/Src/mpu6050.c ****     // check device ID WHO_AM_I
+  72:Drivers/MPU6050/Src/mpu6050.c **** 
+  73:Drivers/MPU6050/Src/mpu6050.c ****     HAL_I2C_Mem_Read(I2Cx, MPU6050_ADDR, WHO_AM_I_REG, 1, &check, 1, i2c_timeout);
+  50              		.loc 1 73 5 view .LVU4
+  51 0008 4FF47A73 		mov	r3, #1000
+  52 000c 0293     		str	r3, [sp, #8]
+  53 000e 0123     		movs	r3, #1
+  54 0010 0193     		str	r3, [sp, #4]
+  55 0012 0DF11702 		add	r2, sp, #23
+  56 0016 0092     		str	r2, [sp]
+  57 0018 7522     		movs	r2, #117
+  58 001a D021     		movs	r1, #208
+  59 001c FFF7FEFF 		bl	HAL_I2C_Mem_Read
+  60              	.LVL1:
+  74:Drivers/MPU6050/Src/mpu6050.c **** 
+  75:Drivers/MPU6050/Src/mpu6050.c ****     if (check == 104) // 0x68 will be returned by the sensor if everything goes well
+  61              		.loc 1 75 5 view .LVU5
+  62              		.loc 1 75 15 is_stmt 0 view .LVU6
+  63 0020 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+  64              		.loc 1 75 8 view .LVU7
+  65 0024 682B     		cmp	r3, #104
+  66 0026 03D0     		beq	.L5
+  76:Drivers/MPU6050/Src/mpu6050.c ****     {
+  77:Drivers/MPU6050/Src/mpu6050.c ****         // power management register 0X6B we should write all 0's to wake the sensor up
+  78:Drivers/MPU6050/Src/mpu6050.c ****         Data = 0;
+  79:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, PWR_MGMT_1_REG, 1, &Data, 1, i2c_timeout);
+  80:Drivers/MPU6050/Src/mpu6050.c **** 
+  81:Drivers/MPU6050/Src/mpu6050.c ****         // Set DATA RATE of 1KHz by writing SMPLRT_DIV register
+  82:Drivers/MPU6050/Src/mpu6050.c ****         Data = 0x07;
+  83:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &Data, 1, i2c_timeout);
+  84:Drivers/MPU6050/Src/mpu6050.c **** 
+  85:Drivers/MPU6050/Src/mpu6050.c ****         // Set accelerometer configuration in ACCEL_CONFIG Register
+  86:Drivers/MPU6050/Src/mpu6050.c ****         // XA_ST=0,YA_ST=0,ZA_ST=0, FS_SEL=0 -> � 2g
+  87:Drivers/MPU6050/Src/mpu6050.c ****         Data = 0x00;
+  88:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+  89:Drivers/MPU6050/Src/mpu6050.c **** 
+  90:Drivers/MPU6050/Src/mpu6050.c ****         // Set Gyroscopic configuration in GYRO_CONFIG Register
+  91:Drivers/MPU6050/Src/mpu6050.c ****         // XG_ST=0,YG_ST=0,ZG_ST=0, FS_SEL=0 -> � 250 �/s
+  92:Drivers/MPU6050/Src/mpu6050.c ****         Data = 0x00;
+  93:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+  94:Drivers/MPU6050/Src/mpu6050.c ****         return 0;
+  95:Drivers/MPU6050/Src/mpu6050.c ****     }
+  96:Drivers/MPU6050/Src/mpu6050.c ****     return 1;
+  67              		.loc 1 96 12 view .LVU8
+  68 0028 0120     		movs	r0, #1
+  69              	.L2:
+  97:Drivers/MPU6050/Src/mpu6050.c **** }
+  70              		.loc 1 97 1 view .LVU9
+  71 002a 06B0     		add	sp, sp, #24
+  72              	.LCFI2:
+  73              		.cfi_remember_state
+  74              		.cfi_def_cfa_offset 24
+  75              		@ sp needed
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 4
+
+
+  76 002c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+  77              	.LVL2:
+  78              	.L5:
+  79              	.LCFI3:
+  80              		.cfi_restore_state
+  78:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, PWR_MGMT_1_REG, 1, &Data, 1, i2c_timeout);
+  81              		.loc 1 78 9 is_stmt 1 view .LVU10
+  78:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, PWR_MGMT_1_REG, 1, &Data, 1, i2c_timeout);
+  82              		.loc 1 78 14 is_stmt 0 view .LVU11
+  83 0030 0024     		movs	r4, #0
+  84 0032 8DF81640 		strb	r4, [sp, #22]
+  79:Drivers/MPU6050/Src/mpu6050.c **** 
+  85              		.loc 1 79 9 is_stmt 1 view .LVU12
+  86 0036 4FF47A78 		mov	r8, #1000
+  87 003a CDF80880 		str	r8, [sp, #8]
+  88 003e 0126     		movs	r6, #1
+  89 0040 0196     		str	r6, [sp, #4]
+  90 0042 0DF11607 		add	r7, sp, #22
+  91 0046 0097     		str	r7, [sp]
+  92 0048 3346     		mov	r3, r6
+  93 004a 6B22     		movs	r2, #107
+  94 004c D021     		movs	r1, #208
+  95 004e 2846     		mov	r0, r5
+  96 0050 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+  97              	.LVL3:
+  82:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &Data, 1, i2c_timeout);
+  98              		.loc 1 82 9 view .LVU13
+  82:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &Data, 1, i2c_timeout);
+  99              		.loc 1 82 14 is_stmt 0 view .LVU14
+ 100 0054 0723     		movs	r3, #7
+ 101 0056 8DF81630 		strb	r3, [sp, #22]
+  83:Drivers/MPU6050/Src/mpu6050.c **** 
+ 102              		.loc 1 83 9 is_stmt 1 view .LVU15
+ 103 005a CDF80880 		str	r8, [sp, #8]
+ 104 005e 0196     		str	r6, [sp, #4]
+ 105 0060 0097     		str	r7, [sp]
+ 106 0062 3346     		mov	r3, r6
+ 107 0064 1922     		movs	r2, #25
+ 108 0066 D021     		movs	r1, #208
+ 109 0068 2846     		mov	r0, r5
+ 110 006a FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 111              	.LVL4:
+  87:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+ 112              		.loc 1 87 9 view .LVU16
+  87:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+ 113              		.loc 1 87 14 is_stmt 0 view .LVU17
+ 114 006e 8DF81640 		strb	r4, [sp, #22]
+  88:Drivers/MPU6050/Src/mpu6050.c **** 
+ 115              		.loc 1 88 9 is_stmt 1 view .LVU18
+ 116 0072 CDF80880 		str	r8, [sp, #8]
+ 117 0076 0196     		str	r6, [sp, #4]
+ 118 0078 0097     		str	r7, [sp]
+ 119 007a 3346     		mov	r3, r6
+ 120 007c 1C22     		movs	r2, #28
+ 121 007e D021     		movs	r1, #208
+ 122 0080 2846     		mov	r0, r5
+ 123 0082 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 5
+
+
+ 124              	.LVL5:
+  92:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+ 125              		.loc 1 92 9 view .LVU19
+  92:Drivers/MPU6050/Src/mpu6050.c ****         HAL_I2C_Mem_Write(I2Cx, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &Data, 1, i2c_timeout);
+ 126              		.loc 1 92 14 is_stmt 0 view .LVU20
+ 127 0086 8DF81640 		strb	r4, [sp, #22]
+  93:Drivers/MPU6050/Src/mpu6050.c ****         return 0;
+ 128              		.loc 1 93 9 is_stmt 1 view .LVU21
+ 129 008a CDF80880 		str	r8, [sp, #8]
+ 130 008e 0196     		str	r6, [sp, #4]
+ 131 0090 0097     		str	r7, [sp]
+ 132 0092 3346     		mov	r3, r6
+ 133 0094 1B22     		movs	r2, #27
+ 134 0096 D021     		movs	r1, #208
+ 135 0098 2846     		mov	r0, r5
+ 136 009a FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 137              	.LVL6:
+  94:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 138              		.loc 1 94 9 view .LVU22
+  94:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 139              		.loc 1 94 16 is_stmt 0 view .LVU23
+ 140 009e 2046     		mov	r0, r4
+ 141 00a0 C3E7     		b	.L2
+ 142              		.cfi_endproc
+ 143              	.LFE216:
+ 145              		.global	__aeabi_i2d
+ 146              		.global	__aeabi_dmul
+ 147              		.global	__aeabi_ddiv
+ 148              		.section	.text.MPU6050_Read_Accel,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	MPU6050_Read_Accel
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	MPU6050_Read_Accel:
+ 156              	.LVL7:
+ 157              	.LFB217:
+  98:Drivers/MPU6050/Src/mpu6050.c **** 
+  99:Drivers/MPU6050/Src/mpu6050.c **** void MPU6050_Read_Accel(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
+ 100:Drivers/MPU6050/Src/mpu6050.c **** {
+ 158              		.loc 1 100 1 is_stmt 1 view -0
+ 159              		.cfi_startproc
+ 160              		@ args = 0, pretend = 0, frame = 8
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162              		.loc 1 100 1 is_stmt 0 view .LVU25
+ 163 0000 70B5     		push	{r4, r5, r6, lr}
+ 164              	.LCFI4:
+ 165              		.cfi_def_cfa_offset 16
+ 166              		.cfi_offset 4, -16
+ 167              		.cfi_offset 5, -12
+ 168              		.cfi_offset 6, -8
+ 169              		.cfi_offset 14, -4
+ 170 0002 86B0     		sub	sp, sp, #24
+ 171              	.LCFI5:
+ 172              		.cfi_def_cfa_offset 40
+ 173 0004 0C46     		mov	r4, r1
+ 101:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[6];
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 6
+
+
+ 174              		.loc 1 101 5 is_stmt 1 view .LVU26
+ 102:Drivers/MPU6050/Src/mpu6050.c **** 
+ 103:Drivers/MPU6050/Src/mpu6050.c ****     // Read 6 BYTES of data starting from ACCEL_XOUT_H register
+ 104:Drivers/MPU6050/Src/mpu6050.c **** 
+ 105:Drivers/MPU6050/Src/mpu6050.c ****     HAL_I2C_Mem_Read(I2Cx, MPU6050_ADDR, ACCEL_XOUT_H_REG, 1, Rec_Data, 6, i2c_timeout);
+ 175              		.loc 1 105 5 view .LVU27
+ 176 0006 4FF47A73 		mov	r3, #1000
+ 177 000a 0293     		str	r3, [sp, #8]
+ 178 000c 0623     		movs	r3, #6
+ 179 000e 0193     		str	r3, [sp, #4]
+ 180 0010 04AB     		add	r3, sp, #16
+ 181 0012 0093     		str	r3, [sp]
+ 182 0014 0123     		movs	r3, #1
+ 183 0016 3B22     		movs	r2, #59
+ 184 0018 D021     		movs	r1, #208
+ 185              	.LVL8:
+ 186              		.loc 1 105 5 is_stmt 0 view .LVU28
+ 187 001a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 188              	.LVL9:
+ 106:Drivers/MPU6050/Src/mpu6050.c **** 
+ 107:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_X_RAW = (int16_t)(Rec_Data[0] << 8 | Rec_Data[1]);
+ 189              		.loc 1 107 5 is_stmt 1 view .LVU29
+ 190              		.loc 1 107 49 is_stmt 0 view .LVU30
+ 191 001e 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
+ 192              		.loc 1 107 68 view .LVU31
+ 193 0022 9DF81100 		ldrb	r0, [sp, #17]	@ zero_extendqisi2
+ 194              		.loc 1 107 31 view .LVU32
+ 195 0026 40EA0320 		orr	r0, r0, r3, lsl #8
+ 196 002a 00B2     		sxth	r0, r0
+ 197              		.loc 1 107 29 view .LVU33
+ 198 002c 2080     		strh	r0, [r4]	@ movhi
+ 108:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 199              		.loc 1 108 5 is_stmt 1 view .LVU34
+ 200              		.loc 1 108 49 is_stmt 0 view .LVU35
+ 201 002e 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
+ 202              		.loc 1 108 68 view .LVU36
+ 203 0032 9DF81360 		ldrb	r6, [sp, #19]	@ zero_extendqisi2
+ 204              		.loc 1 108 31 view .LVU37
+ 205 0036 46EA0326 		orr	r6, r6, r3, lsl #8
+ 206 003a 36B2     		sxth	r6, r6
+ 207              		.loc 1 108 29 view .LVU38
+ 208 003c 6680     		strh	r6, [r4, #2]	@ movhi
+ 109:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 209              		.loc 1 109 5 is_stmt 1 view .LVU39
+ 210              		.loc 1 109 49 is_stmt 0 view .LVU40
+ 211 003e 9DF81430 		ldrb	r3, [sp, #20]	@ zero_extendqisi2
+ 212              		.loc 1 109 68 view .LVU41
+ 213 0042 9DF81550 		ldrb	r5, [sp, #21]	@ zero_extendqisi2
+ 214              		.loc 1 109 31 view .LVU42
+ 215 0046 45EA0325 		orr	r5, r5, r3, lsl #8
+ 216 004a 2DB2     		sxth	r5, r5
+ 217              		.loc 1 109 29 view .LVU43
+ 218 004c A580     		strh	r5, [r4, #4]	@ movhi
+ 110:Drivers/MPU6050/Src/mpu6050.c **** 
+ 111:Drivers/MPU6050/Src/mpu6050.c ****     /*** convert the RAW values into acceleration in 'g'
+ 112:Drivers/MPU6050/Src/mpu6050.c ****          we have to divide according to the Full scale value set in FS_SEL
+ 113:Drivers/MPU6050/Src/mpu6050.c ****          I have configured FS_SEL = 0. So I am dividing by 16384.0
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 7
+
+
+ 114:Drivers/MPU6050/Src/mpu6050.c ****          for more details check ACCEL_CONFIG Register              ****/
+ 115:Drivers/MPU6050/Src/mpu6050.c **** 
+ 116:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ax = DataStruct->Accel_X_RAW / 16384.0;
+ 219              		.loc 1 116 5 is_stmt 1 view .LVU44
+ 220              		.loc 1 116 46 is_stmt 0 view .LVU45
+ 221 004e FFF7FEFF 		bl	__aeabi_i2d
+ 222              	.LVL10:
+ 223 0052 0022     		movs	r2, #0
+ 224 0054 0E4B     		ldr	r3, .L8+8
+ 225 0056 FFF7FEFF 		bl	__aeabi_dmul
+ 226              	.LVL11:
+ 227              		.loc 1 116 20 view .LVU46
+ 228 005a C4E90201 		strd	r0, [r4, #8]
+ 117:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ay = DataStruct->Accel_Y_RAW / 16384.0;
+ 229              		.loc 1 117 5 is_stmt 1 view .LVU47
+ 230              		.loc 1 117 46 is_stmt 0 view .LVU48
+ 231 005e 3046     		mov	r0, r6
+ 232 0060 FFF7FEFF 		bl	__aeabi_i2d
+ 233              	.LVL12:
+ 234 0064 0022     		movs	r2, #0
+ 235 0066 0A4B     		ldr	r3, .L8+8
+ 236 0068 FFF7FEFF 		bl	__aeabi_dmul
+ 237              	.LVL13:
+ 238              		.loc 1 117 20 view .LVU49
+ 239 006c C4E90401 		strd	r0, [r4, #16]
+ 118:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Az = DataStruct->Accel_Z_RAW / Accel_Z_corrector;
+ 240              		.loc 1 118 5 is_stmt 1 view .LVU50
+ 241              		.loc 1 118 46 is_stmt 0 view .LVU51
+ 242 0070 2846     		mov	r0, r5
+ 243 0072 FFF7FEFF 		bl	__aeabi_i2d
+ 244              	.LVL14:
+ 245 0076 04A3     		adr	r3, .L8
+ 246 0078 D3E90023 		ldrd	r2, [r3]
+ 247 007c FFF7FEFF 		bl	__aeabi_ddiv
+ 248              	.LVL15:
+ 249              		.loc 1 118 20 view .LVU52
+ 250 0080 C4E90601 		strd	r0, [r4, #24]
+ 119:Drivers/MPU6050/Src/mpu6050.c **** }
+ 251              		.loc 1 119 1 view .LVU53
+ 252 0084 06B0     		add	sp, sp, #24
+ 253              	.LCFI6:
+ 254              		.cfi_def_cfa_offset 16
+ 255              		@ sp needed
+ 256 0086 70BD     		pop	{r4, r5, r6, pc}
+ 257              	.LVL16:
+ 258              	.L9:
+ 259              		.loc 1 119 1 view .LVU54
+ 260              		.align	3
+ 261              	.L8:
+ 262 0088 00000000 		.word	0
+ 263 008c 0029CC40 		.word	1087121664
+ 264 0090 0000103F 		.word	1058013184
+ 265              		.cfi_endproc
+ 266              	.LFE217:
+ 268              		.section	.text.MPU6050_Read_Gyro,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	MPU6050_Read_Gyro
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 8
+
+
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 275              	MPU6050_Read_Gyro:
+ 276              	.LVL17:
+ 277              	.LFB218:
+ 120:Drivers/MPU6050/Src/mpu6050.c **** 
+ 121:Drivers/MPU6050/Src/mpu6050.c **** void MPU6050_Read_Gyro(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
+ 122:Drivers/MPU6050/Src/mpu6050.c **** {
+ 278              		.loc 1 122 1 is_stmt 1 view -0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 8
+ 281              		@ frame_needed = 0, uses_anonymous_args = 0
+ 282              		.loc 1 122 1 is_stmt 0 view .LVU56
+ 283 0000 70B5     		push	{r4, r5, r6, lr}
+ 284              	.LCFI7:
+ 285              		.cfi_def_cfa_offset 16
+ 286              		.cfi_offset 4, -16
+ 287              		.cfi_offset 5, -12
+ 288              		.cfi_offset 6, -8
+ 289              		.cfi_offset 14, -4
+ 290 0002 86B0     		sub	sp, sp, #24
+ 291              	.LCFI8:
+ 292              		.cfi_def_cfa_offset 40
+ 293 0004 0C46     		mov	r4, r1
+ 123:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[6];
+ 294              		.loc 1 123 5 is_stmt 1 view .LVU57
+ 124:Drivers/MPU6050/Src/mpu6050.c **** 
+ 125:Drivers/MPU6050/Src/mpu6050.c ****     // Read 6 BYTES of data starting from GYRO_XOUT_H register
+ 126:Drivers/MPU6050/Src/mpu6050.c **** 
+ 127:Drivers/MPU6050/Src/mpu6050.c ****     HAL_I2C_Mem_Read(I2Cx, MPU6050_ADDR, GYRO_XOUT_H_REG, 1, Rec_Data, 6, i2c_timeout);
+ 295              		.loc 1 127 5 view .LVU58
+ 296 0006 4FF47A73 		mov	r3, #1000
+ 297 000a 0293     		str	r3, [sp, #8]
+ 298 000c 0623     		movs	r3, #6
+ 299 000e 0193     		str	r3, [sp, #4]
+ 300 0010 04AB     		add	r3, sp, #16
+ 301 0012 0093     		str	r3, [sp]
+ 302 0014 0123     		movs	r3, #1
+ 303 0016 4322     		movs	r2, #67
+ 304 0018 D021     		movs	r1, #208
+ 305              	.LVL18:
+ 306              		.loc 1 127 5 is_stmt 0 view .LVU59
+ 307 001a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 308              	.LVL19:
+ 128:Drivers/MPU6050/Src/mpu6050.c **** 
+ 129:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[0] << 8 | Rec_Data[1]);
+ 309              		.loc 1 129 5 is_stmt 1 view .LVU60
+ 310              		.loc 1 129 48 is_stmt 0 view .LVU61
+ 311 001e 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
+ 312              		.loc 1 129 67 view .LVU62
+ 313 0022 9DF81100 		ldrb	r0, [sp, #17]	@ zero_extendqisi2
+ 314              		.loc 1 129 30 view .LVU63
+ 315 0026 40EA0320 		orr	r0, r0, r3, lsl #8
+ 316 002a 00B2     		sxth	r0, r0
+ 317              		.loc 1 129 28 view .LVU64
+ 318 002c 2084     		strh	r0, [r4, #32]	@ movhi
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 9
+
+
+ 130:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 319              		.loc 1 130 5 is_stmt 1 view .LVU65
+ 320              		.loc 1 130 48 is_stmt 0 view .LVU66
+ 321 002e 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
+ 322              		.loc 1 130 67 view .LVU67
+ 323 0032 9DF81360 		ldrb	r6, [sp, #19]	@ zero_extendqisi2
+ 324              		.loc 1 130 30 view .LVU68
+ 325 0036 46EA0326 		orr	r6, r6, r3, lsl #8
+ 326 003a 36B2     		sxth	r6, r6
+ 327              		.loc 1 130 28 view .LVU69
+ 328 003c 6684     		strh	r6, [r4, #34]	@ movhi
+ 131:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 329              		.loc 1 131 5 is_stmt 1 view .LVU70
+ 330              		.loc 1 131 48 is_stmt 0 view .LVU71
+ 331 003e 9DF81430 		ldrb	r3, [sp, #20]	@ zero_extendqisi2
+ 332              		.loc 1 131 67 view .LVU72
+ 333 0042 9DF81550 		ldrb	r5, [sp, #21]	@ zero_extendqisi2
+ 334              		.loc 1 131 30 view .LVU73
+ 335 0046 45EA0325 		orr	r5, r5, r3, lsl #8
+ 336 004a 2DB2     		sxth	r5, r5
+ 337              		.loc 1 131 28 view .LVU74
+ 338 004c A584     		strh	r5, [r4, #36]	@ movhi
+ 132:Drivers/MPU6050/Src/mpu6050.c **** 
+ 133:Drivers/MPU6050/Src/mpu6050.c ****     /*** convert the RAW values into dps (�/s)
+ 134:Drivers/MPU6050/Src/mpu6050.c ****          we have to divide according to the Full scale value set in FS_SEL
+ 135:Drivers/MPU6050/Src/mpu6050.c ****          I have configured FS_SEL = 0. So I am dividing by 131.0
+ 136:Drivers/MPU6050/Src/mpu6050.c ****          for more details check GYRO_CONFIG Register              ****/
+ 137:Drivers/MPU6050/Src/mpu6050.c **** 
+ 138:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 339              		.loc 1 138 5 is_stmt 1 view .LVU75
+ 340              		.loc 1 138 45 is_stmt 0 view .LVU76
+ 341 004e FFF7FEFF 		bl	__aeabi_i2d
+ 342              	.LVL20:
+ 343 0052 0FA3     		adr	r3, .L12
+ 344 0054 D3E90023 		ldrd	r2, [r3]
+ 345 0058 FFF7FEFF 		bl	__aeabi_ddiv
+ 346              	.LVL21:
+ 347              		.loc 1 138 20 view .LVU77
+ 348 005c C4E90A01 		strd	r0, [r4, #40]
+ 139:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gy = DataStruct->Gyro_Y_RAW / 131.0;
+ 349              		.loc 1 139 5 is_stmt 1 view .LVU78
+ 350              		.loc 1 139 45 is_stmt 0 view .LVU79
+ 351 0060 3046     		mov	r0, r6
+ 352 0062 FFF7FEFF 		bl	__aeabi_i2d
+ 353              	.LVL22:
+ 354 0066 0AA3     		adr	r3, .L12
+ 355 0068 D3E90023 		ldrd	r2, [r3]
+ 356 006c FFF7FEFF 		bl	__aeabi_ddiv
+ 357              	.LVL23:
+ 358              		.loc 1 139 20 view .LVU80
+ 359 0070 C4E90C01 		strd	r0, [r4, #48]
+ 140:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gz = DataStruct->Gyro_Z_RAW / 131.0;
+ 360              		.loc 1 140 5 is_stmt 1 view .LVU81
+ 361              		.loc 1 140 45 is_stmt 0 view .LVU82
+ 362 0074 2846     		mov	r0, r5
+ 363 0076 FFF7FEFF 		bl	__aeabi_i2d
+ 364              	.LVL24:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 10
+
+
+ 365 007a 05A3     		adr	r3, .L12
+ 366 007c D3E90023 		ldrd	r2, [r3]
+ 367 0080 FFF7FEFF 		bl	__aeabi_ddiv
+ 368              	.LVL25:
+ 369              		.loc 1 140 20 view .LVU83
+ 370 0084 C4E90E01 		strd	r0, [r4, #56]
+ 141:Drivers/MPU6050/Src/mpu6050.c **** }
+ 371              		.loc 1 141 1 view .LVU84
+ 372 0088 06B0     		add	sp, sp, #24
+ 373              	.LCFI9:
+ 374              		.cfi_def_cfa_offset 16
+ 375              		@ sp needed
+ 376 008a 70BD     		pop	{r4, r5, r6, pc}
+ 377              	.LVL26:
+ 378              	.L13:
+ 379              		.loc 1 141 1 view .LVU85
+ 380 008c AFF30080 		.align	3
+ 381              	.L12:
+ 382 0090 00000000 		.word	0
+ 383 0094 00606040 		.word	1080057856
+ 384              		.cfi_endproc
+ 385              	.LFE218:
+ 387              		.section	.text.MPU6050_Read_Temp,"ax",%progbits
+ 388              		.align	1
+ 389              		.global	MPU6050_Read_Temp
+ 390              		.syntax unified
+ 391              		.thumb
+ 392              		.thumb_func
+ 394              	MPU6050_Read_Temp:
+ 395              	.LVL27:
+ 396              	.LFB219:
+ 142:Drivers/MPU6050/Src/mpu6050.c **** 
+ 143:Drivers/MPU6050/Src/mpu6050.c **** void MPU6050_Read_Temp(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
+ 144:Drivers/MPU6050/Src/mpu6050.c **** {
+ 397              		.loc 1 144 1 is_stmt 1 view -0
+ 398              		.cfi_startproc
+ 399              		@ args = 0, pretend = 0, frame = 8
+ 400              		@ frame_needed = 0, uses_anonymous_args = 0
+ 401              		.loc 1 144 1 is_stmt 0 view .LVU87
+ 402 0000 10B5     		push	{r4, lr}
+ 403              	.LCFI10:
+ 404              		.cfi_def_cfa_offset 8
+ 405              		.cfi_offset 4, -8
+ 406              		.cfi_offset 14, -4
+ 407 0002 86B0     		sub	sp, sp, #24
+ 408              	.LCFI11:
+ 409              		.cfi_def_cfa_offset 32
+ 410 0004 0C46     		mov	r4, r1
+ 145:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[2];
+ 411              		.loc 1 145 5 is_stmt 1 view .LVU88
+ 146:Drivers/MPU6050/Src/mpu6050.c ****     int16_t temp;
+ 412              		.loc 1 146 5 view .LVU89
+ 147:Drivers/MPU6050/Src/mpu6050.c **** 
+ 148:Drivers/MPU6050/Src/mpu6050.c ****     // Read 2 BYTES of data starting from TEMP_OUT_H_REG register
+ 149:Drivers/MPU6050/Src/mpu6050.c **** 
+ 150:Drivers/MPU6050/Src/mpu6050.c ****     HAL_I2C_Mem_Read(I2Cx, MPU6050_ADDR, TEMP_OUT_H_REG, 1, Rec_Data, 2, i2c_timeout);
+ 413              		.loc 1 150 5 view .LVU90
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 11
+
+
+ 414 0006 4FF47A73 		mov	r3, #1000
+ 415 000a 0293     		str	r3, [sp, #8]
+ 416 000c 0223     		movs	r3, #2
+ 417 000e 0193     		str	r3, [sp, #4]
+ 418 0010 05AB     		add	r3, sp, #20
+ 419 0012 0093     		str	r3, [sp]
+ 420 0014 0123     		movs	r3, #1
+ 421 0016 4122     		movs	r2, #65
+ 422 0018 D021     		movs	r1, #208
+ 423              	.LVL28:
+ 424              		.loc 1 150 5 is_stmt 0 view .LVU91
+ 425 001a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 426              	.LVL29:
+ 151:Drivers/MPU6050/Src/mpu6050.c **** 
+ 152:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[0] << 8 | Rec_Data[1]);
+ 427              		.loc 1 152 5 is_stmt 1 view .LVU92
+ 428              		.loc 1 152 30 is_stmt 0 view .LVU93
+ 429 001e 9DF81430 		ldrb	r3, [sp, #20]	@ zero_extendqisi2
+ 430              		.loc 1 152 34 view .LVU94
+ 431 0022 1B02     		lsls	r3, r3, #8
+ 432              		.loc 1 152 12 view .LVU95
+ 433 0024 1BB2     		sxth	r3, r3
+ 434              		.loc 1 152 49 view .LVU96
+ 435 0026 9DF81520 		ldrb	r2, [sp, #21]	@ zero_extendqisi2
+ 436              		.loc 1 152 10 view .LVU97
+ 437 002a 1343     		orrs	r3, r3, r2
+ 438              	.LVL30:
+ 153:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Temperature = (float)((int16_t)temp / (float)340.0 + (float)36.53);
+ 439              		.loc 1 153 5 is_stmt 1 view .LVU98
+ 440              		.loc 1 153 53 is_stmt 0 view .LVU99
+ 441 002c 07EE903A 		vmov	s15, r3	@ int
+ 442 0030 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 443 0034 DFED056A 		vldr.32	s13, .L16
+ 444 0038 87EEA67A 		vdiv.f32	s14, s15, s13
+ 445              		.loc 1 153 31 view .LVU100
+ 446 003c DFED047A 		vldr.32	s15, .L16+4
+ 447 0040 77EE277A 		vadd.f32	s15, s14, s15
+ 448              		.loc 1 153 29 view .LVU101
+ 449 0044 C4ED107A 		vstr.32	s15, [r4, #64]
+ 154:Drivers/MPU6050/Src/mpu6050.c **** }
+ 450              		.loc 1 154 1 view .LVU102
+ 451 0048 06B0     		add	sp, sp, #24
+ 452              	.LCFI12:
+ 453              		.cfi_def_cfa_offset 8
+ 454              		@ sp needed
+ 455 004a 10BD     		pop	{r4, pc}
+ 456              	.LVL31:
+ 457              	.L17:
+ 458              		.loc 1 154 1 view .LVU103
+ 459              		.align	2
+ 460              	.L16:
+ 461 004c 0000AA43 		.word	1135214592
+ 462 0050 B81E1242 		.word	1108483768
+ 463              		.cfi_endproc
+ 464              	.LFE219:
+ 466              		.global	__aeabi_dsub
+ 467              		.global	__aeabi_dadd
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 12
+
+
+ 468              		.section	.text.Kalman_getAngle,"ax",%progbits
+ 469              		.align	1
+ 470              		.global	Kalman_getAngle
+ 471              		.syntax unified
+ 472              		.thumb
+ 473              		.thumb_func
+ 475              	Kalman_getAngle:
+ 476              	.LVL32:
+ 477              	.LFB221:
+ 155:Drivers/MPU6050/Src/mpu6050.c **** 
+ 156:Drivers/MPU6050/Src/mpu6050.c **** void MPU6050_Read_All(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
+ 157:Drivers/MPU6050/Src/mpu6050.c **** {
+ 158:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[14];
+ 159:Drivers/MPU6050/Src/mpu6050.c ****     int16_t temp;
+ 160:Drivers/MPU6050/Src/mpu6050.c **** 
+ 161:Drivers/MPU6050/Src/mpu6050.c ****     // Read 14 BYTES of data starting from ACCEL_XOUT_H register
+ 162:Drivers/MPU6050/Src/mpu6050.c **** 
+ 163:Drivers/MPU6050/Src/mpu6050.c ****     HAL_I2C_Mem_Read(I2Cx, MPU6050_ADDR, ACCEL_XOUT_H_REG, 1, Rec_Data, 14, i2c_timeout);
+ 164:Drivers/MPU6050/Src/mpu6050.c **** 
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_X_RAW = (int16_t)(Rec_Data[0] << 8 | Rec_Data[1]);
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 171:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 172:Drivers/MPU6050/Src/mpu6050.c **** 
+ 173:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ax = DataStruct->Accel_X_RAW / 16384.0;
+ 174:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ay = DataStruct->Accel_Y_RAW / 16384.0;
+ 175:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Az = DataStruct->Accel_Z_RAW / Accel_Z_corrector;
+ 176:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Temperature = (float)((int16_t)temp / (float)340.0 + (float)36.53);
+ 177:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 178:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gy = DataStruct->Gyro_Y_RAW / 131.0;
+ 179:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gz = DataStruct->Gyro_Z_RAW / 131.0;
+ 180:Drivers/MPU6050/Src/mpu6050.c **** 
+ 181:Drivers/MPU6050/Src/mpu6050.c ****     // Kalman angle solve
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     double dt = (double)(HAL_GetTick() - timer) / 1000;
+ 183:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 184:Drivers/MPU6050/Src/mpu6050.c ****     double roll;
+ 185:Drivers/MPU6050/Src/mpu6050.c ****     double roll_sqrt = sqrt(
+ 186:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Accel_X_RAW * DataStruct->Accel_X_RAW + DataStruct->Accel_Z_RAW * DataStruct->A
+ 187:Drivers/MPU6050/Src/mpu6050.c ****     if (roll_sqrt != 0.0)
+ 188:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 189:Drivers/MPU6050/Src/mpu6050.c ****         roll = atan(DataStruct->Accel_Y_RAW / roll_sqrt) * RAD_TO_DEG;
+ 190:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 191:Drivers/MPU6050/Src/mpu6050.c ****     else
+ 192:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 193:Drivers/MPU6050/Src/mpu6050.c ****         roll = 0.0;
+ 194:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     double pitch = atan2(-DataStruct->Accel_X_RAW, DataStruct->Accel_Z_RAW) * RAD_TO_DEG;
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 197:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 198:Drivers/MPU6050/Src/mpu6050.c ****         KalmanY.angle = pitch;
+ 199:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->KalmanAngleY = pitch;
+ 200:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 201:Drivers/MPU6050/Src/mpu6050.c ****     else
+ 202:Drivers/MPU6050/Src/mpu6050.c ****     {
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 13
+
+
+ 203:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->KalmanAngleY = Kalman_getAngle(&KalmanY, pitch, DataStruct->Gy, dt);
+ 204:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 205:Drivers/MPU6050/Src/mpu6050.c ****     if (fabs(DataStruct->KalmanAngleY) > 90)
+ 206:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Gx = -DataStruct->Gx;
+ 207:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+ 208:Drivers/MPU6050/Src/mpu6050.c **** }
+ 209:Drivers/MPU6050/Src/mpu6050.c **** 
+ 210:Drivers/MPU6050/Src/mpu6050.c **** double Kalman_getAngle(Kalman_t *Kalman, double newAngle, double newRate, double dt)
+ 211:Drivers/MPU6050/Src/mpu6050.c **** {
+ 478              		.loc 1 211 1 is_stmt 1 view -0
+ 479              		.cfi_startproc
+ 480              		@ args = 0, pretend = 0, frame = 40
+ 481              		@ frame_needed = 0, uses_anonymous_args = 0
+ 482              		.loc 1 211 1 is_stmt 0 view .LVU105
+ 483 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 484              	.LCFI13:
+ 485              		.cfi_def_cfa_offset 32
+ 486              		.cfi_offset 4, -32
+ 487              		.cfi_offset 5, -28
+ 488              		.cfi_offset 6, -24
+ 489              		.cfi_offset 7, -20
+ 490              		.cfi_offset 8, -16
+ 491              		.cfi_offset 9, -12
+ 492              		.cfi_offset 10, -8
+ 493              		.cfi_offset 14, -4
+ 494 0004 2DED088B 		vpush.64	{d8, d9, d10, d11}
+ 495              	.LCFI14:
+ 496              		.cfi_def_cfa_offset 64
+ 497              		.cfi_offset 80, -64
+ 498              		.cfi_offset 81, -60
+ 499              		.cfi_offset 82, -56
+ 500              		.cfi_offset 83, -52
+ 501              		.cfi_offset 84, -48
+ 502              		.cfi_offset 85, -44
+ 503              		.cfi_offset 86, -40
+ 504              		.cfi_offset 87, -36
+ 505 0008 8AB0     		sub	sp, sp, #40
+ 506              	.LCFI15:
+ 507              		.cfi_def_cfa_offset 104
+ 508 000a 8246     		mov	r10, r0
+ 509 000c 8DED020B 		vstr.64	d0, [sp, #8]
+ 510 0010 51EC110B 		vmov	r0, r1, d1
+ 511              	.LVL33:
+ 512              		.loc 1 211 1 view .LVU106
+ 513 0014 55EC124B 		vmov	r4, r5, d2
+ 212:Drivers/MPU6050/Src/mpu6050.c ****     double rate = newRate - Kalman->bias;
+ 514              		.loc 1 212 5 is_stmt 1 view .LVU107
+ 515              		.loc 1 212 35 is_stmt 0 view .LVU108
+ 516 0018 9AED087B 		vldr.64	d7, [r10, #32]
+ 517 001c B0EE47BA 		vmov.f32	s22, s14
+ 518 0020 F0EE67BA 		vmov.f32	s23, s15
+ 519              		.loc 1 212 12 view .LVU109
+ 520 0024 53EC172B 		vmov	r2, r3, d7
+ 521 0028 FFF7FEFF 		bl	__aeabi_dsub
+ 522              	.LVL34:
+ 213:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->angle += dt * rate;
+ 523              		.loc 1 213 5 is_stmt 1 view .LVU110
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 14
+
+
+ 524              		.loc 1 213 11 is_stmt 0 view .LVU111
+ 525 002c DAE90667 		ldrd	r6, [r10, #24]
+ 526              		.loc 1 213 25 view .LVU112
+ 527 0030 2246     		mov	r2, r4
+ 528 0032 2B46     		mov	r3, r5
+ 529 0034 FFF7FEFF 		bl	__aeabi_dmul
+ 530              	.LVL35:
+ 531              		.loc 1 213 25 view .LVU113
+ 532 0038 0246     		mov	r2, r0
+ 533 003a 0B46     		mov	r3, r1
+ 534              		.loc 1 213 19 view .LVU114
+ 535 003c 3046     		mov	r0, r6
+ 536 003e 3946     		mov	r1, r7
+ 537 0040 FFF7FEFF 		bl	__aeabi_dadd
+ 538              	.LVL36:
+ 539 0044 41EC180B 		vmov	d8, r0, r1
+ 540 0048 CAE90601 		strd	r0, [r10, #24]
+ 214:Drivers/MPU6050/Src/mpu6050.c **** 
+ 215:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[0][0] += dt * (dt * Kalman->P[1][1] - Kalman->P[0][1] - Kalman->P[1][0] + Kalman->Q_a
+ 541              		.loc 1 215 5 is_stmt 1 view .LVU115
+ 542              		.loc 1 215 17 is_stmt 0 view .LVU116
+ 543 004c DAE90A89 		ldrd	r8, [r10, #40]
+ 544              		.loc 1 215 47 view .LVU117
+ 545 0050 9AED10AB 		vldr.64	d10, [r10, #64]
+ 546              		.loc 1 215 33 view .LVU118
+ 547 0054 2246     		mov	r2, r4
+ 548 0056 2B46     		mov	r3, r5
+ 549 0058 51EC1A0B 		vmov	r0, r1, d10
+ 550 005c FFF7FEFF 		bl	__aeabi_dmul
+ 551              	.LVL37:
+ 552 0060 0646     		mov	r6, r0
+ 553 0062 0F46     		mov	r7, r1
+ 554 0064 CDE90067 		strd	r6, [sp]
+ 555              		.loc 1 215 65 view .LVU119
+ 556 0068 9AED0C6B 		vldr.64	d6, [r10, #48]
+ 557 006c B0EE469A 		vmov.f32	s18, s12
+ 558 0070 F0EE669A 		vmov.f32	s19, s13
+ 559              		.loc 1 215 51 view .LVU120
+ 560 0074 53EC162B 		vmov	r2, r3, d6
+ 561 0078 FFF7FEFF 		bl	__aeabi_dsub
+ 562              	.LVL38:
+ 563              		.loc 1 215 83 view .LVU121
+ 564 007c DAE90E67 		ldrd	r6, [r10, #56]
+ 565              		.loc 1 215 69 view .LVU122
+ 566 0080 3246     		mov	r2, r6
+ 567 0082 3B46     		mov	r3, r7
+ 568 0084 FFF7FEFF 		bl	__aeabi_dsub
+ 569              	.LVL39:
+ 570              		.loc 1 215 87 view .LVU123
+ 571 0088 DAE90023 		ldrd	r2, [r10]
+ 572 008c FFF7FEFF 		bl	__aeabi_dadd
+ 573              	.LVL40:
+ 574              		.loc 1 215 27 view .LVU124
+ 575 0090 2246     		mov	r2, r4
+ 576 0092 2B46     		mov	r3, r5
+ 577 0094 FFF7FEFF 		bl	__aeabi_dmul
+ 578              	.LVL41:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 15
+
+
+ 579 0098 0246     		mov	r2, r0
+ 580 009a 0B46     		mov	r3, r1
+ 581              		.loc 1 215 21 view .LVU125
+ 582 009c 4046     		mov	r0, r8
+ 583 009e 4946     		mov	r1, r9
+ 584 00a0 FFF7FEFF 		bl	__aeabi_dadd
+ 585              	.LVL42:
+ 586 00a4 8046     		mov	r8, r0
+ 587 00a6 8946     		mov	r9, r1
+ 588 00a8 CAE90A89 		strd	r8, [r10, #40]
+ 216:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[0][1] -= dt * Kalman->P[1][1];
+ 589              		.loc 1 216 5 is_stmt 1 view .LVU126
+ 590              		.loc 1 216 21 is_stmt 0 view .LVU127
+ 591 00ac DDE90023 		ldrd	r2, [sp]
+ 592 00b0 51EC190B 		vmov	r0, r1, d9
+ 593 00b4 FFF7FEFF 		bl	__aeabi_dsub
+ 594              	.LVL43:
+ 595 00b8 0A46     		mov	r2, r1
+ 596 00ba 0146     		mov	r1, r0
+ 597 00bc CDE90412 		strd	r1, [sp, #16]
+ 598 00c0 42EC161B 		vmov	d6, r1, r2
+ 599 00c4 8AED0C6B 		vstr.64	d6, [r10, #48]
+ 217:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[1][0] -= dt * Kalman->P[1][1];
+ 600              		.loc 1 217 5 is_stmt 1 view .LVU128
+ 601              		.loc 1 217 21 is_stmt 0 view .LVU129
+ 602 00c8 DDE90023 		ldrd	r2, [sp]
+ 603 00cc 3046     		mov	r0, r6
+ 604 00ce 3946     		mov	r1, r7
+ 605 00d0 FFF7FEFF 		bl	__aeabi_dsub
+ 606              	.LVL44:
+ 607 00d4 41EC190B 		vmov	d9, r0, r1
+ 608 00d8 CAE90E01 		strd	r0, [r10, #56]
+ 218:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[1][1] += Kalman->Q_bias * dt;
+ 609              		.loc 1 218 5 is_stmt 1 view .LVU130
+ 610              		.loc 1 218 39 is_stmt 0 view .LVU131
+ 611 00dc 2246     		mov	r2, r4
+ 612 00de 2B46     		mov	r3, r5
+ 613 00e0 DAE90201 		ldrd	r0, [r10, #8]
+ 614 00e4 FFF7FEFF 		bl	__aeabi_dmul
+ 615              	.LVL45:
+ 616 00e8 0246     		mov	r2, r0
+ 617 00ea 0B46     		mov	r3, r1
+ 618              		.loc 1 218 21 view .LVU132
+ 619 00ec 51EC1A0B 		vmov	r0, r1, d10
+ 620 00f0 FFF7FEFF 		bl	__aeabi_dadd
+ 621              	.LVL46:
+ 622 00f4 41EC1A0B 		vmov	d10, r0, r1
+ 623 00f8 CAE91001 		strd	r0, [r10, #64]
+ 219:Drivers/MPU6050/Src/mpu6050.c **** 
+ 220:Drivers/MPU6050/Src/mpu6050.c ****     double S = Kalman->P[0][0] + Kalman->R_measure;
+ 624              		.loc 1 220 5 is_stmt 1 view .LVU133
+ 625              		.loc 1 220 12 is_stmt 0 view .LVU134
+ 626 00fc DAE90423 		ldrd	r2, [r10, #16]
+ 627 0100 4046     		mov	r0, r8
+ 628 0102 4946     		mov	r1, r9
+ 629 0104 FFF7FEFF 		bl	__aeabi_dadd
+ 630              	.LVL47:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 16
+
+
+ 631 0108 0446     		mov	r4, r0
+ 632              	.LVL48:
+ 633              		.loc 1 220 12 view .LVU135
+ 634 010a 0D46     		mov	r5, r1
+ 635              	.LVL49:
+ 221:Drivers/MPU6050/Src/mpu6050.c ****     double K[2];
+ 636              		.loc 1 221 5 is_stmt 1 view .LVU136
+ 222:Drivers/MPU6050/Src/mpu6050.c ****     K[0] = Kalman->P[0][0] / S;
+ 637              		.loc 1 222 5 view .LVU137
+ 638              		.loc 1 222 28 is_stmt 0 view .LVU138
+ 639 010c 0246     		mov	r2, r0
+ 640 010e 0B46     		mov	r3, r1
+ 641 0110 4046     		mov	r0, r8
+ 642 0112 4946     		mov	r1, r9
+ 643 0114 FFF7FEFF 		bl	__aeabi_ddiv
+ 644              	.LVL50:
+ 645 0118 0646     		mov	r6, r0
+ 646 011a 0F46     		mov	r7, r1
+ 647              		.loc 1 222 10 view .LVU139
+ 648 011c CDE90667 		strd	r6, [sp, #24]
+ 223:Drivers/MPU6050/Src/mpu6050.c ****     K[1] = Kalman->P[1][0] / S;
+ 649              		.loc 1 223 5 is_stmt 1 view .LVU140
+ 650              		.loc 1 223 28 is_stmt 0 view .LVU141
+ 651 0120 2246     		mov	r2, r4
+ 652 0122 2B46     		mov	r3, r5
+ 653 0124 51EC190B 		vmov	r0, r1, d9
+ 654 0128 FFF7FEFF 		bl	__aeabi_ddiv
+ 655              	.LVL51:
+ 656 012c 0446     		mov	r4, r0
+ 657              	.LVL52:
+ 658              		.loc 1 223 28 view .LVU142
+ 659 012e 0D46     		mov	r5, r1
+ 660              		.loc 1 223 10 view .LVU143
+ 661 0130 CDE90845 		strd	r4, [sp, #32]
+ 224:Drivers/MPU6050/Src/mpu6050.c **** 
+ 225:Drivers/MPU6050/Src/mpu6050.c ****     double y = newAngle - Kalman->angle;
+ 662              		.loc 1 225 5 is_stmt 1 view .LVU144
+ 663              		.loc 1 225 12 is_stmt 0 view .LVU145
+ 664 0134 53EC182B 		vmov	r2, r3, d8
+ 665 0138 DDE90201 		ldrd	r0, [sp, #8]
+ 666 013c FFF7FEFF 		bl	__aeabi_dsub
+ 667              	.LVL53:
+ 668 0140 0246     		mov	r2, r0
+ 669 0142 0B46     		mov	r3, r1
+ 670              	.LVL54:
+ 226:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->angle += K[0] * y;
+ 671              		.loc 1 226 5 is_stmt 1 view .LVU146
+ 672              		.loc 1 226 27 is_stmt 0 view .LVU147
+ 673 0144 CDE90023 		strd	r2, [sp]
+ 674 0148 3046     		mov	r0, r6
+ 675 014a 3946     		mov	r1, r7
+ 676 014c FFF7FEFF 		bl	__aeabi_dmul
+ 677              	.LVL55:
+ 678              		.loc 1 226 27 view .LVU148
+ 679 0150 0246     		mov	r2, r0
+ 680 0152 0B46     		mov	r3, r1
+ 681              		.loc 1 226 19 view .LVU149
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 17
+
+
+ 682 0154 51EC180B 		vmov	r0, r1, d8
+ 683 0158 FFF7FEFF 		bl	__aeabi_dadd
+ 684              	.LVL56:
+ 685 015c 41EC180B 		vmov	d8, r0, r1
+ 686 0160 CAE90601 		strd	r0, [r10, #24]
+ 227:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->bias += K[1] * y;
+ 687              		.loc 1 227 5 is_stmt 1 view .LVU150
+ 688              		.loc 1 227 26 is_stmt 0 view .LVU151
+ 689 0164 DDE90023 		ldrd	r2, [sp]
+ 690 0168 2046     		mov	r0, r4
+ 691 016a 2946     		mov	r1, r5
+ 692 016c FFF7FEFF 		bl	__aeabi_dmul
+ 693              	.LVL57:
+ 694 0170 0246     		mov	r2, r0
+ 695 0172 0B46     		mov	r3, r1
+ 696              		.loc 1 227 18 view .LVU152
+ 697 0174 51EC1B0B 		vmov	r0, r1, d11
+ 698 0178 FFF7FEFF 		bl	__aeabi_dadd
+ 699              	.LVL58:
+ 700 017c CAE90801 		strd	r0, [r10, #32]
+ 228:Drivers/MPU6050/Src/mpu6050.c **** 
+ 229:Drivers/MPU6050/Src/mpu6050.c ****     double P00_temp = Kalman->P[0][0];
+ 701              		.loc 1 229 5 is_stmt 1 view .LVU153
+ 702              	.LVL59:
+ 230:Drivers/MPU6050/Src/mpu6050.c ****     double P01_temp = Kalman->P[0][1];
+ 703              		.loc 1 230 5 view .LVU154
+ 231:Drivers/MPU6050/Src/mpu6050.c **** 
+ 232:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[0][0] -= K[0] * P00_temp;
+ 704              		.loc 1 232 5 view .LVU155
+ 705              		.loc 1 232 29 is_stmt 0 view .LVU156
+ 706 0180 3246     		mov	r2, r6
+ 707 0182 3B46     		mov	r3, r7
+ 708 0184 4046     		mov	r0, r8
+ 709 0186 4946     		mov	r1, r9
+ 710 0188 FFF7FEFF 		bl	__aeabi_dmul
+ 711              	.LVL60:
+ 712 018c 0246     		mov	r2, r0
+ 713 018e 0B46     		mov	r3, r1
+ 714              		.loc 1 232 21 view .LVU157
+ 715 0190 4046     		mov	r0, r8
+ 716 0192 4946     		mov	r1, r9
+ 717 0194 FFF7FEFF 		bl	__aeabi_dsub
+ 718              	.LVL61:
+ 719 0198 CAE90A01 		strd	r0, [r10, #40]
+ 233:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[0][1] -= K[0] * P01_temp;
+ 720              		.loc 1 233 5 is_stmt 1 view .LVU158
+ 721              		.loc 1 233 29 is_stmt 0 view .LVU159
+ 722 019c 3246     		mov	r2, r6
+ 723 019e 3B46     		mov	r3, r7
+ 724 01a0 DDE90467 		ldrd	r6, [sp, #16]
+ 725 01a4 3046     		mov	r0, r6
+ 726 01a6 3946     		mov	r1, r7
+ 727 01a8 FFF7FEFF 		bl	__aeabi_dmul
+ 728              	.LVL62:
+ 729 01ac 0246     		mov	r2, r0
+ 730 01ae 0B46     		mov	r3, r1
+ 731              		.loc 1 233 21 view .LVU160
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 18
+
+
+ 732 01b0 3046     		mov	r0, r6
+ 733 01b2 3946     		mov	r1, r7
+ 734 01b4 FFF7FEFF 		bl	__aeabi_dsub
+ 735              	.LVL63:
+ 736 01b8 CAE90C01 		strd	r0, [r10, #48]
+ 234:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[1][0] -= K[1] * P00_temp;
+ 737              		.loc 1 234 5 is_stmt 1 view .LVU161
+ 738              		.loc 1 234 29 is_stmt 0 view .LVU162
+ 739 01bc 2246     		mov	r2, r4
+ 740 01be 2B46     		mov	r3, r5
+ 741 01c0 4046     		mov	r0, r8
+ 742 01c2 4946     		mov	r1, r9
+ 743 01c4 FFF7FEFF 		bl	__aeabi_dmul
+ 744              	.LVL64:
+ 745 01c8 0246     		mov	r2, r0
+ 746 01ca 0B46     		mov	r3, r1
+ 747              		.loc 1 234 21 view .LVU163
+ 748 01cc 51EC190B 		vmov	r0, r1, d9
+ 749 01d0 FFF7FEFF 		bl	__aeabi_dsub
+ 750              	.LVL65:
+ 751 01d4 CAE90E01 		strd	r0, [r10, #56]
+ 235:Drivers/MPU6050/Src/mpu6050.c ****     Kalman->P[1][1] -= K[1] * P01_temp;
+ 752              		.loc 1 235 5 is_stmt 1 view .LVU164
+ 753              		.loc 1 235 29 is_stmt 0 view .LVU165
+ 754 01d8 2246     		mov	r2, r4
+ 755 01da 2B46     		mov	r3, r5
+ 756 01dc 3046     		mov	r0, r6
+ 757 01de 3946     		mov	r1, r7
+ 758 01e0 FFF7FEFF 		bl	__aeabi_dmul
+ 759              	.LVL66:
+ 760 01e4 0246     		mov	r2, r0
+ 761 01e6 0B46     		mov	r3, r1
+ 762              		.loc 1 235 21 view .LVU166
+ 763 01e8 51EC1A0B 		vmov	r0, r1, d10
+ 764 01ec FFF7FEFF 		bl	__aeabi_dsub
+ 765              	.LVL67:
+ 766 01f0 CAE91001 		strd	r0, [r10, #64]
+ 236:Drivers/MPU6050/Src/mpu6050.c **** 
+ 237:Drivers/MPU6050/Src/mpu6050.c ****     return Kalman->angle;
+ 767              		.loc 1 237 5 is_stmt 1 view .LVU167
+ 238:Drivers/MPU6050/Src/mpu6050.c **** };
+ 768              		.loc 1 238 1 is_stmt 0 view .LVU168
+ 769 01f4 B0EE480A 		vmov.f32	s0, s16
+ 770 01f8 F0EE680A 		vmov.f32	s1, s17
+ 771 01fc 0AB0     		add	sp, sp, #40
+ 772              	.LCFI16:
+ 773              		.cfi_def_cfa_offset 64
+ 774              	.LVL68:
+ 775              		.loc 1 238 1 view .LVU169
+ 776              		@ sp needed
+ 777 01fe BDEC088B 		vldm	sp!, {d8-d11}
+ 778              	.LCFI17:
+ 779              		.cfi_restore 86
+ 780              		.cfi_restore 87
+ 781              		.cfi_restore 84
+ 782              		.cfi_restore 85
+ 783              		.cfi_restore 82
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 19
+
+
+ 784              		.cfi_restore 83
+ 785              		.cfi_restore 80
+ 786              		.cfi_restore 81
+ 787              		.cfi_def_cfa_offset 32
+ 788 0202 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 789              		.loc 1 238 1 view .LVU170
+ 790              		.cfi_endproc
+ 791              	.LFE221:
+ 793              		.global	__aeabi_ui2d
+ 794              		.global	__aeabi_dcmpeq
+ 795              		.global	__aeabi_dcmplt
+ 796              		.global	__aeabi_dcmpgt
+ 797              		.section	.text.MPU6050_Read_All,"ax",%progbits
+ 798              		.align	1
+ 799              		.global	MPU6050_Read_All
+ 800              		.syntax unified
+ 801              		.thumb
+ 802              		.thumb_func
+ 804              	MPU6050_Read_All:
+ 805              	.LVL69:
+ 806              	.LFB220:
+ 157:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[14];
+ 807              		.loc 1 157 1 is_stmt 1 view -0
+ 808              		.cfi_startproc
+ 809              		@ args = 0, pretend = 0, frame = 16
+ 810              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157:Drivers/MPU6050/Src/mpu6050.c ****     uint8_t Rec_Data[14];
+ 811              		.loc 1 157 1 is_stmt 0 view .LVU172
+ 812 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 813              	.LCFI18:
+ 814              		.cfi_def_cfa_offset 32
+ 815              		.cfi_offset 4, -32
+ 816              		.cfi_offset 5, -28
+ 817              		.cfi_offset 6, -24
+ 818              		.cfi_offset 7, -20
+ 819              		.cfi_offset 8, -16
+ 820              		.cfi_offset 9, -12
+ 821              		.cfi_offset 10, -8
+ 822              		.cfi_offset 14, -4
+ 823 0004 2DED068B 		vpush.64	{d8, d9, d10}
+ 824              	.LCFI19:
+ 825              		.cfi_def_cfa_offset 56
+ 826              		.cfi_offset 80, -56
+ 827              		.cfi_offset 81, -52
+ 828              		.cfi_offset 82, -48
+ 829              		.cfi_offset 83, -44
+ 830              		.cfi_offset 84, -40
+ 831              		.cfi_offset 85, -36
+ 832 0008 88B0     		sub	sp, sp, #32
+ 833              	.LCFI20:
+ 834              		.cfi_def_cfa_offset 88
+ 835 000a 0C46     		mov	r4, r1
+ 158:Drivers/MPU6050/Src/mpu6050.c ****     int16_t temp;
+ 836              		.loc 1 158 5 is_stmt 1 view .LVU173
+ 159:Drivers/MPU6050/Src/mpu6050.c **** 
+ 837              		.loc 1 159 5 view .LVU174
+ 163:Drivers/MPU6050/Src/mpu6050.c **** 
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 20
+
+
+ 838              		.loc 1 163 5 view .LVU175
+ 839 000c 4FF47A73 		mov	r3, #1000
+ 840 0010 0293     		str	r3, [sp, #8]
+ 841 0012 0E23     		movs	r3, #14
+ 842 0014 0193     		str	r3, [sp, #4]
+ 843 0016 04AB     		add	r3, sp, #16
+ 844 0018 0093     		str	r3, [sp]
+ 845 001a 0123     		movs	r3, #1
+ 846 001c 3B22     		movs	r2, #59
+ 847 001e D021     		movs	r1, #208
+ 848              	.LVL70:
+ 163:Drivers/MPU6050/Src/mpu6050.c **** 
+ 849              		.loc 1 163 5 is_stmt 0 view .LVU176
+ 850 0020 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 851              	.LVL71:
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 852              		.loc 1 165 5 is_stmt 1 view .LVU177
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 853              		.loc 1 165 49 is_stmt 0 view .LVU178
+ 854 0024 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 855              		.loc 1 165 68 view .LVU179
+ 856 0028 9DF81100 		ldrb	r0, [sp, #17]	@ zero_extendqisi2
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 857              		.loc 1 165 31 view .LVU180
+ 858 002c 40EA0320 		orr	r0, r0, r3, lsl #8
+ 859 0030 00B2     		sxth	r0, r0
+ 165:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Y_RAW = (int16_t)(Rec_Data[2] << 8 | Rec_Data[3]);
+ 860              		.loc 1 165 29 view .LVU181
+ 861 0032 2080     		strh	r0, [r4]	@ movhi
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 862              		.loc 1 166 5 is_stmt 1 view .LVU182
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 863              		.loc 1 166 49 is_stmt 0 view .LVU183
+ 864 0034 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 865              		.loc 1 166 68 view .LVU184
+ 866 0038 9DF81380 		ldrb	r8, [sp, #19]	@ zero_extendqisi2
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 867              		.loc 1 166 31 view .LVU185
+ 868 003c 48EA0328 		orr	r8, r8, r3, lsl #8
+ 869 0040 0FFA88F8 		sxth	r8, r8
+ 166:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Accel_Z_RAW = (int16_t)(Rec_Data[4] << 8 | Rec_Data[5]);
+ 870              		.loc 1 166 29 view .LVU186
+ 871 0044 A4F80280 		strh	r8, [r4, #2]	@ movhi
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 872              		.loc 1 167 5 is_stmt 1 view .LVU187
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 873              		.loc 1 167 49 is_stmt 0 view .LVU188
+ 874 0048 9DF81430 		ldrb	r3, [sp, #20]	@ zero_extendqisi2
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 875              		.loc 1 167 68 view .LVU189
+ 876 004c 9DF81570 		ldrb	r7, [sp, #21]	@ zero_extendqisi2
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 877              		.loc 1 167 31 view .LVU190
+ 878 0050 47EA0327 		orr	r7, r7, r3, lsl #8
+ 879 0054 3FB2     		sxth	r7, r7
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 21
+
+
+ 167:Drivers/MPU6050/Src/mpu6050.c ****     temp = (int16_t)(Rec_Data[6] << 8 | Rec_Data[7]);
+ 880              		.loc 1 167 29 view .LVU191
+ 881 0056 A780     		strh	r7, [r4, #4]	@ movhi
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 882              		.loc 1 168 5 is_stmt 1 view .LVU192
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 883              		.loc 1 168 30 is_stmt 0 view .LVU193
+ 884 0058 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 885              		.loc 1 168 34 view .LVU194
+ 886 005c 1B02     		lsls	r3, r3, #8
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 887              		.loc 1 168 12 view .LVU195
+ 888 005e 1BB2     		sxth	r3, r3
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 889              		.loc 1 168 49 view .LVU196
+ 890 0060 9DF81720 		ldrb	r2, [sp, #23]	@ zero_extendqisi2
+ 168:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_X_RAW = (int16_t)(Rec_Data[8] << 8 | Rec_Data[9]);
+ 891              		.loc 1 168 10 view .LVU197
+ 892 0064 43EA0205 		orr	r5, r3, r2
+ 893              	.LVL72:
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 894              		.loc 1 169 5 is_stmt 1 view .LVU198
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 895              		.loc 1 169 48 is_stmt 0 view .LVU199
+ 896 0068 9DF81830 		ldrb	r3, [sp, #24]	@ zero_extendqisi2
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 897              		.loc 1 169 67 view .LVU200
+ 898 006c 9DF819A0 		ldrb	r10, [sp, #25]	@ zero_extendqisi2
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 899              		.loc 1 169 30 view .LVU201
+ 900 0070 4AEA032A 		orr	r10, r10, r3, lsl #8
+ 901 0074 0FFA8AFA 		sxth	r10, r10
+ 169:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Y_RAW = (int16_t)(Rec_Data[10] << 8 | Rec_Data[11]);
+ 902              		.loc 1 169 28 view .LVU202
+ 903 0078 A4F820A0 		strh	r10, [r4, #32]	@ movhi
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 904              		.loc 1 170 5 is_stmt 1 view .LVU203
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 905              		.loc 1 170 48 is_stmt 0 view .LVU204
+ 906 007c 9DF81A30 		ldrb	r3, [sp, #26]	@ zero_extendqisi2
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 907              		.loc 1 170 68 view .LVU205
+ 908 0080 9DF81B90 		ldrb	r9, [sp, #27]	@ zero_extendqisi2
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 909              		.loc 1 170 30 view .LVU206
+ 910 0084 49EA0329 		orr	r9, r9, r3, lsl #8
+ 911 0088 0FFA89F9 		sxth	r9, r9
+ 170:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gyro_Z_RAW = (int16_t)(Rec_Data[12] << 8 | Rec_Data[13]);
+ 912              		.loc 1 170 28 view .LVU207
+ 913 008c A4F82290 		strh	r9, [r4, #34]	@ movhi
+ 171:Drivers/MPU6050/Src/mpu6050.c **** 
+ 914              		.loc 1 171 5 is_stmt 1 view .LVU208
+ 171:Drivers/MPU6050/Src/mpu6050.c **** 
+ 915              		.loc 1 171 48 is_stmt 0 view .LVU209
+ 916 0090 9DF81C30 		ldrb	r3, [sp, #28]	@ zero_extendqisi2
+ 171:Drivers/MPU6050/Src/mpu6050.c **** 
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 22
+
+
+ 917              		.loc 1 171 68 view .LVU210
+ 918 0094 9DF81D60 		ldrb	r6, [sp, #29]	@ zero_extendqisi2
+ 171:Drivers/MPU6050/Src/mpu6050.c **** 
+ 919              		.loc 1 171 30 view .LVU211
+ 920 0098 46EA0326 		orr	r6, r6, r3, lsl #8
+ 921 009c 36B2     		sxth	r6, r6
+ 171:Drivers/MPU6050/Src/mpu6050.c **** 
+ 922              		.loc 1 171 28 view .LVU212
+ 923 009e A684     		strh	r6, [r4, #36]	@ movhi
+ 173:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ay = DataStruct->Accel_Y_RAW / 16384.0;
+ 924              		.loc 1 173 5 is_stmt 1 view .LVU213
+ 173:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ay = DataStruct->Accel_Y_RAW / 16384.0;
+ 925              		.loc 1 173 46 is_stmt 0 view .LVU214
+ 926 00a0 FFF7FEFF 		bl	__aeabi_i2d
+ 927              	.LVL73:
+ 928 00a4 0022     		movs	r2, #0
+ 929 00a6 804B     		ldr	r3, .L39+32
+ 930 00a8 FFF7FEFF 		bl	__aeabi_dmul
+ 931              	.LVL74:
+ 173:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Ay = DataStruct->Accel_Y_RAW / 16384.0;
+ 932              		.loc 1 173 20 view .LVU215
+ 933 00ac C4E90201 		strd	r0, [r4, #8]
+ 174:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Az = DataStruct->Accel_Z_RAW / Accel_Z_corrector;
+ 934              		.loc 1 174 5 is_stmt 1 view .LVU216
+ 174:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Az = DataStruct->Accel_Z_RAW / Accel_Z_corrector;
+ 935              		.loc 1 174 46 is_stmt 0 view .LVU217
+ 936 00b0 4046     		mov	r0, r8
+ 937 00b2 FFF7FEFF 		bl	__aeabi_i2d
+ 938              	.LVL75:
+ 939 00b6 0022     		movs	r2, #0
+ 940 00b8 7B4B     		ldr	r3, .L39+32
+ 941 00ba FFF7FEFF 		bl	__aeabi_dmul
+ 942              	.LVL76:
+ 174:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Az = DataStruct->Accel_Z_RAW / Accel_Z_corrector;
+ 943              		.loc 1 174 20 view .LVU218
+ 944 00be C4E90401 		strd	r0, [r4, #16]
+ 175:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Temperature = (float)((int16_t)temp / (float)340.0 + (float)36.53);
+ 945              		.loc 1 175 5 is_stmt 1 view .LVU219
+ 175:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Temperature = (float)((int16_t)temp / (float)340.0 + (float)36.53);
+ 946              		.loc 1 175 46 is_stmt 0 view .LVU220
+ 947 00c2 3846     		mov	r0, r7
+ 948 00c4 FFF7FEFF 		bl	__aeabi_i2d
+ 949              	.LVL77:
+ 950 00c8 6FA3     		adr	r3, .L39
+ 951 00ca D3E90023 		ldrd	r2, [r3]
+ 952 00ce FFF7FEFF 		bl	__aeabi_ddiv
+ 953              	.LVL78:
+ 175:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Temperature = (float)((int16_t)temp / (float)340.0 + (float)36.53);
+ 954              		.loc 1 175 20 view .LVU221
+ 955 00d2 C4E90601 		strd	r0, [r4, #24]
+ 176:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 956              		.loc 1 176 5 is_stmt 1 view .LVU222
+ 176:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 957              		.loc 1 176 53 is_stmt 0 view .LVU223
+ 958 00d6 07EE905A 		vmov	s15, r5	@ int
+ 959 00da F8EEE77A 		vcvt.f32.s32	s15, s15
+ 960 00de DFED736A 		vldr.32	s13, .L39+36
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 23
+
+
+ 961 00e2 87EEA67A 		vdiv.f32	s14, s15, s13
+ 176:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 962              		.loc 1 176 31 view .LVU224
+ 963 00e6 DFED727A 		vldr.32	s15, .L39+40
+ 964 00ea 77EE277A 		vadd.f32	s15, s14, s15
+ 176:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gx = DataStruct->Gyro_X_RAW / 131.0;
+ 965              		.loc 1 176 29 view .LVU225
+ 966 00ee C4ED107A 		vstr.32	s15, [r4, #64]
+ 177:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gy = DataStruct->Gyro_Y_RAW / 131.0;
+ 967              		.loc 1 177 5 is_stmt 1 view .LVU226
+ 177:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gy = DataStruct->Gyro_Y_RAW / 131.0;
+ 968              		.loc 1 177 45 is_stmt 0 view .LVU227
+ 969 00f2 5046     		mov	r0, r10
+ 970 00f4 FFF7FEFF 		bl	__aeabi_i2d
+ 971              	.LVL79:
+ 972 00f8 65A3     		adr	r3, .L39+8
+ 973 00fa D3E90023 		ldrd	r2, [r3]
+ 974 00fe FFF7FEFF 		bl	__aeabi_ddiv
+ 975              	.LVL80:
+ 177:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gy = DataStruct->Gyro_Y_RAW / 131.0;
+ 976              		.loc 1 177 20 view .LVU228
+ 977 0102 C4E90A01 		strd	r0, [r4, #40]
+ 178:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gz = DataStruct->Gyro_Z_RAW / 131.0;
+ 978              		.loc 1 178 5 is_stmt 1 view .LVU229
+ 178:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gz = DataStruct->Gyro_Z_RAW / 131.0;
+ 979              		.loc 1 178 45 is_stmt 0 view .LVU230
+ 980 0106 4846     		mov	r0, r9
+ 981 0108 FFF7FEFF 		bl	__aeabi_i2d
+ 982              	.LVL81:
+ 983 010c 60A3     		adr	r3, .L39+8
+ 984 010e D3E90023 		ldrd	r2, [r3]
+ 985 0112 FFF7FEFF 		bl	__aeabi_ddiv
+ 986              	.LVL82:
+ 178:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->Gz = DataStruct->Gyro_Z_RAW / 131.0;
+ 987              		.loc 1 178 20 view .LVU231
+ 988 0116 C4E90C01 		strd	r0, [r4, #48]
+ 179:Drivers/MPU6050/Src/mpu6050.c **** 
+ 989              		.loc 1 179 5 is_stmt 1 view .LVU232
+ 179:Drivers/MPU6050/Src/mpu6050.c **** 
+ 990              		.loc 1 179 45 is_stmt 0 view .LVU233
+ 991 011a 3046     		mov	r0, r6
+ 992 011c FFF7FEFF 		bl	__aeabi_i2d
+ 993              	.LVL83:
+ 994 0120 5BA3     		adr	r3, .L39+8
+ 995 0122 D3E90023 		ldrd	r2, [r3]
+ 996 0126 FFF7FEFF 		bl	__aeabi_ddiv
+ 997              	.LVL84:
+ 179:Drivers/MPU6050/Src/mpu6050.c **** 
+ 998              		.loc 1 179 20 view .LVU234
+ 999 012a C4E90E01 		strd	r0, [r4, #56]
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 1000              		.loc 1 182 5 is_stmt 1 view .LVU235
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 1001              		.loc 1 182 26 is_stmt 0 view .LVU236
+ 1002 012e FFF7FEFF 		bl	HAL_GetTick
+ 1003              	.LVL85:
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 24
+
+
+ 1004              		.loc 1 182 40 view .LVU237
+ 1005 0132 604D     		ldr	r5, .L39+44
+ 1006              	.LVL86:
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 1007              		.loc 1 182 40 view .LVU238
+ 1008 0134 2B68     		ldr	r3, [r5]
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 1009              		.loc 1 182 17 view .LVU239
+ 1010 0136 C01A     		subs	r0, r0, r3
+ 1011 0138 FFF7FEFF 		bl	__aeabi_ui2d
+ 1012              	.LVL87:
+ 182:Drivers/MPU6050/Src/mpu6050.c ****     timer = HAL_GetTick();
+ 1013              		.loc 1 182 12 view .LVU240
+ 1014 013c 0022     		movs	r2, #0
+ 1015 013e 5E4B     		ldr	r3, .L39+48
+ 1016 0140 FFF7FEFF 		bl	__aeabi_ddiv
+ 1017              	.LVL88:
+ 1018 0144 41EC190B 		vmov	d9, r0, r1
+ 1019              	.LVL89:
+ 183:Drivers/MPU6050/Src/mpu6050.c ****     double roll;
+ 1020              		.loc 1 183 5 is_stmt 1 view .LVU241
+ 183:Drivers/MPU6050/Src/mpu6050.c ****     double roll;
+ 1021              		.loc 1 183 13 is_stmt 0 view .LVU242
+ 1022 0148 FFF7FEFF 		bl	HAL_GetTick
+ 1023              	.LVL90:
+ 183:Drivers/MPU6050/Src/mpu6050.c ****     double roll;
+ 1024              		.loc 1 183 11 view .LVU243
+ 1025 014c 2860     		str	r0, [r5]
+ 184:Drivers/MPU6050/Src/mpu6050.c ****     double roll_sqrt = sqrt(
+ 1026              		.loc 1 184 5 is_stmt 1 view .LVU244
+ 185:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Accel_X_RAW * DataStruct->Accel_X_RAW + DataStruct->Accel_Z_RAW * DataStruct->A
+ 1027              		.loc 1 185 5 view .LVU245
+ 186:Drivers/MPU6050/Src/mpu6050.c ****     if (roll_sqrt != 0.0)
+ 1028              		.loc 1 186 19 is_stmt 0 view .LVU246
+ 1029 014e B4F90050 		ldrsh	r5, [r4]
+ 186:Drivers/MPU6050/Src/mpu6050.c ****     if (roll_sqrt != 0.0)
+ 1030              		.loc 1 186 71 view .LVU247
+ 1031 0152 B4F90480 		ldrsh	r8, [r4, #4]
+ 186:Drivers/MPU6050/Src/mpu6050.c ****     if (roll_sqrt != 0.0)
+ 1032              		.loc 1 186 85 view .LVU248
+ 1033 0156 08FB08F0 		mul	r0, r8, r8
+ 185:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Accel_X_RAW * DataStruct->Accel_X_RAW + DataStruct->Accel_Z_RAW * DataStruct->A
+ 1034              		.loc 1 185 24 view .LVU249
+ 1035 015a 05FB0500 		mla	r0, r5, r5, r0
+ 1036 015e FFF7FEFF 		bl	__aeabi_i2d
+ 1037              	.LVL91:
+ 1038 0162 41EC100B 		vmov	d0, r0, r1
+ 1039 0166 FFF7FEFF 		bl	sqrt
+ 1040              	.LVL92:
+ 1041 016a 57EC106B 		vmov	r6, r7, d0
+ 1042              	.LVL93:
+ 187:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1043              		.loc 1 187 5 is_stmt 1 view .LVU250
+ 187:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1044              		.loc 1 187 8 is_stmt 0 view .LVU251
+ 1045 016e 0022     		movs	r2, #0
+ 1046 0170 0023     		movs	r3, #0
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 25
+
+
+ 1047 0172 3046     		mov	r0, r6
+ 1048 0174 3946     		mov	r1, r7
+ 1049 0176 FFF7FEFF 		bl	__aeabi_dcmpeq
+ 1050              	.LVL94:
+ 1051 017a 0028     		cmp	r0, #0
+ 1052 017c 73D1     		bne	.L37
+ 189:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1053              		.loc 1 189 9 is_stmt 1 view .LVU252
+ 189:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1054              		.loc 1 189 16 is_stmt 0 view .LVU253
+ 1055 017e B4F90200 		ldrsh	r0, [r4, #2]
+ 1056 0182 FFF7FEFF 		bl	__aeabi_i2d
+ 1057              	.LVL95:
+ 1058 0186 3246     		mov	r2, r6
+ 1059 0188 3B46     		mov	r3, r7
+ 1060 018a FFF7FEFF 		bl	__aeabi_ddiv
+ 1061              	.LVL96:
+ 1062 018e 41EC100B 		vmov	d0, r0, r1
+ 1063 0192 FFF7FEFF 		bl	atan
+ 1064              	.LVL97:
+ 1065 0196 51EC100B 		vmov	r0, r1, d0
+ 189:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1066              		.loc 1 189 14 view .LVU254
+ 1067 019a 3FA3     		adr	r3, .L39+16
+ 1068 019c D3E90023 		ldrd	r2, [r3]
+ 1069 01a0 FFF7FEFF 		bl	__aeabi_dmul
+ 1070              	.LVL98:
+ 1071 01a4 41EC1A0B 		vmov	d10, r0, r1
+ 1072              	.LVL99:
+ 1073              	.L21:
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 1074              		.loc 1 195 5 is_stmt 1 view .LVU255
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 1075              		.loc 1 195 26 is_stmt 0 view .LVU256
+ 1076 01a8 6D42     		rsbs	r5, r5, #0
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 1077              		.loc 1 195 20 view .LVU257
+ 1078 01aa 4046     		mov	r0, r8
+ 1079 01ac FFF7FEFF 		bl	__aeabi_i2d
+ 1080              	.LVL100:
+ 1081 01b0 41EC180B 		vmov	d8, r0, r1
+ 1082 01b4 2846     		mov	r0, r5
+ 1083 01b6 FFF7FEFF 		bl	__aeabi_i2d
+ 1084              	.LVL101:
+ 1085 01ba B0EE481A 		vmov.f32	s2, s16
+ 1086 01be F0EE681A 		vmov.f32	s3, s17
+ 1087 01c2 41EC100B 		vmov	d0, r0, r1
+ 1088 01c6 FFF7FEFF 		bl	atan2
+ 1089              	.LVL102:
+ 1090 01ca 51EC100B 		vmov	r0, r1, d0
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 1091              		.loc 1 195 12 view .LVU258
+ 1092 01ce 32A3     		adr	r3, .L39+16
+ 1093 01d0 D3E90023 		ldrd	r2, [r3]
+ 1094 01d4 FFF7FEFF 		bl	__aeabi_dmul
+ 1095              	.LVL103:
+ 1096 01d8 0646     		mov	r6, r0
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 26
+
+
+ 1097              	.LVL104:
+ 195:Drivers/MPU6050/Src/mpu6050.c ****     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY <
+ 1098              		.loc 1 195 12 view .LVU259
+ 1099 01da 0F46     		mov	r7, r1
+ 1100              	.LVL105:
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1101              		.loc 1 196 5 is_stmt 1 view .LVU260
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1102              		.loc 1 196 8 is_stmt 0 view .LVU261
+ 1103 01dc 0022     		movs	r2, #0
+ 1104 01de 374B     		ldr	r3, .L39+52
+ 1105 01e0 FFF7FEFF 		bl	__aeabi_dcmplt
+ 1106              	.LVL106:
+ 1107 01e4 30B1     		cbz	r0, .L23
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1108              		.loc 1 196 22 discriminator 1 view .LVU262
+ 1109 01e6 0022     		movs	r2, #0
+ 1110 01e8 354B     		ldr	r3, .L39+56
+ 1111 01ea D4E91401 		ldrd	r0, [r4, #80]
+ 1112 01ee FFF7FEFF 		bl	__aeabi_dcmpgt
+ 1113              	.LVL107:
+ 1114 01f2 70B9     		cbnz	r0, .L25
+ 1115              	.L23:
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1116              		.loc 1 196 56 discriminator 3 view .LVU263
+ 1117 01f4 0022     		movs	r2, #0
+ 1118 01f6 324B     		ldr	r3, .L39+56
+ 1119 01f8 3046     		mov	r0, r6
+ 1120 01fa 3946     		mov	r1, r7
+ 1121 01fc FFF7FEFF 		bl	__aeabi_dcmpgt
+ 1122              	.LVL108:
+ 1123 0200 0028     		cmp	r0, #0
+ 1124 0202 33D0     		beq	.L26
+ 196:Drivers/MPU6050/Src/mpu6050.c ****     {
+ 1125              		.loc 1 196 71 discriminator 4 view .LVU264
+ 1126 0204 0022     		movs	r2, #0
+ 1127 0206 2D4B     		ldr	r3, .L39+52
+ 1128 0208 D4E91401 		ldrd	r0, [r4, #80]
+ 1129 020c FFF7FEFF 		bl	__aeabi_dcmplt
+ 1130              	.LVL109:
+ 1131 0210 60B3     		cbz	r0, .L26
+ 1132              	.L25:
+ 198:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->KalmanAngleY = pitch;
+ 1133              		.loc 1 198 9 is_stmt 1 view .LVU265
+ 198:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->KalmanAngleY = pitch;
+ 1134              		.loc 1 198 23 is_stmt 0 view .LVU266
+ 1135 0212 2C4B     		ldr	r3, .L39+60
+ 1136 0214 C3E90667 		strd	r6, [r3, #24]
+ 199:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1137              		.loc 1 199 9 is_stmt 1 view .LVU267
+ 199:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1138              		.loc 1 199 34 is_stmt 0 view .LVU268
+ 1139 0218 C4E91467 		strd	r6, [r4, #80]
+ 1140              	.L29:
+ 205:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Gx = -DataStruct->Gx;
+ 1141              		.loc 1 205 5 is_stmt 1 view .LVU269
+ 205:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Gx = -DataStruct->Gx;
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 27
+
+
+ 1142              		.loc 1 205 24 is_stmt 0 view .LVU270
+ 1143 021c D4E91423 		ldrd	r2, [r4, #80]
+ 205:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Gx = -DataStruct->Gx;
+ 1144              		.loc 1 205 9 view .LVU271
+ 1145 0220 1046     		mov	r0, r2
+ 1146 0222 23F00041 		bic	r1, r3, #-2147483648
+ 205:Drivers/MPU6050/Src/mpu6050.c ****         DataStruct->Gx = -DataStruct->Gx;
+ 1147              		.loc 1 205 8 view .LVU272
+ 1148 0226 0022     		movs	r2, #0
+ 1149 0228 254B     		ldr	r3, .L39+56
+ 1150 022a FFF7FEFF 		bl	__aeabi_dcmpgt
+ 1151              	.LVL110:
+ 1152 022e 30B1     		cbz	r0, .L30
+ 206:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+ 1153              		.loc 1 206 9 is_stmt 1 view .LVU273
+ 206:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+ 1154              		.loc 1 206 37 is_stmt 0 view .LVU274
+ 1155 0230 D4E90A01 		ldrd	r0, [r4, #40]
+ 206:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+ 1156              		.loc 1 206 26 view .LVU275
+ 1157 0234 0246     		mov	r2, r0
+ 1158 0236 01F10043 		add	r3, r1, #-2147483648
+ 206:Drivers/MPU6050/Src/mpu6050.c ****     DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+ 1159              		.loc 1 206 24 view .LVU276
+ 1160 023a C4E90A23 		strd	r2, [r4, #40]
+ 1161              	.L30:
+ 207:Drivers/MPU6050/Src/mpu6050.c **** }
+ 1162              		.loc 1 207 5 is_stmt 1 view .LVU277
+ 207:Drivers/MPU6050/Src/mpu6050.c **** }
+ 1163              		.loc 1 207 32 is_stmt 0 view .LVU278
+ 1164 023e B0EE492A 		vmov.f32	s4, s18
+ 1165 0242 F0EE692A 		vmov.f32	s5, s19
+ 1166 0246 94ED0A1B 		vldr.64	d1, [r4, #40]
+ 1167 024a B0EE4A0A 		vmov.f32	s0, s20
+ 1168 024e F0EE6A0A 		vmov.f32	s1, s21
+ 1169 0252 1D48     		ldr	r0, .L39+64
+ 1170 0254 FFF7FEFF 		bl	Kalman_getAngle
+ 1171              	.LVL111:
+ 207:Drivers/MPU6050/Src/mpu6050.c **** }
+ 1172              		.loc 1 207 30 view .LVU279
+ 1173 0258 84ED120B 		vstr.64	d0, [r4, #72]
+ 208:Drivers/MPU6050/Src/mpu6050.c **** 
+ 1174              		.loc 1 208 1 view .LVU280
+ 1175 025c 08B0     		add	sp, sp, #32
+ 1176              	.LCFI21:
+ 1177              		.cfi_remember_state
+ 1178              		.cfi_def_cfa_offset 56
+ 1179              		@ sp needed
+ 1180 025e BDEC068B 		vldm	sp!, {d8-d10}
+ 1181              	.LCFI22:
+ 1182              		.cfi_restore 84
+ 1183              		.cfi_restore 85
+ 1184              		.cfi_restore 82
+ 1185              		.cfi_restore 83
+ 1186              		.cfi_restore 80
+ 1187              		.cfi_restore 81
+ 1188              		.cfi_def_cfa_offset 32
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 28
+
+
+ 1189              	.LVL112:
+ 208:Drivers/MPU6050/Src/mpu6050.c **** 
+ 1190              		.loc 1 208 1 view .LVU281
+ 1191 0262 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1192              	.LVL113:
+ 1193              	.L37:
+ 1194              	.LCFI23:
+ 1195              		.cfi_restore_state
+ 193:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1196              		.loc 1 193 14 view .LVU282
+ 1197 0266 9FED0EAB 		vldr.64	d10, .L39+24
+ 1198 026a 9DE7     		b	.L21
+ 1199              	.LVL114:
+ 1200              	.L26:
+ 203:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1201              		.loc 1 203 9 is_stmt 1 view .LVU283
+ 203:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1202              		.loc 1 203 36 is_stmt 0 view .LVU284
+ 1203 026c B0EE492A 		vmov.f32	s4, s18
+ 1204 0270 F0EE692A 		vmov.f32	s5, s19
+ 1205 0274 94ED0C1B 		vldr.64	d1, [r4, #48]
+ 1206 0278 47EC106B 		vmov	d0, r6, r7
+ 1207 027c 1148     		ldr	r0, .L39+60
+ 1208 027e FFF7FEFF 		bl	Kalman_getAngle
+ 1209              	.LVL115:
+ 203:Drivers/MPU6050/Src/mpu6050.c ****     }
+ 1210              		.loc 1 203 34 view .LVU285
+ 1211 0282 84ED140B 		vstr.64	d0, [r4, #80]
+ 1212 0286 C9E7     		b	.L29
+ 1213              	.L40:
+ 1214              		.align	3
+ 1215              	.L39:
+ 1216 0288 00000000 		.word	0
+ 1217 028c 0029CC40 		.word	1087121664
+ 1218 0290 00000000 		.word	0
+ 1219 0294 00606040 		.word	1080057856
+ 1220 0298 F8C1631A 		.word	442745336
+ 1221 029c DCA54C40 		.word	1078765020
+ 1222 02a0 00000000 		.word	0
+ 1223 02a4 00000000 		.word	0
+ 1224 02a8 0000103F 		.word	1058013184
+ 1225 02ac 0000AA43 		.word	1135214592
+ 1226 02b0 B81E1242 		.word	1108483768
+ 1227 02b4 00000000 		.word	timer
+ 1228 02b8 00408F40 		.word	1083129856
+ 1229 02bc 008056C0 		.word	-1068072960
+ 1230 02c0 00805640 		.word	1079410688
+ 1231 02c4 00000000 		.word	KalmanY
+ 1232 02c8 00000000 		.word	KalmanX
+ 1233              		.cfi_endproc
+ 1234              	.LFE220:
+ 1236              		.global	KalmanY
+ 1237              		.section	.data.KalmanY,"aw"
+ 1238              		.align	3
+ 1241              	KalmanY:
+ 1242 0000 000000E0 		.word	-536870912
+ 1243 0004 4D62503F 		.word	1062232653
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 29
+
+
+ 1244 0008 000000C0 		.word	-1073741824
+ 1245 000c 7493683F 		.word	1063818100
+ 1246 0010 000000E0 		.word	-536870912
+ 1247 0014 51B89E3F 		.word	1067366481
+ 1248 0018 00000000 		.space	48
+ 1248      00000000 
+ 1248      00000000 
+ 1248      00000000 
+ 1248      00000000 
+ 1249              		.global	KalmanX
+ 1250              		.section	.data.KalmanX,"aw"
+ 1251              		.align	3
+ 1254              	KalmanX:
+ 1255 0000 000000E0 		.word	-536870912
+ 1256 0004 4D62503F 		.word	1062232653
+ 1257 0008 000000C0 		.word	-1073741824
+ 1258 000c 7493683F 		.word	1063818100
+ 1259 0010 000000E0 		.word	-536870912
+ 1260 0014 51B89E3F 		.word	1067366481
+ 1261 0018 00000000 		.space	48
+ 1261      00000000 
+ 1261      00000000 
+ 1261      00000000 
+ 1261      00000000 
+ 1262              		.global	timer
+ 1263              		.section	.bss.timer,"aw",%nobits
+ 1264              		.align	2
+ 1267              	timer:
+ 1268 0000 00000000 		.space	4
+ 1269              		.global	Accel_Z_corrector
+ 1270              		.section	.rodata.Accel_Z_corrector,"a"
+ 1271              		.align	3
+ 1274              	Accel_Z_corrector:
+ 1275 0000 00000000 		.word	0
+ 1276 0004 0029CC40 		.word	1087121664
+ 1277              		.global	i2c_timeout
+ 1278              		.section	.rodata.i2c_timeout,"a"
+ 1279              		.align	1
+ 1282              	i2c_timeout:
+ 1283 0000 E803     		.short	1000
+ 1284              		.text
+ 1285              	.Letext0:
+ 1286              		.file 2 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 1287              		.file 3 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 1288              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h"
+ 1289              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 1290              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 1291              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 1292              		.file 8 "Drivers/MPU6050/Inc/mpu6050.h"
+ 1293              		.file 9 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 1294              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mpu6050.c
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:21     .text.MPU6050_Init:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:27     .text.MPU6050_Init:00000000 MPU6050_Init
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:149    .text.MPU6050_Read_Accel:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:155    .text.MPU6050_Read_Accel:00000000 MPU6050_Read_Accel
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:262    .text.MPU6050_Read_Accel:00000088 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:269    .text.MPU6050_Read_Gyro:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:275    .text.MPU6050_Read_Gyro:00000000 MPU6050_Read_Gyro
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:382    .text.MPU6050_Read_Gyro:00000090 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:388    .text.MPU6050_Read_Temp:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:394    .text.MPU6050_Read_Temp:00000000 MPU6050_Read_Temp
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:461    .text.MPU6050_Read_Temp:0000004c $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:469    .text.Kalman_getAngle:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:475    .text.Kalman_getAngle:00000000 Kalman_getAngle
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:798    .text.MPU6050_Read_All:00000000 $t
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:804    .text.MPU6050_Read_All:00000000 MPU6050_Read_All
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1216   .text.MPU6050_Read_All:00000288 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1267   .bss.timer:00000000 timer
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1241   .data.KalmanY:00000000 KalmanY
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1254   .data.KalmanX:00000000 KalmanX
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1238   .data.KalmanY:00000000 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1251   .data.KalmanX:00000000 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1264   .bss.timer:00000000 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1274   .rodata.Accel_Z_corrector:00000000 Accel_Z_corrector
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1271   .rodata.Accel_Z_corrector:00000000 $d
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1282   .rodata.i2c_timeout:00000000 i2c_timeout
+C:\Users\natha\AppData\Local\Temp\cc3PGSyK.s:1279   .rodata.i2c_timeout:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_I2C_Mem_Read
+HAL_I2C_Mem_Write
+__aeabi_i2d
+__aeabi_dmul
+__aeabi_ddiv
+__aeabi_dsub
+__aeabi_dadd
+__aeabi_ui2d
+__aeabi_dcmpeq
+__aeabi_dcmplt
+__aeabi_dcmpgt
+HAL_GetTick
+sqrt
+atan
+atan2

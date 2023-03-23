@@ -1,0 +1,147 @@
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccfES86z.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"MB1040.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Drivers/Ultrasonic/Src/MB1040.c"
+  20              		.global	__aeabi_f2d
+  21              		.global	__aeabi_dmul
+  22              		.global	__aeabi_d2f
+  23              		.section	.text.MB1040_get_distance,"ax",%progbits
+  24              		.align	1
+  25              		.global	MB1040_get_distance
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  30              	MB1040_get_distance:
+  31              	.LVL0:
+  32              	.LFB219:
+   1:Drivers/Ultrasonic/Src/MB1040.c **** /**
+   2:Drivers/Ultrasonic/Src/MB1040.c ****   ******************************************************************************
+   3:Drivers/Ultrasonic/Src/MB1040.c ****   * @file           : ultrasonic.c
+   4:Drivers/Ultrasonic/Src/MB1040.c ****   * @brief          : functions for ultrasonic sensor
+   5:Drivers/Ultrasonic/Src/MB1040.c ****   ******************************************************************************
+   6:Drivers/Ultrasonic/Src/MB1040.c ****   */
+   7:Drivers/Ultrasonic/Src/MB1040.c **** 
+   8:Drivers/Ultrasonic/Src/MB1040.c ****  #include "MB1040.h"
+   9:Drivers/Ultrasonic/Src/MB1040.c **** 
+  10:Drivers/Ultrasonic/Src/MB1040.c **** void MB1040_get_distance(ADC_HandleTypeDef *adc, float *distance) {
+  33              		.loc 1 10 67 view -0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37              		.loc 1 10 67 is_stmt 0 view .LVU1
+  38 0000 38B5     		push	{r3, r4, r5, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 16
+  41              		.cfi_offset 3, -16
+  42              		.cfi_offset 4, -12
+  43              		.cfi_offset 5, -8
+  44              		.cfi_offset 14, -4
+  45 0002 0546     		mov	r5, r0
+  46 0004 0C46     		mov	r4, r1
+  11:Drivers/Ultrasonic/Src/MB1040.c ****   HAL_ADC_Start(adc);
+  47              		.loc 1 11 3 is_stmt 1 view .LVU2
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccfES86z.s 			page 2
+
+
+  48 0006 FFF7FEFF 		bl	HAL_ADC_Start
+  49              	.LVL1:
+  12:Drivers/Ultrasonic/Src/MB1040.c ****   uint16_t raw = HAL_ADC_GetValue(adc);
+  50              		.loc 1 12 3 view .LVU3
+  51              		.loc 1 12 18 is_stmt 0 view .LVU4
+  52 000a 2846     		mov	r0, r5
+  53 000c FFF7FEFF 		bl	HAL_ADC_GetValue
+  54              	.LVL2:
+  55              		.loc 1 12 12 view .LVU5
+  56 0010 80B2     		uxth	r0, r0
+  57              	.LVL3:
+  13:Drivers/Ultrasonic/Src/MB1040.c ****   float voltage = (float)raw / RES * 3.3;
+  58              		.loc 1 13 3 is_stmt 1 view .LVU6
+  59              		.loc 1 13 19 is_stmt 0 view .LVU7
+  60 0012 07EE900A 		vmov	s15, r0	@ int
+  61 0016 F8EE677A 		vcvt.f32.u32	s15, s15
+  62              		.loc 1 13 30 view .LVU8
+  63 001a 9FED0F7A 		vldr.32	s14, .L3+8
+  64 001e 67EE877A 		vmul.f32	s15, s15, s14
+  65 0022 17EE900A 		vmov	r0, s15
+  66              	.LVL4:
+  67              		.loc 1 13 30 view .LVU9
+  68 0026 FFF7FEFF 		bl	__aeabi_f2d
+  69              	.LVL5:
+  70              		.loc 1 13 36 view .LVU10
+  71 002a 09A3     		adr	r3, .L3
+  72 002c D3E90023 		ldrd	r2, [r3]
+  73 0030 FFF7FEFF 		bl	__aeabi_dmul
+  74              	.LVL6:
+  75              		.loc 1 13 9 view .LVU11
+  76 0034 FFF7FEFF 		bl	__aeabi_d2f
+  77              	.LVL7:
+  78 0038 06EE900A 		vmov	s13, r0
+  79              	.LVL8:
+  14:Drivers/Ultrasonic/Src/MB1040.c **** 
+  15:Drivers/Ultrasonic/Src/MB1040.c ****   *distance = voltage / SENSITIVITY;
+  80              		.loc 1 15 3 is_stmt 1 view .LVU12
+  81              		.loc 1 15 23 is_stmt 0 view .LVU13
+  82 003c 9FED077A 		vldr.32	s14, .L3+12
+  83 0040 C6EE877A 		vdiv.f32	s15, s13, s14
+  84              		.loc 1 15 13 view .LVU14
+  85 0044 C4ED007A 		vstr.32	s15, [r4]
+  16:Drivers/Ultrasonic/Src/MB1040.c **** }...
+  86              		.loc 1 16 1 view .LVU15
+  87 0048 38BD     		pop	{r3, r4, r5, pc}
+  88              	.LVL9:
+  89              	.L4:
+  90              		.loc 1 16 1 view .LVU16
+  91 004a 00BFAFF3 		.align	3
+  91      0080
+  92              	.L3:
+  93 0050 66666666 		.word	1717986918
+  94 0054 66660A40 		.word	1074423398
+  95 0058 00008039 		.word	964689920
+  96 005c 2E90203C 		.word	1008767022
+  97              		.cfi_endproc
+  98              	.LFE219:
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccfES86z.s 			page 3
+
+
+ 100              		.text
+ 101              	.Letext0:
+ 102              		.file 2 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 103              		.file 3 "c:\\users\\natha\\devtools\\arm-gnu-toolchain-12.2.mpacbti-bet1-mingw-w64-i686-arm-none-e
+ 104              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xe.h"
+ 105              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 106              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 107              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 108              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ARM GAS  C:\Users\natha\AppData\Local\Temp\ccfES86z.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 MB1040.c
+C:\Users\natha\AppData\Local\Temp\ccfES86z.s:24     .text.MB1040_get_distance:00000000 $t
+C:\Users\natha\AppData\Local\Temp\ccfES86z.s:30     .text.MB1040_get_distance:00000000 MB1040_get_distance
+C:\Users\natha\AppData\Local\Temp\ccfES86z.s:93     .text.MB1040_get_distance:00000050 $d
+
+UNDEFINED SYMBOLS
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_d2f
+HAL_ADC_Start
+HAL_ADC_GetValue
