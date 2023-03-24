@@ -164,6 +164,7 @@ int main(void)
 
       HAL_Delay(100); // might not want this delay
     }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
     MOTOR_move_speed_forward(5000, &motorInstance);
 
@@ -181,7 +182,7 @@ int main(void)
       HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     } 
 
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 
     HAL_Delay(2000);
 
@@ -202,6 +203,7 @@ int main(void)
 
       HAL_Delay(100); // might not want this delay
     }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
     MOTOR_move_speed_forward(5000, &motorInstance);
 
@@ -219,7 +221,7 @@ int main(void)
       HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     } 
 
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 
     HAL_Delay(500);
 
@@ -240,6 +242,7 @@ int main(void)
 
       HAL_Delay(100); // might not want this delay
     }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
     MOTOR_move_speed_forward(5000, &motorInstance);
 
@@ -256,8 +259,7 @@ int main(void)
 
       HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     } 
-
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 
     HAL_Delay(2000);
 
