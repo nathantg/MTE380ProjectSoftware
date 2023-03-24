@@ -136,19 +136,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    MOTOR_move_speed_forward_accel(25000, &motorInstance);
+    MOTOR_move_speed_forward(10000, &motorInstance);
 
     HAL_Delay(20000);
 
     MOTOR_stop_both(&motorInstance);
 
-    HAL_Delay(20000);
+    HAL_Delay(2000);
 
-    MOTOR_move_speed_backward_accel(25000, &motorInstance);
+    MOTOR_move_speed_backward(10000, &motorInstance);
 
     HAL_Delay(20000);
 
     MOTOR_stop_both(&motorInstance);
+
+    HAL_Delay(2000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
