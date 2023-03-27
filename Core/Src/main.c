@@ -130,7 +130,7 @@ int main(void)
 
   while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
 
-  MOTOR_move_speed_forward(30000, &motorInstance);
+  MOTOR_move_speed_forward(10000, &motorInstance);
 
   /* USER CODE END 2 */
 
