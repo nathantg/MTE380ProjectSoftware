@@ -146,28 +146,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
-
-    MOTOR_turn_right(40000, &motorInstance);
-
-    logging(&huart2, 0, 0, 0, &motorInstance);
-    HAL_Delay(1000);
-
-    MOTOR_stop_both(&motorInstance);
-
-    // MOTOR_turn_right(50000, &motorInstance);
-
-    // float distance = 1000;
-
-    // while(distance >= PLATFORM_DISTANCE) {
-    //   MB1040_get_distance(&hadc1, &distance);
-    //   logging(&huart2, distance, 2, 2, &motorInstance);
-    // }
-
-    // MOTOR_stop_both(&motorInstance);
-    // MB1040_get_distance(&hadc1, &distance);
-    // logging(&huart2, distance, 2, 2, &motorInstance);
-    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
