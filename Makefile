@@ -66,6 +66,7 @@ Drivers/MPU6050/Src/mpu6050.c \
 Drivers/Logging/Src/logging.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c
+Controls/Platform_Finding/Src/platform_finding.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -131,7 +132,8 @@ C_INCLUDES =  \
 -IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc \
 -IDrivers/MPU6050/Inc \
--IDrivers/Logging/Inc
+-IDrivers/Logging/Inc \
+-IControls/Platform_Finding/Inc
 
 
 # compile gcc flags
