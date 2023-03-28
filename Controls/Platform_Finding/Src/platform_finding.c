@@ -42,10 +42,14 @@ void platform_finding_circle_scan(motor_instance_t *motorInstance, switches_inst
 
 }
 
-void platform_finding_side_scan(motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c) {
+void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c) {
   // Move to boundary after course
   MOTOR_move_speed_forward(10000, motorInstance);
-  while(!SWITCHES_get_right_limit_switch(switchInstance) || !SWITCHES_get_left_limit_switch(switchInstance)) {} // Wait for both limit switches to engage (or maybe change to one)
+  while(!SWITCHES_get_right_limit_switch(switchInstance) || !SWITCHES_get_left_limit_switch(switchInstance)) {
+    #ifdef LOGGING
+    logging(huart, 0, switchInstance, motorInstance, gyro);
+    #endif
+  } // Wait for both limit switches to engage (or maybe change to one)
   MOTOR_stop_both(motorInstance);
 
   // Turn left 90 degrees
@@ -58,6 +62,9 @@ void platform_finding_side_scan(motor_instance_t *motorInstance, switches_instan
   while((!SWITCHES_get_right_limit_switch(switchInstance) || !SWITCHES_get_left_limit_switch(switchInstance)) && !pillarFound) { // Wait for both limit switches to engage (or maybe change to one)
     float distance;
     MB1040_get_distance(adc, &distance);
+    #ifdef LOGGING
+    logging(huart, distance, switchInstance, motorInstance, gyro);
+    #endif
 
     if(distance < PILLAR_MAX_DISTANCE) {
       pillarFound = 1;
@@ -71,7 +78,9 @@ void platform_finding_side_scan(motor_instance_t *motorInstance, switches_instan
 
     while(!platformFound) {
       MPU6050_Read_All(i2c, gyro);
-
+      #ifdef LOGGING
+      logging(huart, 0, switchInstance, motorInstance, gyro);
+      #endif
       if((gyro->KalmanAngleX > PLATFORM_ROLL_THRESHOLD) || (gyro->KalmanAngleY > PLATFORM_PITCH_THRESHOLD) || SWITCHES_get_right_limit_switch(switchInstance) || SWITCHES_get_left_limit_switch(switchInstance)) {
         platformFound = 1;
         MOTOR_stop_both(motorInstance);

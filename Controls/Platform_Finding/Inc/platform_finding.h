@@ -17,6 +17,8 @@
 #include "mpu6050.h"
 #include "logging.h"
 
+#define LOGGING
+
 #define PILLAR_MAX_DISTANCE 0.0f
 #define PLATFORM_PITCH_THRESHOLD 0.0f
 #define PLATFORM_ROLL_THRESHOLD 0.0f
@@ -41,7 +43,7 @@ void platform_finding_brute_force(motor_instance_t *motorInstance, switches_inst
   * @param i2c pointer to i2c handler used for MPU6050 sensor
   * @retval None
   */
-void platform_finding_side_scan(motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c);
+void platform_finding_side_scan(UART_HandleTypeDef *huart,motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c);
 
 /**
   * @brief Circle scan platform finding algorithm
