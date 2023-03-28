@@ -17,6 +17,10 @@
 #include "mpu6050.h"
 #include "logging.h"
 
+#define PILLAR_MAX_DISTANCE 0.0f
+#define PLATFORM_PITCH_THRESHOLD 0.0f
+#define PLATFORM_ROLL_THRESHOLD 0.0f
+
 /**
   * @brief Brute force platform finding algorithm
   * @param motorInstance pointer to motor instance struct for motor control
