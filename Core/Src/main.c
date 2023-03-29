@@ -25,7 +25,12 @@
 #include "MB1040.h"
 #include "motor_functions.h"
 #include "mpu6050.h"
+
+#ifdef LOGGING
 #include "logging.h"
+#endif
+
+#include "platform_finding.h"
 
 /* USER CODE END Includes */
 
@@ -37,6 +42,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define PLATFORM_DISTANCE 10.0f
+
+#define PILLAR_DISTANCE_THRESHOLD 70.0f // Distance threshold is 70 inces
+#define PLATFORM_PITCH_THRESHOLD 0.16f
+#define PLATFORM_ROLL_THRESHOLD 0.1f
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -116,9 +125,9 @@ int main(void)
   SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
   SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
 
-  switches_instance_t switchesInstance;
+  switches_instance_t switchInstance;
 
-  SWITCHES_initiallize_switch_instance(&switchesInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
+  SWITCHES_initiallize_switch_instance(&switchInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
 
   motor_config_t rightMotor;
   motor_config_t leftMotor;
@@ -140,6 +149,13 @@ int main(void)
 
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
+  float distance;
+  float minDistance = 1000;
+
+  // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
+
+  // MOTOR_move_speed_forward(10000, &motorInstance);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -147,6 +163,46 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+      SWITCHES_get_right_limit_switch(&switchInstance);
+      SWITCHES_get_left_limit_switch(&switchInstance);
+      MB1040_get_distance(&hadc1, &distance);
+      MPU6050_Read_All(&hi2c1, &gyroInstance);
+
+      #ifdef LOGGING
+      logging(&huart2, distance, &switchInstance, &motorInstance, &gyroInstance);
+      #endif 
+    }
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    platform_finding_side_scan(&huart2, &motorInstance, &switchInstance, &hadc1, &gyroInstance, &hi2c1);
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
+    
+    // MPU6050_Read_All(&hi2c1, &gyroInstance);
+
+    // MB1040_get_distance(&hadc1, &distance);
+
+    // #ifdef LOGGING
+    // logging(&huart2, distance, &switchesInstance, &motorInstance, &gyroInstance);
+    // #endif
+
+    // if(distance < minDistance) {
+    //   minDistance = distance;
+    // }
+
+    
+
+
+
+    // if(distance <= PILLAR_DISTANCE_THRESHOLD) {
+    //   HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    // }
+
+    // if(gyroInstance.KalmanAngleX) {
+    //   HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    // }
 
     /* USER CODE BEGIN 3 */
   }

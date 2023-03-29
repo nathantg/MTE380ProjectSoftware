@@ -88,6 +88,7 @@ void Error_Handler(void);
 #define Right_Motor_Driver_DIR_Pin_Pin GPIO_PIN_4
 #define Right_Motor_Driver_DIR_Pin_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+#define LOGGING
 
 /* USER CODE END Private defines */
 

@@ -17,11 +17,9 @@
 #include "mpu6050.h"
 #include "logging.h"
 
-#define LOGGING
-
-#define PILLAR_MAX_DISTANCE 0.0f
-#define PLATFORM_PITCH_THRESHOLD 0.0f
-#define PLATFORM_ROLL_THRESHOLD 0.0f
+#define PILLAR_DISTANCE_THRESHOLD 10.0f // Distance threshold is 70 inces
+#define PLATFORM_PITCH_THRESHOLD 0.16f
+#define PLATFORM_ROLL_THRESHOLD 0.1f
 
 /**
   * @brief Brute force platform finding algorithm

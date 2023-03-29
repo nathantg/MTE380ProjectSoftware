@@ -17,10 +17,10 @@ void logging(UART_HandleTypeDef *huart, float distance, switches_instance_t *swi
             "Distance: %u.%u in, Pitch: %u.%u, Roll: %u.%u, RightLimit: %d, LeftLimit: %d\r\n",
             ((unsigned int)distance / 100),
             ((unsigned int)distance % 100), 
-            ((unsigned int)gyroInstance->KalmanAngleY / 100),
-            ((unsigned int)gyroInstance->KalmanAngleY % 100),  
             ((unsigned int)gyroInstance->KalmanAngleX / 100),
-            ((unsigned int)gyroInstance->KalmanAngleX % 100),
+            ((unsigned int)gyroInstance->KalmanAngleX % 100),  
+            ((unsigned int)gyroInstance->KalmanAngleY / 100),
+            ((unsigned int)gyroInstance->KalmanAngleY % 100),
             switchesInstance->rightLimitSwitch->switchStatus,
             switchesInstance->leftLimitSwitch->switchStatus);
 
