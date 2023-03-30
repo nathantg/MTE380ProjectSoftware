@@ -41,11 +41,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define PLATFORM_DISTANCE 10.0f
 
-#define PILLAR_DISTANCE_THRESHOLD 70.0f // Distance threshold is 70 inces
-#define PLATFORM_PITCH_THRESHOLD 0.16f
-#define PLATFORM_ROLL_THRESHOLD 0.1f
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -150,7 +146,6 @@ int main(void)
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
   float distance;
-  float minDistance = 1000;
 
   // while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {}
 
