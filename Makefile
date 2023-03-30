@@ -65,7 +65,8 @@ Drivers/Ultrasonic/Src/MB1040.c \
 Drivers/MPU6050/Src/mpu6050.c \
 Drivers/Logging/Src/logging.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c \
+Controls/Ramp_Approach/Src/ramp_approach.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -131,7 +132,8 @@ C_INCLUDES =  \
 -IDrivers/Switches/Inc \
 -IDrivers/Ultrasonic/Inc \
 -IDrivers/MPU6050/Inc \
--IDrivers/Logging/Inc
+-IDrivers/Logging/Inc \
+-IControls/Ramp_Approach/Inc
 
 
 # compile gcc flags

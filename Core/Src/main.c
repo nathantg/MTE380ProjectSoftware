@@ -26,6 +26,7 @@
 #include "motor_functions.h"
 #include "mpu6050.h"
 #include "logging.h"
+#include "ramp_approach.h"
 
 /* USER CODE END Includes */
 
@@ -115,9 +116,9 @@ int main(void)
   SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
   SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
 
-  switches_instance_t switchesInstance;
+  switches_instance_t switchInstance;
 
-  SWITCHES_initiallize_switch_instance(&switchesInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
+  SWITCHES_initiallize_switch_instance(&switchInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
 
   motor_config_t rightMotor;
   motor_config_t leftMotor;
@@ -139,6 +140,8 @@ int main(void)
 
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
+  float distance;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -146,6 +149,22 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    while(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == 1) {
+      SWITCHES_get_right_limit_switch(&switchInstance);
+      SWITCHES_get_left_limit_switch(&switchInstance);
+      MB1040_get_distance(&hadc1, &distance);
+      MPU6050_Read_All(&hi2c1, &gyroInstance);
+
+      #ifdef LOGGING
+      logging(&huart2, distance, &switchInstance, &motorInstance, &gyroInstance);
+      #endif 
+    }
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+
+    ramp_approach(&huart2, &motorInstance, &switchInstance, &hadc1, &gyroInstance, &hi2c1);
+
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
     /* USER CODE BEGIN 3 */
   }
