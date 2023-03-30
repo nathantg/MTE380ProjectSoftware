@@ -14,16 +14,17 @@
 #include "motor_functions.h"
 #include "switches.h"
 #include "MB1040.h"
+#include "mpu6050.h"
 
 /**
  * @brief Initialize limit and tilt switch configuration
  * @param huart pointer to UART handle
- * @param limitSwitchValue variable with limit switch value
- * @param tiltSwitchValue variable with tilt switch value
  * @param distance variable with distance value
+ * @param switchesInstance pointer to switches instance struct
  * @param motorInstance pointer to motor instance struct
+ * @param gyroInstance pointer to gyro instance struct
  * @retval None
  */
-void logging(UART_HandleTypeDef *huart, float distance, uint8_t limitSwitchValue, uint8_t tiltSwitchValue, motor_instance_t *motorInstance);
+void logging(UART_HandleTypeDef *huart, float distance, switches_instance_t *switchesInstance, motor_instance_t *motorInstance, MPU6050_t *gyroInstance);
 
 #endif /* __LOGGING_H */

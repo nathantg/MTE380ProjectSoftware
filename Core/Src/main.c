@@ -21,8 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "switches.h"
 #include "MB1040.h"
 #include "motor_functions.h"
+#include "mpu6050.h"
 #include "logging.h"
 
 /* USER CODE END Includes */
@@ -44,6 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 
+I2C_HandleTypeDef hi2c1;
+
 TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart2;
@@ -58,6 +62,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -98,7 +103,21 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  swtiches_config_t rightLimitSwitch;
+  swtiches_config_t leftLimitSwitch;
+  swtiches_config_t upTiltSwitch;
+  swtiches_config_t downTiltSwitch;
+
+  SWITCHES_initialize_switch_config(&rightLimitSwitch, Right_Limit_Switch_Pin, Right_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&leftLimitSwitch, Left_Limit_Switch_Pin, Left_Limit_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&upTiltSwitch, Up_Tilt_Switch_Pin, Up_Tilt_Switch_GPIO_Port);
+  SWITCHES_initialize_switch_config(&downTiltSwitch, Down_Tilt_Switch_Pin, Down_Tilt_Switch_GPIO_Port);
+
+  switches_instance_t switchesInstance;
+
+  SWITCHES_initiallize_switch_instance(&switchesInstance, &rightLimitSwitch, &leftLimitSwitch, &upTiltSwitch, &downTiltSwitch);
 
   motor_config_t rightMotor;
   motor_config_t leftMotor;
@@ -111,6 +130,14 @@ int main(void)
   MOTOR_initialize_motor_instance(&motorInstance, &htim3, rightMotor, leftMotor); 
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); 
+
+  MPU6050_t gyroInstance;
+
+  while(MPU6050_Init(&hi2c1)) {
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+  }
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 
   /* USER CODE END 2 */
 
@@ -220,6 +247,40 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
 
 }
 
@@ -348,6 +409,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Up_Tilt_Switch_Pin */
+  GPIO_InitStruct.Pin = Up_Tilt_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Up_Tilt_Switch_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Left_Limit_Switch_Pin Right_Limit_Switch_Pin */
+  GPIO_InitStruct.Pin = Left_Limit_Switch_Pin|Right_Limit_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Down_Tilt_Switch_Pin */
+  GPIO_InitStruct.Pin = Down_Tilt_Switch_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Down_Tilt_Switch_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Right_Motor_Driver_DIR_Pin_Pin */
   GPIO_InitStruct.Pin = Right_Motor_Driver_DIR_Pin_Pin;
