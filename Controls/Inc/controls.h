@@ -18,8 +18,8 @@
 #include "logging.h"
 
 #define PILLAR_DISTANCE_THRESHOLD 10.0f // Distance threshold is 70 inces
-#define PLATFORM_PITCH_THRESHOLD 7.0f
-#define PLATFORM_ROLL_THRESHOLD 1.0f
+#define PLATFORM_PITCH_THRESHOLD 8.0f
+#define PLATFORM_ROLL_THRESHOLD 1.5f
 
 /**
   * @brief Brute force platform finding algorithm

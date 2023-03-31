@@ -9,7 +9,7 @@
 
 static void turn_left_90_degrees(motor_instance_t *motorInstance) {
   MOTOR_turn_left(30000, motorInstance);
-  HAL_Delay(2000); // Change delay for 90 degree turn
+  HAL_Delay(5500); // Change delay for 90 degree turn
   MOTOR_stop_both(motorInstance);
   HAL_Delay(500);
 }
@@ -130,22 +130,29 @@ void platform_finding_brute_force(UART_HandleTypeDef *huart, motor_instance_t *m
 
 void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c) {
   // Move to scan start position
-  // wall_align(huart, motorInstance, switchInstance, gyro);
+  wall_align(huart, motorInstance, switchInstance, gyro);
 
-  // MOTOR_move_speed_backward(10000, motorInstance);
-  // HAL_Delay(1000);
-  // MOTOR_stop_both(motorInstance);
+  MOTOR_move_speed_backward(10000, motorInstance);
+  HAL_Delay(2000);
+  MOTOR_stop_both(motorInstance);
+  HAL_Delay(500);
+
+  turn_left_90_degrees(motorInstance);
 
   float distance;
   float minDistance = 1000;
 
   // turn_left_90_degrees(motorInstance);
 
+  SWITCHES_get_right_limit_switch(switchInstance);
+  SWITCHES_get_left_limit_switch(switchInstance);
+
   MOTOR_move_speed_forward(10000, motorInstance);
 
   // Find the minimum recorded distance
   while((!SWITCHES_get_right_limit_switch(switchInstance) && !SWITCHES_get_left_limit_switch(switchInstance))) {
     MB1040_get_distance(adc, &distance); 
+    MPU6050_Read_All(i2c, gyro);
     #ifdef LOGGING
     logging(huart, distance, switchInstance, motorInstance, gyro);
     #endif 
@@ -154,13 +161,6 @@ void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *mot
   }
 
   MOTOR_stop_both(motorInstance);
-
-  // if((gyro->KalmanAngleX > PLATFORM_PITCH_THRESHOLD) || (gyro->KalmanAngleY > PLATFORM_ROLL_THRESHOLD)) {
-  //   while(1) {
-  //     HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
-  //     HAL_Delay(500);
-  //   } 
-  // }
 
   HAL_Delay(1000);
 
@@ -186,22 +186,23 @@ void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *mot
   SWITCHES_get_left_limit_switch(switchInstance);
   MOTOR_move_speed_forward(10000, motorInstance);
 
-  HAL_Delay(1000);
+  HAL_Delay(2000);
 
   uint8_t platformFound = 0;
+
   while(!platformFound) {
     MPU6050_Read_All(i2c, gyro);
     #ifdef LOGGING
     logging(huart, 0, switchInstance, motorInstance, gyro);
     #endif
 
-    if(gyro->KalmanAngleX > PLATFORM_PITCH_THRESHOLD || gyro->KalmanAngleY > PLATFORM_ROLL_THRESHOLD) {
+    if((gyro->KalmanAngleX > PLATFORM_PITCH_THRESHOLD) || (gyro->KalmanAngleY > PLATFORM_ROLL_THRESHOLD)) {
       platformFound = 1;
     }
   }
 
   MOTOR_stop_both(motorInstance);
-  HAL_Delay(10000);
+  HAL_Delay(500);
 
   if(platformFound) {
     while(1) {
