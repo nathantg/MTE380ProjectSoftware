@@ -30,7 +30,7 @@
 #include "logging.h"
 #endif
 
-#include "platform_finding.h"
+#include "controls.h"
 
 /* USER CODE END Includes */
 
