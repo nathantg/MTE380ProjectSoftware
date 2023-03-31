@@ -5,7 +5,7 @@
   ******************************************************************************
 */
 
-#include "platform_finding.h"
+#include "controls.h"
 
 static void turn_left_90_degrees(motor_instance_t *motorInstance) {
   MOTOR_turn_left(30000, motorInstance);
@@ -128,17 +128,6 @@ void platform_finding_brute_force(UART_HandleTypeDef *huart, motor_instance_t *m
   }
 }
 
-void platform_finding_circle_scan(motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c) {
-  // Scan in corner after ramp
-
-  // Scan in centre
-
-  // Scan in opposite corner
-
-  // Scan in adjacent corner
-
-}
-
 void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c) {
   // Move to scan start position
   // wall_align(huart, motorInstance, switchInstance, gyro);
@@ -220,20 +209,4 @@ void platform_finding_side_scan(UART_HandleTypeDef *huart, motor_instance_t *mot
       HAL_Delay(500);
     } 
   }
-  // else {
-  //   // move to corner
-  //   MOTOR_move_speed_forward(10000, motorInstance);
-
-  //   while(!SWITCHES_get_right_limit_switch(switchInstance) && !SWITCHES_get_left_limit_switch(switchInstance)) {
-  //     MPU6050_Read_All(i2c, gyro);
-  //     #ifdef LOGGING
-  //     logging(huart, 0, switchInstance, motorInstance, gyro);
-  //     #endif
-
-  //     // also look for platform
-
-  //   }
-
-  //   wall_align(huart, motorInstance, switchInstance, gyro);
-  // }
 }
