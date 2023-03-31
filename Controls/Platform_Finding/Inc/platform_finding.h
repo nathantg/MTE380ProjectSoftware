@@ -18,8 +18,8 @@
 #include "logging.h"
 
 #define PILLAR_DISTANCE_THRESHOLD 10.0f // Distance threshold is 70 inces
-#define PLATFORM_PITCH_THRESHOLD 0.16f
-#define PLATFORM_ROLL_THRESHOLD 0.1f
+#define PLATFORM_PITCH_THRESHOLD 7.0f
+#define PLATFORM_ROLL_THRESHOLD 1.0f
 
 /**
   * @brief Brute force platform finding algorithm
@@ -53,5 +53,7 @@ void platform_finding_side_scan(UART_HandleTypeDef *huart,motor_instance_t *moto
   * @retval None
   */
 void platform_finding_circle_scan(motor_instance_t *motorInstance, switches_instance_t *switchInstance, ADC_HandleTypeDef *adc, MPU6050_t *gyro, I2C_HandleTypeDef *i2c);
+
+void wall_align(UART_HandleTypeDef *huart, motor_instance_t *motorInstance, switches_instance_t *switchInstance, MPU6050_t *gyro);
 
 #endif /* __PLATFORM_FINDING_H */

@@ -13,12 +13,17 @@ void logging(UART_HandleTypeDef *huart, float distance, switches_instance_t *swi
     uint8_t buf[100];
 
     distance *= 100;
+
+    double pitch = gyroInstance->KalmanAngleX;
+
+    double pitchString = pitch * 100;
+    
     sprintf((char*)buf, 
             "Distance: %u.%u in, Pitch: %u.%u, Roll: %u.%u, RightLimit: %d, LeftLimit: %d\r\n",
             ((unsigned int)distance / 100),
             ((unsigned int)distance % 100), 
-            ((unsigned int)gyroInstance->KalmanAngleX / 100),
-            ((unsigned int)gyroInstance->KalmanAngleX % 100),  
+            ((unsigned int)pitchString / 100),
+            ((unsigned int)pitchString % 100),  
             ((unsigned int)gyroInstance->KalmanAngleY / 100),
             ((unsigned int)gyroInstance->KalmanAngleY % 100),
             switchesInstance->rightLimitSwitch->switchStatus,

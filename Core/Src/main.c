@@ -165,13 +165,15 @@ int main(void)
       MPU6050_Read_All(&hi2c1, &gyroInstance);
 
       #ifdef LOGGING
-      logging(&huart2, distance, &switchInstance, &motorInstance, &gyroInstance);
+      logging(&huart2, 0, &switchInstance, &motorInstance, &gyroInstance);
       #endif 
     }
 
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 
     platform_finding_side_scan(&huart2, &motorInstance, &switchInstance, &hadc1, &gyroInstance, &hi2c1);
+
+    //wall_align(&huart2, &motorInstance, &switchInstance, &gyroInstance);
 
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
     
